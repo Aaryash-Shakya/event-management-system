@@ -1,10 +1,16 @@
-import express from 'express'
-const app = express();
-import cors from 'cors';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 
+dotenv.config();
+const port = process.env.PORT || 3000;
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.listen(8000,()=>{
-    console.log('server started at port: 8000');
-})
+import db from "../models";
+db.sequelize.sync().then(() => {
+	app.listen(port, () => {
+		console.log("server started at port: 8000");
+	});
+});
