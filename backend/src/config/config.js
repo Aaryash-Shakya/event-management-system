@@ -10,7 +10,7 @@ module.exports = {
 		database: DB_DATABASE,
 		// port: DB_PORT,
 		host: DB_HOST,
-		dialect: "mysql",
+		dialect: "postgres",
 		migrationStorageTableName: "sequelize_migrations",
 		seederStorageTableName: "sequelize_seeds",
 	},

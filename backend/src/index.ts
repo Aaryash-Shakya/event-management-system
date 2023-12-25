@@ -8,34 +8,35 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-import db from "../models";
-import { users } from "../seeders/user";
+import { users } from "./seeders/user";
+import { UserModel } from "./models/user";
+import { SequelizeClass } from "./database/connection";
 
 const createUser = () => {
-	users.map(user => {
-		db.User.create(user);
+	UserModel.create({
+		id: 0,
+		email: "hello@gmail.com",
+		password: "TestPassword",
 	});
 };
 
+app.listen(port, () => {
+	console.log("server started at port: 8000");
+});
 
-db.sequelize
-	.sync()
+
+
+const testSequelize = new SequelizeClass();
+testSequelize
+	.testRun()
 	.then(() => {
-		app.listen(port, () => {
-			console.log("server started at port: 8000");
-		});
+		// UserModel.sync()
+
+		// UserModel.create({
+		// 	email: "test@email.com",
+		// 	password: "123456",
+		// })
 	})
-	.then(() => {
-		// createUser();
-
-        // get users
-        db.User.findAll()
-			.then(u => {
-				console.log('user are');
-				console.log(u);
-				// Process the fetched users as needed
-			})
-			.catch(error => {
-				console.error("Error fetching data:", error);
-			});
+	.catch(err => {
+		console.log(`error from index: ${err}`);
 	});
