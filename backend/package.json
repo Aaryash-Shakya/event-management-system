@@ -19,6 +19,7 @@
     "start": "nodemon --exec ts-node src/index.ts",
     "config": "nodemon --exec ts-node config/config.js",
     "migrate": "sequelize db:migrate --env=database",
+    "model:generate":"npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string",
     "generateMigration": "sequelize migration:create --name"
   },
   "repository": {

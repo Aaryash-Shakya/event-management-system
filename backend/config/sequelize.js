@@ -2,9 +2,7 @@ const { config } = require("dotenv");
 config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 
 import { Sequelize } from "sequelize";
-import { UserModel } from "../src/models/user";
 import config from "./config";
-
 
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;

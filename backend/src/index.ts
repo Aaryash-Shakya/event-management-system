@@ -9,14 +9,8 @@ app.use(cors());
 app.use(express.json());
 
 import { SequelizeClass } from "../config/sequelize";
-import ExampleModel from "./models/example";
-
-const createUser = () => {
-	// UserModel.create({
-	// 	email: "test@email.com",
-	// 	password: "123456",
-	// })
-};
+import { DB_sequelize } from "../config/sequelize";
+import db from "../models";
 
 app.listen(port, () => {
 	console.log("server started at port: 8000");
@@ -28,11 +22,10 @@ const testSequelize = new SequelizeClass();
 testSequelize
 	.testRun()
 	.then(() => {
-		// ExampleModel.sync()
-
-		const example = ExampleModel.create({
+		// console.log(db.sequelize.models);
+		const user = db.sequelize.models.UserModel.create({
 			name: "aaryash",
-			surname: "apple"
+			email: "aaryash@shakya.com"
 		})
 	}).then(() =>{
 		console.log("example query executed")

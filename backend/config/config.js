@@ -4,7 +4,7 @@ config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
 console.log(process.env.NODE_ENV);
 module.exports = {
-    env: "development",
+    env: "development",	
 	development: {
 		username: DB_USER,
 		password: DB_PASSWORD,
