@@ -8,16 +8,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-import { users } from "./seeders/user";
-import { UserModel } from "./models/user";
 import { SequelizeClass } from "./database/connection";
+import ExampleModel from "./models/example";
 
 const createUser = () => {
-	UserModel.create({
-		id: 0,
-		email: "hello@gmail.com",
-		password: "TestPassword",
-	});
+	// UserModel.create({
+	// 	email: "test@email.com",
+	// 	password: "123456",
+	// })
 };
 
 app.listen(port, () => {
@@ -30,12 +28,14 @@ const testSequelize = new SequelizeClass();
 testSequelize
 	.testRun()
 	.then(() => {
-		// UserModel.sync()
+		// ExampleModel.sync()
 
-		// UserModel.create({
-		// 	email: "test@email.com",
-		// 	password: "123456",
+		// const example = ExampleModel.create({
+		// 	name: "aaryash",
+		// 	email: "aaryash@gmail.com"
 		// })
+	}).then(() =>{
+		console.log("example query executed")
 	})
 	.catch(err => {
 		console.log(`error from index: ${err}`);
