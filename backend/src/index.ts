@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-import { SequelizeClass } from "./database/connection";
+import { SequelizeClass } from "../config/sequelize";
 import ExampleModel from "./models/example";
 
 const createUser = () => {
@@ -30,10 +30,10 @@ testSequelize
 	.then(() => {
 		// ExampleModel.sync()
 
-		// const example = ExampleModel.create({
-		// 	name: "aaryash",
-		// 	email: "aaryash@gmail.com"
-		// })
+		const example = ExampleModel.create({
+			name: "aaryash",
+			surname: "apple"
+		})
 	}).then(() =>{
 		console.log("example query executed")
 	})

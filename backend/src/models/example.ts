@@ -1,6 +1,5 @@
 import Sequelize from 'sequelize';
-
-import { DB_sequelize } from '../database/connection';
+import { DB_sequelize } from "../../config/sequelize"; 
 
 
 const ExampleModel = DB_sequelize.define('example', {
@@ -14,7 +13,7 @@ const ExampleModel = DB_sequelize.define('example', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    email: {
+    surname: {
         type: Sequelize.STRING,
         allowNull: false
     }

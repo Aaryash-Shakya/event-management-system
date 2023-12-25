@@ -1,15 +1,24 @@
-import { config } from "dotenv";
-config({ path: `.env.${process.env.NODE_ENV || "development"}` });
+const { config } = require("dotenv");
+config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
+
 import { Sequelize } from "sequelize";
-import { UserModel } from "../models/user";
+import { UserModel } from "../src/models/user";
+import config from "./config";
+
+
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
 
-export const DB_sequelize = new Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
-	dialect: "postgres",
-	host: DB_HOST,
-	timezone: "+05:45"
-});
+export const DB_sequelize = new Sequelize(
+	DB_DATABASE,
+	DB_USER, 
+	DB_PASSWORD, 
+	{
+		dialect: "postgres",
+		host: DB_HOST,
+		timezone: "+05:45"
+	}
+);
 
 export class SequelizeClass {
 	async testRun() {
