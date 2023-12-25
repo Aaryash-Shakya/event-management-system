@@ -1,25 +1,28 @@
-import * as dotenv from "dotenv"
+const { config } = require("dotenv");
+config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 
+const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
+console.log(process.env.NODE_ENV);
 module.exports = {
 	development: {
-		username: process.env.DB_USER,
-		password: process.env.DB_PASS,
-		database: process.env.DB_NAME,
-		host: "127.0.0.1",
-		dialect: "postgres",
+		username: DB_USER,
+		password: DB_PASSWORD,
+		database: DB_DATABASE,
+		// port: DB_PORT,
+		host: DB_HOST,
+		dialect: "mysql",
+		migrationStorageTableName: "sequelize_migrations",
+		seederStorageTableName: "sequelize_seeds",
 	},
 	test: {
-		username: "root",
-		password: null,
-		database: "database_test",
-		host: "127.0.0.1",
+		username: DB_USER,
+		password: DB_PASSWORD,
+		database: DB_DATABASE,
+		// port: DB_PORT,
+		host: DB_HOST,
 		dialect: "mysql",
+		migrationStorageTableName: "sequelize_migrations",
+		seederStorageTableName: "sequelize_seeds",
 	},
-	production: {
-		username: "root",
-		password: null,
-		database: "database_production",
-		host: "127.0.0.1",
-		dialect: "mysql",
-	},
+	// production
 };

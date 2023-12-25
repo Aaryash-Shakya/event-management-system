@@ -1,4 +1,3 @@
-"use strict";
 const { Model } = require("sequelize");
 
 interface UserAttributes {
@@ -9,11 +8,6 @@ interface UserAttributes {
 
 module.exports = (sequelize: any, DataTypes: any) => {
 	class User extends Model<UserAttributes> implements UserAttributes {
-		/**
-		 * Helper method for defining associations.
-		 * This method is not a part of Sequelize lifecycle.
-		 * The `models/index` file will call this method automatically.
-		 */
 		firstName!: String;
 		lastName!: String;
 		email!: String;
