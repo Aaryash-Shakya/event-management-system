@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@types/express": "^4.17.21",
     "@types/pg": "^8.10.9",
     "@types/sequelize": "^4.28.19",
     "body-parser": "^1.20.2",
@@ -19,7 +20,7 @@
     "start": "nodemon --exec ts-node src/index.ts",
     "config": "nodemon --exec ts-node config/config.js",
     "migrate": "sequelize db:migrate --env=database",
-    "model:generate":"npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string",
+    "model:generate": "npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string",
     "generateMigration": "sequelize migration:create --name"
   },
   "repository": {
@@ -35,7 +36,6 @@
   "description": "",
   "devDependencies": {
     "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
     "sequelize-cli": "^6.6.2"
   }
 }

@@ -19,7 +19,7 @@ export const DB_sequelize = new Sequelize(
 );
 
 export class SequelizeClass {
-	async testRun() {
+	async syncDatabase() {
 		try {
 			// await DB_sequelize.sync({force:true});
 			await DB_sequelize.sync();
