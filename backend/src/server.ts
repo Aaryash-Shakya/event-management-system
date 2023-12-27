@@ -3,14 +3,21 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { DB_sequelize } from "../config/sequelize";
 import { SequelizeClass } from "../config/sequelize";
+import userRoute from "./routes/userRoute";
 
 export class Server {
 	public app: express.Application = express();
 
 	constructor() {
 		this.setConfiguration();
+
+		// initialize all routes
 		this.setRoutes();
+
+		// if route not found above rest are handled by handle404Error
 		this.handle404Error();
+
+		// only accessed when a route redirects to it by calling next(error:Error)
 		this.handleErrors();
 	}
 
@@ -23,8 +30,8 @@ export class Server {
 		this.app.use(express.json());
 	}
 
-	async connectDatabase(){
-		const sequelize = new SequelizeClass;
+	async connectDatabase() {
+		const sequelize = new SequelizeClass();
 		await sequelize.syncDatabase();
 	}
 
@@ -33,7 +40,7 @@ export class Server {
 	}
 
 	setRoutes() {
-		this.app.use("/api/user");
+		this.app.use("/api/user", userRoute);
 	}
 
 	handle404Error() {
@@ -50,7 +57,7 @@ export class Server {
 			let errorStatus = (error as any).errorStatus || 500;
 			let errorMessage = error.message || "Something went wrong. Please try again later";
 
-			console.log(`error occurred: ${error.name} ${error.errorStatus} ${error.message}`);
+			console.log(`\nerror occurred: ${error.name} ${error.errorStatus} ${error.message}`);
 			console.log(error);
 			res.status(errorStatus).json({
 				errorName: error.name,
