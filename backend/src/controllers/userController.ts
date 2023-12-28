@@ -1,4 +1,4 @@
-import db from "../../models";
+import {db,Sequelize} from "../models";
 
 export class UserController {
 	static async getAllUsers(req, res, next) {

@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
-import { DB_sequelize } from "../config/sequelize"; 
 
+import { DB_sequelize } from '../../config/sequelize';
 
 const ExampleModel = DB_sequelize.define('example', {
     id: {
