@@ -25,7 +25,10 @@ class UserRouter {
 		this.router.post("/signup", UserController.signup);
 	}
 	
-	patchRoutes() {}
+	patchRoutes() {
+		this.router.patch("/verify-email",UserController.verifyEmail)	
+	}
+
 	putRoutes() {}
 	deleteRoutes() {}
 }
