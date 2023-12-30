@@ -1,3 +1,9 @@
-import db from "../models";
+import { db } from "../models";
 
-export class UserRepository {}
+export async function findAll() {
+	return await db.UserModel.findAll();
+}
+
+export async function createUser(){
+    
+}
