@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { UserController } from "../controllers/userController";
 import { UserRepository } from "../repository/userRepository";
+import { UserValidator } from "../validators/userValidator";
+import { GlobalMiddleware } from "../middlewares/globalMiddleware";
 
 class UserRouter {
 	public router: Router;
@@ -23,13 +25,28 @@ class UserRouter {
 	}
 
 	postRoutes() {
-		this.router.post("/signup", UserController.signup);
+		this.router.post(
+			"/signup",
+			UserValidator.signupValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.signup
+		);
 	}
 
 	patchRoutes() {
-		this.router.patch("/verify-email", UserController.verifyEmail);
-		
-		this.router.patch("/resend-verification-token", UserController.resendVerificationToken);
+		this.router.patch(
+			"/verify-email",
+			UserValidator.verifyEmailValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.verifyEmail
+		);
+
+		this.router.patch(
+			"/resend-verification-token",
+			UserValidator.resendVerificationTokenValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.resendVerificationToken
+		);
 	}
 
 	putRoutes() {}
