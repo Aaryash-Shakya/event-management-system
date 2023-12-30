@@ -1,9 +1,21 @@
-import { db } from "../models";
+import { Sequelize, db } from "../models";
 
-export async function findAll() {
-	return await db.UserModel.findAll();
-}
+// NOTE this syntax supports intelisense
+// Sequelize.Model
 
-export async function createUser(){
-    
+export class UserRepository {
+	static async findAll() {
+		return await db.UserModel.findAll();
+	}
+
+	static async findOne(userEmail: String) {
+		return await db.UserModel.findOne({ 
+            where: { email: userEmail } 
+        });
+	}
+
+	static async create(userData) {
+		let user = await db.UserModel.create(userData);
+        return user.toJSON();
+	}
 }

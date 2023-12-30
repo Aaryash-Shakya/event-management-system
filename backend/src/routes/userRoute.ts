@@ -21,7 +21,10 @@ class UserRouter {
 		this.router.get("/get-users", UserController.getAllUsers);
 	}
 
-	postRoutes() {}
+	postRoutes() {
+		this.router.post("/signup", UserController.signup);
+	}
+	
 	patchRoutes() {}
 	putRoutes() {}
 	deleteRoutes() {}
