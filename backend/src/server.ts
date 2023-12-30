@@ -1,7 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { DB_sequelize } from "../config/sequelize";
 import { SequelizeClass } from "../config/sequelize";
 import userRoute from "./routes/userRoute";
 

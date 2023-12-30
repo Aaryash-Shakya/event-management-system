@@ -27,4 +27,11 @@ export class UserValidator {
 	static resendVerificationTokenValidator() {
 		return [body("email", "Email is required").isEmail()];
 	}
+
+	static loginValidator() {
+		return [
+			body("email", "Email is required").isEmail(),
+			body("password", "Password is required").isAlphanumeric(),
+		];
+	}
 }

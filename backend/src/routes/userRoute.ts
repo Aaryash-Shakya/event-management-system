@@ -31,6 +31,13 @@ class UserRouter {
 			GlobalMiddleware.checkValidationError,
 			UserController.signup
 		);
+
+		this.router.post(
+			"/login",
+			UserValidator.loginValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.login
+		);
 	}
 
 	patchRoutes() {

@@ -1,5 +1,7 @@
 import { db, Sequelize } from "../models";
 import { UserRepository } from "../repository/userRepository";
+import { Bcrypt } from "../services/bcrypt";
+import { Jwt } from "../services/jwt";
 import { Service } from "../services/utils";
 
 export class UserController {
@@ -17,7 +19,7 @@ export class UserController {
 		try {
 			// check conditions
 			// check if email already exists
-			const existingUser = await UserRepository.findOne(email);
+			const existingUser = await UserRepository.findOne({ email });
 			if (existingUser) {
 				Service.createErrorAndThrow("Email is already registered", 409); // conflict
 			}
@@ -25,13 +27,16 @@ export class UserController {
 			// generate verification OTP
 			let verification_token = Service.generateOTP();
 
+			// hash password
+			let hashed_password = await Bcrypt.encryptPassword(password);
+
 			// post user
 			const data = {
 				name,
 				email,
 				verification_token,
 				verification_token_time: Service.generateVerificationTime(new Date(), 5),
-				password,
+				password: hashed_password,
 				password_reset_token: -1, // -1 -> not generated
 				password_reset_token_time: Service.generateVerificationTime(new Date(), -10), // always expired: 10 min before creating the account
 				phone,
@@ -40,7 +45,7 @@ export class UserController {
 			let user = await UserRepository.create(data);
 
 			// ! whats the convention do you use return on res.send call.
-			// ! logically it doesnt makes any difference
+			// ! logically it doesn't makes any difference
 			return res.status(200).json({
 				message: "Account Created. Verify your email.",
 				user: user,
@@ -54,7 +59,7 @@ export class UserController {
 		const { email, verification_token } = req.body;
 		try {
 			// test conditions
-			const testUser = await UserRepository.findOne({email});
+			const testUser = await UserRepository.findOne({ email });
 
 			// if email exists
 			if (!testUser) {
@@ -125,10 +130,51 @@ export class UserController {
 				}
 			);
 			if (updatedUser) {
-				res.status(200).json({ message: "Verification email resent successfully",updatedUser });
+				res.status(200).json({ message: "Verification email resent successfully", updatedUser });
 			} else {
 				Service.createErrorAndThrow("Failed to resend verification email", 500);
 			}
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async login(req, res, next) {
+		const { email, password } = req.body;
+		try {
+			let user = await UserRepository.findOne({ email: email });
+
+			// test condition
+			// check if user exists
+			if (!user) {
+				Service.createErrorAndThrow("Account not found", 404);
+			}
+
+			// check if user email is verified
+			if (!user.email_verified) {
+				Service.createErrorAndThrow("Email not Verified", 401); // unauthorized
+			}
+
+			// check password is correct
+			const checkPassword = await Bcrypt.comparePassword(password, user.password);
+			if (checkPassword !== true) {
+				Service.createErrorAndThrow(checkPassword, 401); // forbidden
+			}
+
+			// generate new jwt token
+			const payload = {
+				userId: user.id,
+				email: user.email,
+				type: user.type,
+				purpose: "login",
+			};
+			const token = Jwt.signJwt(payload, "10d");
+
+			// send response
+			res.status(200).json({
+				message: "login successful",
+				token: token,
+			});
 		} catch (err) {
 			next(err);
 		}
