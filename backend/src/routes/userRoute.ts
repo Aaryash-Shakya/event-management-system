@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { UserController } from "../controllers/userController";
+import { UserRepository } from "../repository/userRepository";
 
 class UserRouter {
 	public router: Router;
@@ -15,7 +16,7 @@ class UserRouter {
 
 	getRoutes() {
 		this.router.get("/test-route", (req, res, next) => {
-			res.send("success");
+			res.send(UserRepository.findOne({ email: "rs9995@gmail.com" }));
 		});
 
 		this.router.get("/get-users", UserController.getAllUsers);
@@ -24,9 +25,11 @@ class UserRouter {
 	postRoutes() {
 		this.router.post("/signup", UserController.signup);
 	}
-	
+
 	patchRoutes() {
-		this.router.patch("/verify-email",UserController.verifyEmail)	
+		this.router.patch("/verify-email", UserController.verifyEmail);
+		
+		this.router.patch("/resend-verification-token", UserController.resendVerificationToken);
 	}
 
 	putRoutes() {}

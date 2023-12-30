@@ -8,10 +8,14 @@ export class UserRepository {
 		return await db.UserModel.findAll();
 	}
 
-	static async findOne(userEmail: String) {
-		return await db.UserModel.findOne({ 
-            where: { email: userEmail } 
+	static async findOne(key) {
+		let user = await db.UserModel.findOne({ 
+            where: { ...key } 
         });
+        if(user){
+            return user.dataValues;
+        }
+        // NOTE dont use user.toJSON(), if user doesn't exist it throws instead, using .dataValues also cause error
 	}
 
 	static async create(userData) {
@@ -30,7 +34,6 @@ export class UserRepository {
                 plain: true,
             }
         );
-        console.log(user[1].dataValues);
         return user[1].dataValues;
 	}
 }

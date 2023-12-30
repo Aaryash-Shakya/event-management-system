@@ -39,6 +39,8 @@ export class UserController {
 			};
 			let user = await UserRepository.create(data);
 
+			// ! whats the convention do you use return on res.send call.
+			// ! logically it doesnt makes any difference
 			return res.status(200).json({
 				message: "Account Created. Verify your email.",
 				user: user,
@@ -52,7 +54,7 @@ export class UserController {
 		const { email, verification_token } = req.body;
 		try {
 			// test conditions
-			const testUser = await UserRepository.findOne(email);
+			const testUser = await UserRepository.findOne({email});
 
 			// if email exists
 			if (!testUser) {
@@ -94,5 +96,41 @@ export class UserController {
 		}
 	}
 
-	
+	static async resendVerificationToken(req, res, next) {
+		const email = req.body.email;
+		try {
+			const testUser = await UserRepository.findOne({ email });
+
+			// test conditions
+			// check if email is correct
+			if (!testUser) {
+				Service.createErrorAndThrow("Email not registered", 404); // email not found
+			}
+
+			// check if email is already verified
+			else if (testUser.email_verified === true) {
+				Service.createErrorAndThrow("Email already verified", 400); // bad request
+			}
+
+			// generate new token and update time
+			const newVerificationToken = Service.generateOTP();
+			const newVerificationTime = Service.generateVerificationTime(new Date(), 5);
+
+			// update user
+			const updatedUser = await UserRepository.update(
+				{ email },
+				{
+					verification_token: newVerificationToken,
+					verification_token_time: newVerificationTime,
+				}
+			);
+			if (updatedUser) {
+				res.status(200).json({ message: "Verification email resent successfully",updatedUser });
+			} else {
+				Service.createErrorAndThrow("Failed to resend verification email", 500);
+			}
+		} catch (err) {
+			next(err);
+		}
+	}
 }
