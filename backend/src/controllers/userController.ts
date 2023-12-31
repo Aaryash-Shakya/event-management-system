@@ -240,7 +240,7 @@ export class UserController {
 
             // check if jwt is correct
             else if (decoded.email !== email) {
-                Service.createErrorAndThrow("Invalid JsonWebToken", 401); // unauthorized
+                Service.createErrorAndThrow("Invalid JsonWebToken, email doesn't match", 401); // unauthorized
             }
 
             const testUser = await UserRepository.findOne({
@@ -289,6 +289,102 @@ export class UserController {
 
             res.status(200).json({
                 message: "Password reset successful",
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+	static async getProfile(req, res, next) {
+        const decoded = req.decoded;
+        const email = req.params.email;
+        try {
+            // test conditions
+            // check if jwt exists
+            if (!decoded) {
+                Service.createErrorAndThrow("JsonWebToken not found", 404); // jwt not found
+            }
+
+            // check if jwt is correct
+            else if (decoded.email !== email) {
+                Service.createErrorAndThrow("Invalid JsonWebToken, email doesn't match", 401); // unauthorized
+            }
+
+            const testUser = await UserRepository.findOne({
+                email: email,
+            });
+
+            // check if email exists
+            if (!testUser) {
+                Service.createErrorAndThrow("Email not registered", 404); // email not found
+            }
+
+            // check is email is verified
+            if (!testUser.email_verified) {
+                Service.createErrorAndThrow("Email not verified", 401); // unauthorized
+            }
+
+            // only send necessary data
+            const user = {
+                name: testUser.name,
+                email: testUser.email,
+                phone: testUser.phone,
+                type: testUser.type,
+                createdAt: testUser.createdAt,
+            };
+
+            res.status(200).json({
+                message: "Fetch user successful",
+                profile: user,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    static async updateProfile(req, res, next) {
+        const { email, name, phone, type } = req.body;
+        const decoded = req.decoded;
+        try {
+            // test conditions
+            // check if jwt exists
+            if (!decoded) {
+                Service.createErrorAndThrow("JsonWebToken not found", 404); // jwt not found
+            }
+
+            // check if jwt is correct
+            else if (decoded.email !== email) {
+                Service.createErrorAndThrow("Invalid JsonWebToken", 401); // unauthorized
+            }
+
+            const testUser = await UserRepository.findOne({
+                email: email,
+            });
+
+            // check if email exists
+            if (!testUser) {
+                Service.createErrorAndThrow("Email not registered", 404); // email not found
+            }
+
+            // check is email is verified
+            if (!testUser.email_verified) {
+                Service.createErrorAndThrow("Email not verified", 401); // unauthorized
+            }
+
+            // update
+            let newData: { name?: string; phone?: string; type?: string } = {};
+            if (name !== undefined) {
+                newData.name = name;
+            }
+            if (phone !== undefined) {
+                newData.phone = phone;
+            }
+            if (type !== undefined) {
+                newData.type = type;
+            }
+            await UserRepository.update({ email: email }, newData);
+            res.status(200).json({
+                message: "Profile update successfully",
             });
         } catch (err) {
             next(err);

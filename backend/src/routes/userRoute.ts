@@ -22,6 +22,14 @@ class UserRouter {
 		});
 
 		this.router.get("/get-users", UserController.getAllUsers);
+
+		this.router.get(
+			"/get-profile/:email",
+			GlobalMiddleware.authorization,
+			UserValidator.getProfileValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.getProfile
+		);
 	}
 
 	postRoutes() {
@@ -40,11 +48,11 @@ class UserRouter {
 		);
 
 		this.router.post(
-            "/forgot-password",
-            UserValidator.forgotPasswordValidator(),
-            GlobalMiddleware.checkValidationError,
-            UserController.forgotPassword
-        );
+			"/forgot-password",
+			UserValidator.forgotPasswordValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.forgotPassword
+		);
 	}
 
 	patchRoutes() {
@@ -63,12 +71,20 @@ class UserRouter {
 		);
 
 		this.router.patch(
-            "/reset-password",
-            GlobalMiddleware.authorization,
-            UserValidator.resetPasswordValidator(),
-            GlobalMiddleware.checkValidationError,
-            UserController.resetPassword
-        );
+			"/reset-password",
+			GlobalMiddleware.authorization,
+			UserValidator.resetPasswordValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.resetPassword
+		);
+
+		this.router.patch(
+			"/update-profile",
+			GlobalMiddleware.authorization,
+			UserValidator.updateProfileValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.updateProfile
+		);
 	}
 
 	putRoutes() {}
