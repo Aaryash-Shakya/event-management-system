@@ -1,0 +1,46 @@
+{
+  "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/pg": "^8.10.9",
+    "@types/sequelize": "^4.28.19",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.0.2",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.35.2"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec ts-node src/index.ts",
+    "config": "nodemon --exec ts-node config/config.js",
+    "migrate": "sequelize db:migrate --env=database",
+    "model:generate": "sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string",
+    "migration:generate": "sequelize-cli migration:generate --name"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aaryash-Shakya/event-management-system.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Aaryash-Shakya/event-management-system/issues"
+  },
+  "homepage": "https://github.com/Aaryash-Shakya/event-management-system#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "sequelize-cli": "^6.6.2"
+  }
+}
