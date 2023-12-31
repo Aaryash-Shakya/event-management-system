@@ -38,6 +38,13 @@ class UserRouter {
 			GlobalMiddleware.checkValidationError,
 			UserController.login
 		);
+
+		this.router.post(
+            "/forgot-password",
+            UserValidator.forgotPasswordValidator(),
+            GlobalMiddleware.checkValidationError,
+            UserController.forgotPassword
+        );
 	}
 
 	patchRoutes() {
@@ -54,6 +61,14 @@ class UserRouter {
 			GlobalMiddleware.checkValidationError,
 			UserController.resendVerificationToken
 		);
+
+		this.router.patch(
+            "/reset-password",
+            GlobalMiddleware.authorization,
+            UserValidator.resetPasswordValidator(),
+            GlobalMiddleware.checkValidationError,
+            UserController.resetPassword
+        );
 	}
 
 	putRoutes() {}
