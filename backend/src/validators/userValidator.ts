@@ -44,7 +44,7 @@ export class UserValidator {
     static resetPasswordValidator() {
         return [
             body("email", "Email is required").isEmail(),
-            body("password_reset_token", "Password reset OTP is required").isNumeric(),
+            body("password_reset_token", "Password reset OTP is required").isString(),
         ];
     }
 

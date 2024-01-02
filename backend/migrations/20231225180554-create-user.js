@@ -38,13 +38,6 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 				defaultValue: false,
 			},
-			password_reset_token: {
-				type: Sequelize.INTEGER,
-				defaultValue: -1,
-			},
-			password_reset_token_time: {
-				type: Sequelize.DATE,
-			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE,

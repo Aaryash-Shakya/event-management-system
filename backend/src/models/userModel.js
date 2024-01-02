@@ -47,13 +47,6 @@ module.exports = (sequelize, DataTypes) => {
 			email_verified: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false,
-			},
-			password_reset_token: {
-				type: DataTypes.INTEGER,
-				defaultValue: -1,
-			},
-			password_reset_token_time: {
-				type: DataTypes.DATE,
 			},	
 		},
 		{

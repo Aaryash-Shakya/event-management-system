@@ -50,8 +50,6 @@ export class UserController {
 				name,
 				email,
 				password: hashed_password,
-				password_reset_token: -1, // -1 -> not generated
-				password_reset_token_time: Service.generateVerificationTime(new Date(), -10), // always expired: 10 min before creating the account
 				phone,
 				type: "admin",
 				date_of_birth,
@@ -59,8 +57,7 @@ export class UserController {
 			};
 			let user = await UserRepository.create(data);
 
-			// generate email verification OTP
-
+			// generate verification token
 			const tokenData: token = {
 				purpose: "verify-email",
 				expires_in: Service.generateVerificationTime(new Date(), 5),
@@ -221,19 +218,19 @@ export class UserController {
 				Service.createErrorAndThrow(checkPassword, 401); // forbidden
 			}
 
-			// generate new jwt token
+			// generate new jwt
 			const payload = {
 				userId: user.id,
 				email: user.email,
 				type: user.type,
 				purpose: "login",
 			};
-			const token = Jwt.signJwt(payload, "10d");
+			const jwt = Jwt.signJwt(payload, "10d");
 
 			// send response
 			res.status(200).json({
 				message: "login successful",
-				token: token,
+				jwt: jwt,
 			});
 		} catch (err) {
 			next(err);
@@ -259,27 +256,43 @@ export class UserController {
 			const passwordResetToken = Service.generateOTP();
 			const passwordResetTokenTime = Service.generateVerificationTime(new Date(), 5);
 
-			const updatedUser = await UserRepository.update(
-				{ email: email },
-				{
-					password_reset_token: passwordResetToken,
-					password_reset_token_time: passwordResetTokenTime,
-				}
-			);
+			const existingToken = await TokenRepository.findAll({
+				userId: testUser.id,
+			});
+
+			// if reset token exists delete old token
+			if (existingToken) {
+				await TokenRepository.deleteOne({ userId: testUser.id, purpose: "reset-password" });
+			}
+			let token = await TokenRepository.create({
+				purpose: "reset-password",
+				expires_in: passwordResetTokenTime,
+				value: passwordResetToken,
+				userId: testUser.id,
+			});
+
+			// send email
+			await NodeMailer.sendEmail({
+				from: "event-management@api.com",
+				to: email,
+				subject: "Reset Password",
+				text: `To reset your account password use the OTP ${token.value}`,
+				html: `<a href="https://localhost:3000/api/user/reset-password">Click to reset password ${token.value}</a>`,
+			});
 
 			// generate jwt to verify device during reset
 			const payload = {
-				userId: updatedUser._id,
-				email: updatedUser.email,
-				type: updatedUser.type,
+				userId: testUser.id,
+				email: testUser.email,
+				type: testUser.type,
 				purpose: "reset-password",
 			};
-			const token = Jwt.signJwt(payload, "1hr");
+			const jwt = Jwt.signJwt(payload, "1hr");
 
 			res.status(200).json({
 				message: "Password reset OTP has been sent",
-				token: token,
-				user: updatedUser,
+				jwt: jwt,
+				user: testUser,
 			});
 		} catch (err) {
 			next(err);
@@ -302,9 +315,7 @@ export class UserController {
 				Service.createErrorAndThrow("Invalid JsonWebToken, email doesn't match", 401); // unauthorized
 			}
 
-			const testUser = await UserRepository.findOne({
-				email: email,
-			});
+			const testUser = await UserRepository.findOne({ email: email });
 
 			// check if email exists
 			if (!testUser) {
@@ -316,35 +327,32 @@ export class UserController {
 				Service.createErrorAndThrow("Email not verified", 401); // unauthorized
 			}
 
-			// check if password reset token has expired
-			else if (new Date() > testUser.password_reset_token_time) {
-				Service.createErrorAndThrow("Password reset token expired", 401); // unauthorized
-			}
+			const resetToken = await TokenRepository.findOne({
+				userId: decoded.userId,
+				purpose: "reset-password",
+			});
 
 			// check if password reset OTP hasn't been requested
-			else if (password_reset_token === -1) {
+			if (!resetToken) {
 				Service.createErrorAndThrow("Password reset token not generated", 400); // bad request
 			}
 
+			// check if password reset token has expired
+			else if (new Date() > resetToken.expires_in) {
+				Service.createErrorAndThrow("Password reset token expired", 401); // unauthorized
+			}
+
 			// check if password reset token is correct
-			else if (password_reset_token != testUser.password_reset_token) {
+			else if (password_reset_token !== resetToken.value) {
 				Service.createErrorAndThrow("Invalid password reset token", 401); // unauthorized
 			}
 
-			// generate hashed password
-			const hashed_password = await Bcrypt.encryptPassword(password);
+            // delete reset token
+            await TokenRepository.deleteOne({ userId: testUser.id, purpose: "reset-password" });
 
-			const updatedUser = await UserRepository.update(
-				{
-					email: email,
-					password_reset_token: password_reset_token,
-				},
-				{
-					password: hashed_password,
-					password_reset_token: -1,
-					password_reset_token_time: Service.generateVerificationTime(new Date(), -10),
-				}
-			);
+			// update password
+			const hashed_password = await Bcrypt.encryptPassword(password);
+			const updatedUser = await UserRepository.update({ email: email }, { password: hashed_password });
 
 			res.status(200).json({
 				message: "Password reset successful",

@@ -14,6 +14,7 @@ export class TokenRepository {
 		if (token) {
 			return token.dataValues;
 		}
+		return false;
 	}
 
 	static async create(tokenData: object) {
