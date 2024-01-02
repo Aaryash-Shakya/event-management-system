@@ -7,6 +7,7 @@ import { NodeMailer } from "../services/nodeMailer";
 import { Service } from "../services/utils";
 import { TokenController } from "./tokenController";
 
+import { Request, Response, NextFunction } from 'express';
 type token = {
 	purpose: string;
 	expires_in: Date;
@@ -15,7 +16,7 @@ type token = {
 };
 
 export class UserController {
-	static async getAllUsers(req, res, next) {
+	static async getAllUsers(req:Request, res:Response, next:NextFunction) {
 		try {
 			const users = await UserRepository.findAll();
 			res.send(users);
@@ -24,7 +25,7 @@ export class UserController {
 		}
 	}
 
-	static async signup(req, res, next) {
+	static async signup(req:Request, res:Response, next:NextFunction) {
 		let { name, email, password, phone, date_of_birth, gender } = req.body;
 		try {
 			// check conditions
@@ -86,7 +87,7 @@ export class UserController {
 		}
 	}
 
-	static async verifyEmail(req, res, next) {
+	static async verifyEmail(req:Request, res:Response, next:NextFunction) {
 		const { email, email_verification_token } = req.body;
 		try {
 			// test conditions
@@ -143,7 +144,7 @@ export class UserController {
 		}
 	}
 
-	static async resendVerificationToken(req, res, next) {
+	static async resendVerificationToken(req:Request, res:Response, next:NextFunction) {
 		const email = req.body.email;
 		try {
 			const testUser = await UserRepository.findOne({ email });
@@ -196,7 +197,7 @@ export class UserController {
 		}
 	}
 
-	static async login(req, res, next) {
+	static async login(req:Request, res:Response, next:NextFunction) {
 		const { email, password } = req.body;
 		try {
 			let user = await UserRepository.findOne({ email: email });
@@ -237,7 +238,7 @@ export class UserController {
 		}
 	}
 
-	static async forgotPassword(req, res, next) {
+	static async forgotPassword(req:Request, res:Response, next:NextFunction) {
 		const email = req.body.email;
 		try {
 			const testUser = await UserRepository.findOne({ email: email });
@@ -299,7 +300,7 @@ export class UserController {
 		}
 	}
 
-	static async resetPassword(req, res, next) {
+	static async resetPassword(req, res:Response, next:NextFunction) {
 		const { email, password, password_reset_token } = req.body;
 		// from GlobalMiddleware.authorization
 		const decoded = req.decoded;
@@ -362,7 +363,7 @@ export class UserController {
 		}
 	}
 
-	static async getProfile(req, res, next) {
+	static async getProfile(req, res:Response, next:NextFunction) {
 		const decoded = req.decoded;
 		const email = req.params.email;
 		try {
@@ -409,7 +410,7 @@ export class UserController {
 		}
 	}
 
-	static async updateProfile(req, res, next) {
+	static async updateProfile(req, res:Response, next:NextFunction) {
 		const { email, name, phone, type } = req.body;
 		const decoded = req.decoded;
 		try {
