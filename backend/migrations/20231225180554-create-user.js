@@ -38,12 +38,6 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 				defaultValue: false,
 			},
-			email_verification_token: {
-				type: Sequelize.INTEGER,
-			},
-			email_verification_token_time: {
-				type: Sequelize.DATE,
-			},
 			password_reset_token: {
 				type: Sequelize.INTEGER,
 				defaultValue: -1,

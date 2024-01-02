@@ -48,12 +48,6 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false,
 			},
-			email_verification_token: {
-				type: DataTypes.INTEGER,
-			},
-			email_verification_token_time: {
-				type: DataTypes.DATE,
-			},
 			password_reset_token: {
 				type: DataTypes.INTEGER,
 				defaultValue: -1,

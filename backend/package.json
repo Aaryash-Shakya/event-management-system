@@ -24,7 +24,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --exec ts-node src/index.ts",
     "config": "nodemon --exec ts-node config/config.js",
-    "migrate": "sequelize db:migrate --env=database",
+    "db:migrate": "sequelize db:migrate --env=database",
     "model:generate": "sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string",
     "migration:generate": "sequelize-cli migration:generate --name"
   },

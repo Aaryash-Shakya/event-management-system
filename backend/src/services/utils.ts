@@ -10,7 +10,7 @@ export class Service {
                 otp += Math.floor(Math.random() * 10);
             }
         }
-        return parseInt(otp);
+        return otp;
     }
 
     // add times to date
