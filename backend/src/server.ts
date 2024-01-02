@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { SequelizeClass } from "../config/sequelize";
 import userRoute from "./routes/userRoute";
+import tokenRoute from "./routes/tokenRoute";
 
 export class Server {
 	public app: express.Application = express();
@@ -40,6 +41,7 @@ export class Server {
 
 	setRoutes() {
 		this.app.use("/api/user", userRoute);
+		this.app.use("/api/token", tokenRoute)
 	}
 
 	handle404Error() {

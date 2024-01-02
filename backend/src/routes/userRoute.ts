@@ -4,7 +4,7 @@ import { UserRepository } from "../repository/userRepository";
 import { UserValidator } from "../validators/userValidator";
 import { GlobalMiddleware } from "../middlewares/globalMiddleware";
 
-class UserRouter {
+class UserRoute {
 	public router: Router;
 
 	constructor() {
@@ -91,4 +91,4 @@ class UserRouter {
 	deleteRoutes() {}
 }
 
-export default new UserRouter().router;
+export default new UserRoute().router;
