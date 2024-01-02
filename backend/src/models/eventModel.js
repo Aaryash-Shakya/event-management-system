@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
 				NotNull: true,
 			},
 			description: {
-				type: DataTypes.StrING,
+				type: DataTypes.STRING,
 				NotNull: true,
 			},
-			status:{
+			status: {
 				type: DataTypes.STRING,
 				NotNull: true,
 			},
@@ -62,6 +62,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 		},
 		{
+			timestamps: true,
 			sequelize,
 			modelName: "EventModel",
 			tableName: "Events",
