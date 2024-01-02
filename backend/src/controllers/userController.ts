@@ -15,17 +15,26 @@ export class UserController {
 	}
 
 	static async signup(req, res, next) {
-		let { name, email, password, phone, type } = req.body;
+		let { name, email, password, phone, date_of_birth, gender } = req.body;
 		try {
 			// check conditions
 			// check if email already exists
-			const existingUser = await UserRepository.findOne({ email });
-			if (existingUser) {
+			const existingUserEmail = await UserRepository.findOne({ email });
+			if (existingUserEmail) {
 				Service.createErrorAndThrow("Email is already registered", 409); // conflict
+			}
+			
+            // check if phone already exists
+            if(phone!==undefined){
+                console.log('enter');
+                const existingUserPhone = await UserRepository.findOne({ phone });
+                if (existingUserPhone) {
+                    Service.createErrorAndThrow("Phone number is already registered", 409); // conflict
+                }
 			}
 
 			// generate verification OTP
-			let verification_token = Service.generateOTP();
+			let email_verification_token = Service.generateOTP();
 
 			// hash password
 			let hashed_password = await Bcrypt.encryptPassword(password);
@@ -34,13 +43,15 @@ export class UserController {
 			const data = {
 				name,
 				email,
-				verification_token,
-				verification_token_time: Service.generateVerificationTime(new Date(), 5),
+				email_verification_token,
+				email_verification_token_time: Service.generateVerificationTime(new Date(), 5),
 				password: hashed_password,
 				password_reset_token: -1, // -1 -> not generated
 				password_reset_token_time: Service.generateVerificationTime(new Date(), -10), // always expired: 10 min before creating the account
 				phone,
-				type,
+				type: "admin",
+                date_of_birth,
+                gender,
 			};
 			let user = await UserRepository.create(data);
 
@@ -56,7 +67,7 @@ export class UserController {
 	}
 
 	static async verifyEmail(req, res, next) {
-		const { email, verification_token } = req.body;
+		const { email, email_verification_token } = req.body;
 		try {
 			// test conditions
 			const testUser = await UserRepository.findOne({ email });
@@ -72,18 +83,18 @@ export class UserController {
 			}
 
 			// if verification token has expired
-			else if (new Date() > testUser.verification_token_time) {
+			else if (new Date() > testUser.email_verification_token_time) {
 				Service.createErrorAndThrow("Email verification token expired", 401); // unauthorized
 			}
 
 			// if verification token is incorrect
-			else if (verification_token != testUser.verification_token) {
+			else if (email_verification_token != testUser.email_verification_token) {
 				Service.createErrorAndThrow("Invalid Verification Token", 401); // unauthorized
 			}
 
 			// update user
 			const user = await UserRepository.update(
-				{ email, verification_token },
+				{ email, email_verification_token },
 				{
 					email_verified: true,
 				}
@@ -125,8 +136,8 @@ export class UserController {
 			const updatedUser = await UserRepository.update(
 				{ email },
 				{
-					verification_token: newVerificationToken,
-					verification_token_time: newVerificationTime,
+					email_verification_token: newVerificationToken,
+					email_verification_token_time: newVerificationTime,
 				}
 			);
 			if (updatedUser) {

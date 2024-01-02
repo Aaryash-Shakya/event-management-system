@@ -9,17 +9,9 @@ module.exports = {
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			username: {
-				type: Sequelize.STRING,
-				unique: true,
-				notNull: true,
-			},
-			first_name: {
+			name: {
 				type: Sequelize.STRING,
 				notNull: true,
-			},
-			last_name: {
-				type: Sequelize.STRING,
 			},
 			date_of_birth: {
 				type: Sequelize.DATE,
@@ -37,6 +29,10 @@ module.exports = {
 			},
 			password: {
 				type: Sequelize.STRING,
+			},
+			type: {
+				type: Sequelize.STRING,
+				defaultValue: "user",
 			},
 			email_verified: {
 				type: Sequelize.BOOLEAN,

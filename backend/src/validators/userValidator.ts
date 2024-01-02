@@ -3,21 +3,23 @@ import { body, param, query } from "express-validator";
 export class UserValidator {
 	static signupValidator() {
 		return [
-			body("name", "Name is required").isString(),
+			body("name", "name is required").isString(),
 			body("email", "Email is required").isEmail(),
 			body("password", "Password is required")
 				.isAlphanumeric()
 				.isLength({ min: 8, max: 32 })
 				.withMessage("Password must be between 8-32 characters"),
-			body("phone", "Phone number is required").isString(),
+			body("phone", "Phone number is required").isString().optional(),
 			body("type", "User type is required").isString().optional(),
+			body("date_of_birth", "Date of birth is required").isDate().optional(),
+			body("gender", "Gender is required").isString().optional(),
 		];
 	}
 
 	static verifyEmailValidator() {
 		return [
 			body("email", "Email is required").isEmail(),
-			body("verification_token", "Token is required")
+			body("email_verification_token", "Token is required")
 				.isNumeric()
 				.isLength({ min: 6, max: 6 })
 				.withMessage("OTP must be have 6 digits"),

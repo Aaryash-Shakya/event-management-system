@@ -1,16 +1,16 @@
 import { Model } from "sequelize";
 module.exports = (sequelize, DataTypes) => {
-	class Token extends Model {
+	class TokenModel extends Model {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			// define association here
+			// TokenModel.belongsTo(models.UserModel, { foreignKey: 'userId' });
 		}
 	}
-	Token.init(
+	TokenModel.init(
 		{
 			id: {
 				allowNull: false,
@@ -30,11 +30,20 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.DATE,
 				NotNull: true,
 			},
+			userId: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				references: {
+					model: 'User',
+					key: 'id',
+				},
+			},
 		},
 		{
 			sequelize,
-			modelName: "Token",
+			modelName: "TokenModel",
+			tableName: "Tokens",
 		}
 	);
-	return Token;
+	return TokenModel;
 };

@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			// define association here
+			UserModel.hasMany(models.TokenModel, { foreignKey: "userId" });
+			// UserModel.hasMany(models.TokenModel);
 		}
 	}
 	UserModel.init(
@@ -18,17 +19,9 @@ module.exports = (sequelize, DataTypes) => {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
-			username:{
-				type: DataTypes.STRING,
-				unique: true,
-				notNull: true,
-			},
-			first_name: {
+			name:{
 				type: DataTypes.STRING,
 				notNull: true,
-			},
-			last_name: {
-				type: DataTypes.STRING,
 			},
 			date_of_birth: {
 				type: DataTypes.DATE,
@@ -46,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			password: {
 				type: DataTypes.STRING,
+			},
+			type: {
+				type: DataTypes.STRING,
+				defaultValue: "user",
 			},
 			email_verified: {
 				type: DataTypes.BOOLEAN,
