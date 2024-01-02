@@ -2,36 +2,51 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await queryInterface.createTable("user", {
+		await queryInterface.createTable("Users", {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			name:{
+			username: {
 				type: Sequelize.STRING,
-				allowNull: false,
+				unique: true,
+				notNull: true,
+			},
+			first_name: {
+				type: Sequelize.STRING,
+				notNull: true,
+			},
+			last_name: {
+				type: Sequelize.STRING,
+			},
+			date_of_birth: {
+				type: Sequelize.DATE,
+			},
+			gender: {
+				type: Sequelize.STRING,
 			},
 			email: {
 				type: Sequelize.STRING,
 				unique: true,
-				allowNull: false,
+			},
+			phone: {
+				type: Sequelize.STRING,
+				unique: true,
+			},
+			password: {
+				type: Sequelize.STRING,
 			},
 			email_verified: {
 				type: Sequelize.BOOLEAN,
 				defaultValue: false,
-				allowNull: false,
 			},
-			verification_token: {
+			email_verification_token: {
 				type: Sequelize.INTEGER,
 			},
-			verification_token_time: {
+			email_verification_token_time: {
 				type: Sequelize.DATE,
-			},
-			password: {
-				type: Sequelize.STRING,
-				allowNull: false,
 			},
 			password_reset_token: {
 				type: Sequelize.INTEGER,
@@ -40,25 +55,17 @@ module.exports = {
 			password_reset_token_time: {
 				type: Sequelize.DATE,
 			},
-			phone: {
-				type: Sequelize.STRING,
-			},
-			type: {
-				type: Sequelize.STRING,
-				allowNull: false,
-				defaultValue: 'admin',
-			},
 			createdAt: {
-				type: Sequelize.DATE,
 				allowNull: false,
+				type: Sequelize.DATE,
 			},
 			updatedAt: {
-				type: Sequelize.DATE,
 				allowNull: false,
+				type: Sequelize.DATE,
 			},
 		});
 	},
 	async down(queryInterface, Sequelize) {
-		await queryInterface.dropTable("user");
+		await queryInterface.dropTable("Users");
 	},
 };

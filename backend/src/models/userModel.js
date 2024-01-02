@@ -1,5 +1,5 @@
-import { Model,DataTypes } from "sequelize";
-module.exports = (sequelize) => {
+import { Model } from "sequelize";
+module.exports = (sequelize, DataTypes) => {
 	class UserModel extends Model {
 		/**
 		 * Helper method for defining associations.
@@ -18,25 +18,44 @@ module.exports = (sequelize) => {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
-			name:{
+			username:{
+				type: DataTypes.STRING,
+				unique: true,
+				notNull: true,
+			},
+			first_name: {
+				type: DataTypes.STRING,
+				notNull: true,
+			},
+			last_name: {
+				type: DataTypes.STRING,
+			},
+			date_of_birth: {
+				type: DataTypes.DATE,
+			},
+			gender:{
 				type: DataTypes.STRING,
 			},
 			email: {
 				type: DataTypes.STRING,
 				unique: true,
 			},
+			phone: {
+				type: DataTypes.STRING,
+				unique: true,
+			},
+			password: {
+				type: DataTypes.STRING,
+			},
 			email_verified: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false,
 			},
-			verification_token: {
+			email_verification_token: {
 				type: DataTypes.INTEGER,
 			},
-			verification_token_time: {
+			email_verification_token_time: {
 				type: DataTypes.DATE,
-			},
-			password: {
-				type: DataTypes.STRING,
 			},
 			password_reset_token: {
 				type: DataTypes.INTEGER,
@@ -44,20 +63,13 @@ module.exports = (sequelize) => {
 			},
 			password_reset_token_time: {
 				type: DataTypes.DATE,
-			},
-			phone: {
-				type: DataTypes.STRING,
-			},
-			type: {
-				type: DataTypes.STRING,
-				defaultValue: 'admin',
 			},	
 		},
 		{
 			sequelize,
 			timestamps: true,
 			modelName: "UserModel",
-			tableName: "user",
+			tableName: "Users",
 		}
 	);
 	return UserModel;
