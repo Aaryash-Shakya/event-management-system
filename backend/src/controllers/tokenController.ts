@@ -3,7 +3,17 @@ import { TokenRepository } from "../repository/tokenRepository";
 export class TokenController{
     static async getTokens(req, res, next) {
         try {
-            const tokens = await TokenRepository.findAll();
+            const tokens = await TokenRepository.findAll({});
+            res.status(200).json(tokens);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async getUserTokens(req, res, next) {
+        const userId = req.params.userId;
+        try {
+            const tokens = await TokenRepository.findAll({ userId });
             res.status(200).json(tokens);
         } catch (error) {
             next(error);

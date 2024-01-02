@@ -16,6 +16,8 @@ class TokenRoute {
 
 	getRoutes() {
 		this.router.get("/get-tokens", TokenController.getTokens);
+
+		this.router.get("/get-user-tokens/:userId", TokenController.getUserTokens);
 	}
 
 	postRoutes() {

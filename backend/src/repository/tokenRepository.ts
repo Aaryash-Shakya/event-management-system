@@ -1,8 +1,10 @@
 import { Sequelize, db } from "../models";
 
 export class TokenRepository {
-	static async findAll() {
-		return await db.TokenModel.findAll();
+	static async findAll(key: object) {
+		return await db.TokenModel.findAll({
+			where: { ...key },
+		});
 	}
 
 	static async findOne(key: object) {
