@@ -3,6 +3,7 @@ import { TokenRepository } from "../repository/tokenRepository";
 import { UserRepository } from "../repository/userRepository";
 import { Bcrypt } from "../services/bcrypt";
 import { Jwt } from "../services/jwt";
+import { NodeMailer } from "../services/nodeMailer";
 import { Service } from "../services/utils";
 import { TokenController } from "./tokenController";
 
@@ -67,6 +68,15 @@ export class UserController {
 				userId: user.id,
 			};
 			let token = await TokenRepository.create(tokenData);
+
+			// send email
+			await NodeMailer.sendEmail({
+				from: "event-management@api.com",
+				to: user.email,
+				subject: "Email Verification",
+				text: `To verify your event management account use the OTP ${token.value}`,
+				html: `<a href="https://localhost:3000/api/user/verify-email">Click to verify ${token.value}</a>`,
+			});
 
 			// ! whats the convention do you use return on res.send call.
 			// ! logically it doesn't makes any difference
@@ -168,7 +178,19 @@ export class UserController {
 				}
 			);
 			if (updatedToken) {
-				res.status(200).json({ message: "Verification email resent successfully", updatedToken });
+				// send email
+				await NodeMailer.sendEmail({
+					from: "event-management@api.com",
+					to: email,
+					subject: "Resend Email Verification",
+					text: `To verify your event management account use the OTP ${updatedToken.value}`,
+					html: `<a href="https://localhost:3000/api/user/verify-email">Click to verify ${updatedToken.value}</a>`,
+				});
+
+				res.status(200).json({
+					message: "Verification email resent successfully",
+					updatedToken,
+				});
 			} else {
 				Service.createErrorAndThrow("Failed to resend verification email", 500);
 			}
