@@ -6,4 +6,9 @@ export class EventRepository {
 			where: { ...key },
 		});
 	}
+
+	static async create(eventData: object) {
+		let event = await db.EventModel.create(eventData);
+		return event.toJSON();
+	}
 }

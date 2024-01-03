@@ -17,7 +17,9 @@ class EventRoute {
 		this.router.get("/get-events", EventController.getEvents);
 	}
 
-	postRoutes() {}
+	postRoutes() {
+		this.router.post("/add-event", EventController.addEvent);
+	}
 	patchRoutes() {}
 	putRoutes() {}
 	deleteRoutes() {}
