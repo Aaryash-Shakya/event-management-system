@@ -52,4 +52,26 @@ export class EventController {
 			next(err);
 		}
 	}
+
+	static async getEvent(req, res, next) {
+		const event_id = req.params.event_id;
+		try {
+			// test conditions
+			const testEvent = await EventRepository.findAll({
+				event_id: event_id,
+			});
+
+			// check if event exists
+			if (!testEvent) {
+				Service.createErrorAndThrow("Event not registered", 404); // event not found
+			}
+
+			res.status(200).json({
+				message: "Fetch event successful",
+				event: testEvent,
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
 }

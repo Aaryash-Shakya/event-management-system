@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { EventController } from "../controllers/eventController";
+import { GlobalMiddleware } from "../middlewares/globalMiddleware";
+import { EventValidator } from "../validators/eventValidator";
 
 class EventRoute {
 	public router: Router;
@@ -15,12 +17,24 @@ class EventRoute {
 
 	getRoutes() {
 		this.router.get("/get-events", EventController.getEvents);
+
+		this.router.get(
+			"/get-event/:event_id",
+			EventValidator.getEventValidator(),
+			GlobalMiddleware.checkValidationError,
+			EventController.getEvent
+		);
 	}
 
 	postRoutes() {
-		this.router.post("/add-event", EventController.addEvent);
+		this.router.post(
+			"/add-event",
+			EventValidator.addEventValidator(),
+			GlobalMiddleware.checkValidationError,
+			EventController.addEvent
+		);
 	}
-	
+
 	patchRoutes() {}
 	putRoutes() {}
 	deleteRoutes() {}
