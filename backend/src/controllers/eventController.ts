@@ -1,10 +1,14 @@
 import { EventRepository } from "../repository/eventRepository";
+import { Service } from "../services/utils";
 
 export class EventController {
 	static async getEvents(req, res, next) {
 		try {
 			const events = await EventRepository.findAll({});
-			res.status(200).json({ events, message: "success" });
+			res.status(200).json({
+				events,
+				message: "success",
+			});
 		} catch (error) {
 			next(error);
 		}
@@ -18,11 +22,11 @@ export class EventController {
 			description,
 			status,
 			maximum_participants,
+			gathering_point,
+			destination,
 			start_date,
 			duration,
 			difficulty,
-			starting_location,
-			ending_location,
 		} = req.body;
 
 		const eventData = {
@@ -31,17 +35,18 @@ export class EventController {
 			status,
 			current_participants,
 			maximum_participants,
+			gathering_point,
+			destination,
 			start_date,
 			duration,
 			difficulty,
-			starting_location,
-			ending_location,
 		};
 		try {
 			const event = await EventRepository.create(eventData);
-			res.send(200).json({
+			console.log(event);
+			res.status(200).json({
 				message: "Event created",
-				event,
+				event
 			});
 		} catch (err) {
 			next(err);

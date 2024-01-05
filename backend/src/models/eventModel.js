@@ -40,23 +40,23 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.INTEGER,
 				NotNull: true,
 			},
+			gathering_point: {
+				type: DataTypes.STRING,
+				NotNull: true,
+			},
+			destination: {
+				type: DataTypes.STRING,
+				NotNull: true,
+			},
 			start_date: {
 				type: DataTypes.DATE,
 				NotNull: true,
 			},
 			duration: {
-				type: DataTypes.DATE,
+				type: DataTypes.STRING,
 				NotNull: true,
 			},
 			difficulty: {
-				type: DataTypes.STRING,
-				NotNull: true,
-			},
-			starting_location: {
-				type: DataTypes.STRING,
-				NotNull: true,
-			},
-			ending_location: {
 				type: DataTypes.STRING,
 				NotNull: true,
 			},

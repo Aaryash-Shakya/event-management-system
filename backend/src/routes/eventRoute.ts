@@ -20,6 +20,7 @@ class EventRoute {
 	postRoutes() {
 		this.router.post("/add-event", EventController.addEvent);
 	}
+	
 	patchRoutes() {}
 	putRoutes() {}
 	deleteRoutes() {}
