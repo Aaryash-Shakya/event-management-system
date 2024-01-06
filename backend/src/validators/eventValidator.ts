@@ -1,4 +1,4 @@
-import {body} from "express-validator";
+import {body, param} from "express-validator";
 
 export class EventValidator {
     static addEventValidator() {
@@ -16,6 +16,21 @@ export class EventValidator {
     }
 
     static getEventValidator() {
-        return [body("event_id", "Event ID is required").isString()];
+        return [param("event_id", "Event ID is required").isNumeric()];
+    }
+
+    static updateEventValidator() {
+        return [
+            param("event_id", "Event ID is required").isNumeric(),
+            body("title").isString().optional(),
+            body("description").isString().optional(),
+            body("status").isString().optional(),
+            body("maximum_participants").isNumeric().optional(),
+            body("gathering_point").isString().optional(),
+            body("destination").isString().optional(),
+            body("start_date").isString().optional(),
+            body("duration").isString().optional(),
+            body("difficulty").isString().optional(),
+        ];
     }
 }

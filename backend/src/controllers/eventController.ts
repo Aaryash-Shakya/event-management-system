@@ -46,7 +46,7 @@ export class EventController {
 			console.log(event);
 			res.status(200).json({
 				message: "Event created",
-				event
+				event,
 			});
 		} catch (err) {
 			next(err);
@@ -69,6 +69,57 @@ export class EventController {
 			res.status(200).json({
 				message: "Fetch event successful",
 				event: testEvent,
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async updateEvent(req, res, next) {
+		const event_id = req.params.event_id;
+		const {
+			title,
+			description,
+			status,
+			maximum_participants,
+			gathering_point,
+			destination,
+			start_date,
+			duration,
+			difficulty,
+		} = req.body;
+
+		try {
+			// test conditions
+			const testEvent = await EventRepository.findAll({
+				event_id: event_id,
+			});
+
+			// check if event exists
+			if (!testEvent) {
+				Service.createErrorAndThrow("Event not registered", 404); // event not found
+			}
+
+			const eventData: any = {};
+			if (title) eventData.title = title;
+			if (description) eventData.description = description;
+			if (status) eventData.status = status;
+			if (maximum_participants) eventData.maximum_participants = maximum_participants;
+			if (gathering_point) eventData.gathering_point = gathering_point;
+			if (destination) eventData.destination = destination;
+			if (start_date) eventData.start_date = start_date;
+			if (duration) eventData.duration = duration;
+			if (difficulty) eventData.difficulty = difficulty;
+
+			const event = await EventRepository.update(
+				{
+					event_id,
+				},
+				eventData
+			);
+			res.status(200).json({
+				message: "Event updated",
+				event,
 			});
 		} catch (err) {
 			next(err);
