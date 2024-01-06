@@ -7,6 +7,15 @@ export class EventRepository {
 		});
 	}
 
+	static async findOne(key: object) {
+		let event = await db.EventModel.findOne({
+			where: { ...key },
+		});
+		if (event) {
+			return event.dataValues;
+		}
+	}
+
 	static async create(eventData: object) {
 		let event = await db.EventModel.create(eventData);
 		return event.toJSON();
@@ -22,5 +31,12 @@ export class EventRepository {
 			}
 		);
 		return event[1].dataValues;
+	}
+	
+	static async delete(key: object) {
+		let event = await db.EventModel.destroy({
+			where: { ...key },
+		});
+		return event;
 	}
 }

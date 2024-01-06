@@ -57,7 +57,7 @@ export class EventController {
 		const event_id = req.params.event_id;
 		try {
 			// test conditions
-			const testEvent = await EventRepository.findAll({
+			const testEvent = await EventRepository.findOne({
 				event_id: event_id,
 			});
 
@@ -91,7 +91,7 @@ export class EventController {
 
 		try {
 			// test conditions
-			const testEvent = await EventRepository.findAll({
+			const testEvent = await EventRepository.findOne({
 				event_id: event_id,
 			});
 
@@ -120,6 +120,31 @@ export class EventController {
 			res.status(200).json({
 				message: "Event updated",
 				event,
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async deleteEvent(req, res, next) {
+		const event_id = req.params.event_id;
+		try {
+			// test conditions
+			const testEvent = await EventRepository.findOne({
+				event_id: event_id,
+			});
+
+			// check if event exists
+			if (!testEvent) {
+				console.log("event not registered");
+				Service.createErrorAndThrow("Event not registered", 404); // event not found
+			}
+
+			await EventRepository.delete({
+				event_id,
+			});
+			res.status(200).json({
+				message: "Event deleted",
 			});
 		} catch (err) {
 			next(err);

@@ -36,6 +36,7 @@ class EventRoute {
 	}
 
 	patchRoutes() {}
+
 	putRoutes() {
 		this.router.put(
 			"/update-event/:event_id",
@@ -44,7 +45,15 @@ class EventRoute {
 			EventController.updateEvent
 		)
 	}
-	deleteRoutes() {}
+
+	deleteRoutes() {
+		this.router.delete(
+			"/delete-event/:event_id",
+			EventValidator.deleteEventValidator(),
+			GlobalMiddleware.checkValidationError,
+			EventController.deleteEvent,
+		)
+	}
 }
 
 export default new EventRoute().router;

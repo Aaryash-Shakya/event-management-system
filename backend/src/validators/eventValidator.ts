@@ -33,4 +33,8 @@ export class EventValidator {
             body("difficulty").isString().optional(),
         ];
     }
+
+    static deleteEventValidator() {
+        return [param("event_id", "Event ID is required").isNumeric()];
+    }
 }
