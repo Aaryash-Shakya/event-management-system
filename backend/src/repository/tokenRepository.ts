@@ -22,7 +22,7 @@ export class TokenRepository {
 		return token.toJSON();
 	}
 
-	static async deleteOne(key: object) {
+	static async delete(key: object) {
 		return await db.TokenModel.destroy({
 			where: { ...key },
 		});

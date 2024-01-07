@@ -95,6 +95,14 @@ class UserRoute {
 			GlobalMiddleware.checkValidationError,
 			UserController.deleteUser
 		)
+
+		this.router.delete(
+			"/confirm-delete-user",
+			GlobalMiddleware.authorization,
+			UserValidator.confirmDeleteUserValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.confirmDeleteUser
+		)
 	}
 }
 

@@ -38,30 +38,40 @@ export class UserValidator {
 	}
 
 	static forgotPasswordValidator() {
-        return [body("email", "Email is required").isEmail()];
-    }
+		return [body("email", "Email is required").isEmail()];
+	}
 
-    static resetPasswordValidator() {
-        return [
-            body("email", "Email is required").isEmail(),
-            body("password_reset_token", "Password reset OTP is required").isString(),
-        ];
-    }
+	static resetPasswordValidator() {
+		return [
+			body("email", "Email is required").isEmail(),
+			body("password_reset_token", "Password reset OTP is required").isString(),
+		];
+	}
 
 	static getProfileValidator() {
 		return [param("email", "Email is required").isEmail()];
 	}
 
 	static updateProfileValidator() {
-        return [
-            body("email", "Email is required").isEmail(),
-            body("name").optional().isString(),
-            body("phone").optional().isString(),
-            body("type").optional().isString(),
-        ];
-    }
+		return [
+			body("email", "Email is required").isEmail(),
+			body("name").optional().isString(),
+			body("phone").optional().isString(),
+			body("type").optional().isString(),
+		];
+	}
 
 	static deleteUserValidator() {
-		return [body("email", "Email is required").isEmail()];
+		return [
+			body("email", "Email is required").isEmail(),
+			body("password", "Password is required").isAlphanumeric(),
+		];
+	}
+
+	static confirmDeleteUserValidator() {
+		return [
+			body("email", "Email is required").isEmail(),
+			body("delete_user_token", "Delete user OTP is required").isString(),
+		];
 	}
 }

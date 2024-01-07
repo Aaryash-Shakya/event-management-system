@@ -133,7 +133,7 @@ export class UserController {
 
 			if (user) {
 				// delete token
-				await TokenRepository.deleteOne({ userId: testUser.id, purpose: "verify-email" });
+				await TokenRepository.delete({ userId: testUser.id, purpose: "verify-email" });
 
 				res.status(200).json({ message: "Email has been verified successfully" });
 			} else {
@@ -263,7 +263,7 @@ export class UserController {
 
 			// if reset token exists delete old token
 			if (existingToken) {
-				await TokenRepository.deleteOne({ userId: testUser.id, purpose: "reset-password" });
+				await TokenRepository.delete({ userId: testUser.id, purpose: "reset-password" });
 			}
 			let token = await TokenRepository.create({
 				purpose: "reset-password",
@@ -348,12 +348,12 @@ export class UserController {
 				Service.createErrorAndThrow("Invalid password reset token", 401); // unauthorized
 			}
 
-			// delete reset token
-			await TokenRepository.deleteOne({ userId: testUser.id, purpose: "reset-password" });
-
 			// update password
 			const hashed_password = await Bcrypt.encryptPassword(password);
 			const updatedUser = await UserRepository.update({ email: email }, { password: hashed_password });
+
+			// delete reset token
+			await TokenRepository.delete({ userId: testUser.id, purpose: "reset-password" });
 
 			res.status(200).json({
 				message: "Password reset successful",
@@ -460,7 +460,7 @@ export class UserController {
 	}
 
 	static async deleteUser(req, res, next) {
-		const email = req.body.email;
+		const { email, password } = req.body;
 		try {
 			// test conditions
 			const testUser = await UserRepository.findOne({
@@ -472,17 +472,23 @@ export class UserController {
 				Service.createErrorAndThrow("User not registered", 404); // user not found
 			}
 
+			// confirm password
+			const checkPassword = await Bcrypt.comparePassword(req.body.password, testUser.password);
+			if (checkPassword !== true) {
+				Service.createErrorAndThrow(checkPassword, 401); // forbidden
+			}
+			
 			// update token
-			const accountDeletionToken = Service.generateOTP();
-			const accountDeletionTokenTime = Service.generateVerificationTime(new Date(), 5);
+			const userDeletionToken = Service.generateOTP();
+			const userDeletionTokenTime = Service.generateVerificationTime(new Date(), 5);
 
 			// if reset token exists delete old token
-			await TokenRepository.deleteOne({ userId: testUser.id, purpose: "delete-account" });
+			await TokenRepository.delete({ userId: testUser.id, purpose: "delete-user" });
 
 			let token = await TokenRepository.create({
-				purpose: "delete-account",
-				expires_in: accountDeletionTokenTime,
-				value: accountDeletionToken,
+				purpose: "delete-user",
+				expires_in: userDeletionTokenTime,
+				value: userDeletionToken,
 				userId: testUser.id,
 			});
 
@@ -490,7 +496,7 @@ export class UserController {
 				userId: testUser.id,
 				email: testUser.email,
 				type: testUser.type,
-				purpose: "delete-account",
+				purpose: "delete-user",
 			};
 			const jwt = Jwt.signJwt(payload, "5m");
 
@@ -498,14 +504,70 @@ export class UserController {
 			await NodeMailer.sendEmail({
 				from: "event-management@api.com",
 				to: email,
-				subject: "Deletion of Account",
-				text: `To reset your account password use the OTP ${accountDeletionToken}`,
-				html: `<a href="https://localhost:3000/api/user/confirm-delete-account">Click to reset password ${accountDeletionToken}</a>`,
+				subject: "Deletion of User Account",
+				text: `To reset your account password use the OTP ${userDeletionToken}`,
+				html: `<a href="https://localhost:3000/api/user/confirm-delete-user">Click to reset password ${userDeletionToken}</a>`,
 			});
 
 			res.status(200).json({
 				message: "Account Deletion OTP sent in email",
-				jwt: Jwt,
+				jwt: jwt,
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async confirmDeleteUser(req, res, next) {
+		const { email, delete_user_token } = req.body;
+		// from GlobalMiddleware.authorization
+		const decoded = req.decoded;
+		try {
+			// if jwt doesn't exists
+			if (!decoded) {
+				Service.createErrorAndThrow("JsonWebToken not found", 404); // jwt not found
+			}
+
+			// if jwt is incorrect
+			else if (decoded.email !== email) {
+				Service.createErrorAndThrow("Invalid JsonWebToken, email doesn't match", 401); // unauthorized
+			}
+
+			const testUser = await UserRepository.findOne({ email: email });
+
+			// if email doesn't exists
+			if (!testUser) {
+				Service.createErrorAndThrow("Email not registered", 404); // email not found
+			}
+
+			const deleteToken = await TokenRepository.findOne({
+				userId: decoded.userId,
+				purpose: "delete-user",
+			});
+
+			// check if account deletion OTP hasn't been requested
+			if (!deleteToken) {
+				Service.createErrorAndThrow("Account deletion token not generated", 400); // bad request
+			}
+
+			// check if password reset token has expired
+			else if (new Date() > deleteToken.expires_in) {
+				Service.createErrorAndThrow("Account deletion token expired", 401); // unauthorized
+			}
+
+			// check if password reset token is correct
+			else if (delete_user_token !== deleteToken.value) {
+				Service.createErrorAndThrow("Invalid account deletion token", 401); // unauthorized
+			}
+
+			// delete user
+			await UserRepository.delete({ email: email });
+
+			// delete all token associated to user
+			await TokenRepository.delete({ userId: testUser.id });
+
+			res.status(200).json({
+				message: "Account deleted successfully",
 			});
 		} catch (err) {
 			next(err);
