@@ -60,4 +60,8 @@ export class UserValidator {
             body("type").optional().isString(),
         ];
     }
+
+	static deleteUserValidator() {
+		return [body("email", "Email is required").isEmail()];
+	}
 }

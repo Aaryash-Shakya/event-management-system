@@ -136,7 +136,6 @@ export class EventController {
 
 			// check if event exists
 			if (!testEvent) {
-				console.log("event not registered");
 				Service.createErrorAndThrow("Event not registered", 404); // event not found
 			}
 

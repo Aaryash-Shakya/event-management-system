@@ -36,4 +36,11 @@ export class UserRepository {
 		);
 		return user[1].dataValues;
 	}
+
+	static async delete(key: object) {
+		let user = await db.UserModel.destroy({
+			where: { ...key },
+		});
+		return user;
+	}
 }

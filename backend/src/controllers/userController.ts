@@ -7,7 +7,7 @@ import { NodeMailer } from "../services/nodeMailer";
 import { Service } from "../services/utils";
 import { TokenController } from "./tokenController";
 
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
 type token = {
 	purpose: string;
 	expires_in: Date;
@@ -16,7 +16,7 @@ type token = {
 };
 
 export class UserController {
-	static async getAllUsers(req:Request, res:Response, next:NextFunction) {
+	static async getAllUsers(req: Request, res: Response, next: NextFunction) {
 		try {
 			const users = await UserRepository.findAll();
 			res.send(users);
@@ -25,7 +25,7 @@ export class UserController {
 		}
 	}
 
-	static async signup(req:Request, res:Response, next:NextFunction) {
+	static async signup(req: Request, res: Response, next: NextFunction) {
 		let { name, email, password, phone, date_of_birth, gender } = req.body;
 		try {
 			// check conditions
@@ -87,7 +87,7 @@ export class UserController {
 		}
 	}
 
-	static async verifyEmail(req:Request, res:Response, next:NextFunction) {
+	static async verifyEmail(req: Request, res: Response, next: NextFunction) {
 		const { email, email_verification_token } = req.body;
 		try {
 			// test conditions
@@ -144,7 +144,7 @@ export class UserController {
 		}
 	}
 
-	static async resendVerificationToken(req:Request, res:Response, next:NextFunction) {
+	static async resendVerificationToken(req: Request, res: Response, next: NextFunction) {
 		const email = req.body.email;
 		try {
 			const testUser = await UserRepository.findOne({ email });
@@ -197,7 +197,7 @@ export class UserController {
 		}
 	}
 
-	static async login(req:Request, res:Response, next:NextFunction) {
+	static async login(req: Request, res: Response, next: NextFunction) {
 		const { email, password } = req.body;
 		try {
 			let user = await UserRepository.findOne({ email: email });
@@ -238,7 +238,7 @@ export class UserController {
 		}
 	}
 
-	static async forgotPassword(req:Request, res:Response, next:NextFunction) {
+	static async forgotPassword(req: Request, res: Response, next: NextFunction) {
 		const email = req.body.email;
 		try {
 			const testUser = await UserRepository.findOne({ email: email });
@@ -288,7 +288,7 @@ export class UserController {
 				type: testUser.type,
 				purpose: "reset-password",
 			};
-			const jwt = Jwt.signJwt(payload, "1hr");
+			const jwt = Jwt.signJwt(payload, "5m");
 
 			res.status(200).json({
 				message: "Password reset OTP has been sent",
@@ -300,7 +300,7 @@ export class UserController {
 		}
 	}
 
-	static async resetPassword(req, res:Response, next:NextFunction) {
+	static async resetPassword(req, res: Response, next: NextFunction) {
 		const { email, password, password_reset_token } = req.body;
 		// from GlobalMiddleware.authorization
 		const decoded = req.decoded;
@@ -348,8 +348,8 @@ export class UserController {
 				Service.createErrorAndThrow("Invalid password reset token", 401); // unauthorized
 			}
 
-            // delete reset token
-            await TokenRepository.deleteOne({ userId: testUser.id, purpose: "reset-password" });
+			// delete reset token
+			await TokenRepository.deleteOne({ userId: testUser.id, purpose: "reset-password" });
 
 			// update password
 			const hashed_password = await Bcrypt.encryptPassword(password);
@@ -363,7 +363,7 @@ export class UserController {
 		}
 	}
 
-	static async getProfile(req, res:Response, next:NextFunction) {
+	static async getProfile(req, res: Response, next: NextFunction) {
 		const decoded = req.decoded;
 		const email = req.params.email;
 		try {
@@ -410,7 +410,7 @@ export class UserController {
 		}
 	}
 
-	static async updateProfile(req, res:Response, next:NextFunction) {
+	static async updateProfile(req, res: Response, next: NextFunction) {
 		const { email, name, phone, type } = req.body;
 		const decoded = req.decoded;
 		try {
@@ -453,6 +453,59 @@ export class UserController {
 			await UserRepository.update({ email: email }, newData);
 			res.status(200).json({
 				message: "Profile update successfully",
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async deleteUser(req, res, next) {
+		const email = req.body.email;
+		try {
+			// test conditions
+			const testUser = await UserRepository.findOne({
+				email,
+			});
+
+			// check if user exists
+			if (!testUser) {
+				Service.createErrorAndThrow("User not registered", 404); // user not found
+			}
+
+			// update token
+			const accountDeletionToken = Service.generateOTP();
+			const accountDeletionTokenTime = Service.generateVerificationTime(new Date(), 5);
+
+			// if reset token exists delete old token
+			await TokenRepository.deleteOne({ userId: testUser.id, purpose: "delete-account" });
+
+			let token = await TokenRepository.create({
+				purpose: "delete-account",
+				expires_in: accountDeletionTokenTime,
+				value: accountDeletionToken,
+				userId: testUser.id,
+			});
+
+			const payload = {
+				userId: testUser.id,
+				email: testUser.email,
+				type: testUser.type,
+				purpose: "delete-account",
+			};
+			const jwt = Jwt.signJwt(payload, "5m");
+
+			// send email
+			await NodeMailer.sendEmail({
+				from: "event-management@api.com",
+				to: email,
+				subject: "Deletion of Account",
+				text: `To reset your account password use the OTP ${accountDeletionToken}`,
+				html: `<a href="https://localhost:3000/api/user/confirm-delete-account">Click to reset password ${accountDeletionToken}</a>`,
+			});
+
+			res.status(200).json({
+				message: "Account Deletion OTP sent in email",
+				jwt: Jwt,
 			});
 		} catch (err) {
 			next(err);

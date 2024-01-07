@@ -88,7 +88,14 @@ class UserRoute {
 	}
 
 	putRoutes() {}
-	deleteRoutes() {}
+	deleteRoutes() {
+		this.router.delete(
+			"/delete-user",
+			UserValidator.deleteUserValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.deleteUser
+		)
+	}
 }
 
 export default new UserRoute().router;
