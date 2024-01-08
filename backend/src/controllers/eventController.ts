@@ -75,12 +75,14 @@ export class EventController {
 		}
 	}
 
+	// ! ask: should i make a separate function for each field like: updateStatus, incrementCurrentParticipants, etc.?
 	static async updateEvent(req, res, next) {
 		const event_id = req.params.event_id;
 		const {
 			title,
 			description,
 			status,
+			current_participants,
 			maximum_participants,
 			gathering_point,
 			destination,
@@ -104,6 +106,7 @@ export class EventController {
 			if (title) eventData.title = title;
 			if (description) eventData.description = description;
 			if (status) eventData.status = status;
+			if (current_participants) eventData.maximum_participants = current_participants;
 			if (maximum_participants) eventData.maximum_participants = maximum_participants;
 			if (gathering_point) eventData.gathering_point = gathering_point;
 			if (destination) eventData.destination = destination;

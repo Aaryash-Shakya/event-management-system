@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			UserModel.hasMany(models.TokenModel, { foreignKey: "userId" });
-			// UserModel.hasMany(models.TokenModel);
+			UserModel.hasMany(models.UserEventModel, { foreignKey: "user_id" });
 		}
 	}
 	UserModel.init(
@@ -19,14 +19,14 @@ module.exports = (sequelize, DataTypes) => {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
-			name:{
+			name: {
 				type: DataTypes.STRING,
 				notNull: true,
 			},
 			date_of_birth: {
 				type: DataTypes.DATE,
 			},
-			gender:{
+			gender: {
 				type: DataTypes.STRING,
 			},
 			email: {
@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
 			email_verified: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false,
-			},	
+			},
 		},
 		{
 			sequelize,
