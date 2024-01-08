@@ -15,7 +15,7 @@ export class UserRepository {
 		if (user) {
 			return user.dataValues;
 		}
-		// NOTE dont use user.toJSON(), if user doesn't exist it throws instead, using .dataValues also cause error
+		// NOTE don't use user.toJSON(), if user doesn't exist it throws instead, using .dataValues also cause error
 	}
 
 	static async create(userData: object) {
