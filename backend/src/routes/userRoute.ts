@@ -21,7 +21,7 @@ class UserRoute {
 			res.send(UserRepository.findOne({ email: "rs9995@gmail.com" }));
 		});
 
-		this.router.get("/get-users", UserController.getAllUsers);
+		this.router.get("/get-users", GlobalMiddleware.checkTypeAdmin, UserController.getAllUsers);
 
 		this.router.get(
 			"/get-profile/:email",
@@ -94,7 +94,7 @@ class UserRoute {
 			UserValidator.deleteUserValidator(),
 			GlobalMiddleware.checkValidationError,
 			UserController.deleteUser
-		)
+		);
 
 		this.router.delete(
 			"/confirm-delete-user",
@@ -102,7 +102,7 @@ class UserRoute {
 			UserValidator.confirmDeleteUserValidator(),
 			GlobalMiddleware.checkValidationError,
 			UserController.confirmDeleteUser
-		)
+		);
 	}
 }
 

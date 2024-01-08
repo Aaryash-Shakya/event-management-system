@@ -29,6 +29,7 @@ class EventRoute {
 	postRoutes() {
 		this.router.post(
 			"/add-event",
+			GlobalMiddleware.checkTypeAdmin,
 			EventValidator.addEventValidator(),
 			GlobalMiddleware.checkValidationError,
 			EventController.addEvent
@@ -40,6 +41,7 @@ class EventRoute {
 	putRoutes() {
 		this.router.put(
 			"/update-event/:event_id",
+			GlobalMiddleware.checkTypeAdmin,
 			EventValidator.updateEventValidator(),
 			GlobalMiddleware.checkValidationError,
 			EventController.updateEvent
@@ -49,6 +51,7 @@ class EventRoute {
 	deleteRoutes() {
 		this.router.delete(
 			"/delete-event/:event_id",
+			GlobalMiddleware.checkTypeAdmin,
 			EventValidator.deleteEventValidator(),
 			GlobalMiddleware.checkValidationError,
 			EventController.deleteEvent,
