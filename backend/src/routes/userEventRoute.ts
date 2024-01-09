@@ -17,7 +17,10 @@ class UserEventRoute {
 		this.router.get("/get-all-data", UserEventController.getAllData);
 	}
 
-	postRoutes() {}
+	postRoutes() {
+		this.router.post("/join-user", UserEventController.joinEvent);
+	}
+	
 	patchRoutes() {}
 	putRoutes() {}
 	deleteRoutes() {}

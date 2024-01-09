@@ -15,13 +15,28 @@ class TokenRoute {
 	}
 
 	getRoutes() {
-		this.router.get("/get-tokens", GlobalMiddleware.checkTypeAdmin, TokenController.getTokens);
+		this.router.get(
+			"/get-tokens",
+			GlobalMiddleware.authorization,
+			GlobalMiddleware.checkTypeAdmin,
+			TokenController.getTokens
+		);
 
-		this.router.get("/get-user-tokens/:userId", GlobalMiddleware.checkTypeAdmin, TokenController.getUserTokens);
+		this.router.get(
+			"/get-user-tokens/:userId",
+			GlobalMiddleware.authorization,
+			GlobalMiddleware.checkTypeAdmin,
+			TokenController.getUserTokens
+		);
 	}
 
 	postRoutes() {
-		this.router.post("/create-token", GlobalMiddleware.checkTypeAdmin, TokenController.createToken);
+		this.router.post(
+			"/create-token",
+			GlobalMiddleware.authorization,
+			GlobalMiddleware.checkTypeAdmin,
+			TokenController.createToken
+		);
 	}
 	patchRoutes() {}
 	putRoutes() {}

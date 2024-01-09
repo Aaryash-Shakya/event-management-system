@@ -21,7 +21,12 @@ class UserRoute {
 			res.send(UserRepository.findOne({ email: "rs9995@gmail.com" }));
 		});
 
-		this.router.get("/get-users", GlobalMiddleware.checkTypeAdmin, UserController.getAllUsers);
+		this.router.get(
+			"/get-users",
+			GlobalMiddleware.authorization,
+			GlobalMiddleware.checkTypeAdmin,
+			UserController.getAllUsers
+		);
 
 		this.router.get(
 			"/get-profile/:email",

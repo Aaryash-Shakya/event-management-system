@@ -28,6 +28,7 @@ export class GlobalMiddleware {
 		}
 	}
 
+	// note authorization must be called before this
 	static checkTypeAdmin(req, res, next) {
 		const userType = req.decoded.type;
 		try {

@@ -18,6 +18,7 @@ type token = {
 export class UserController {
 	static async getAllUsers(req: Request, res: Response, next: NextFunction) {
 		try {
+			console.log('enter getAllUsers');
 			const users = await UserRepository.findAll();
 			res.send(users);
 		} catch (err) {
