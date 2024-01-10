@@ -30,7 +30,9 @@ export class EventRepository {
 				plain: true,
 			}
 		);
-		return event[1].dataValues;
+		if(event[1]){
+			return event[1].dataValues;
+		}
 	}
 	
 	static async delete(key: object) {

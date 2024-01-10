@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { UserEventController } from "../controllers/userEventController";
+import { UserEventValidator } from "../validators/userEventValidator";
+import { GlobalMiddleware } from "../middlewares/globalMiddleware";
 
 class UserEventRoute {
 	public router: Router;
@@ -18,9 +20,14 @@ class UserEventRoute {
 	}
 
 	postRoutes() {
-		this.router.post("/join-user", UserEventController.joinEvent);
+		this.router.post(
+			"/join-event",
+			UserEventValidator.joinEventValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserEventController.joinEvent
+		);
 	}
-	
+
 	patchRoutes() {}
 	putRoutes() {}
 	deleteRoutes() {}
