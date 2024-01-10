@@ -15,20 +15,38 @@ export class UserEventController {
 	}
 
 	static async joinEvent(req, res, next) {
-		const { user_id, event_id } = req.body;
+		const { user_id, event_id, decoded } = req.body;
 		try {
 			const testUser = await UserRepository.findOne({ id: user_id });
-			if (!testUser) {
+			// if jwt doesn't belong to user_id
+			if (decoded.id !== user_id) {
+				Service.createErrorAndThrow("Unauthorized user", 401);
+			}
+			// if user not found
+			else if (!testUser) {
 				Service.createErrorAndThrow("User not found", 404);
-			} else if (testUser.email_verified === false) {
+			}
+			// if email not verified
+			else if (testUser.email_verified === false) {
 				Service.createErrorAndThrow("User email not verified", 400);
 			}
 
 			const testEvent = await EventRepository.findOne({ event_id: event_id });
 			if (!testEvent) {
 				Service.createErrorAndThrow("Event not found", 404);
-			} else if (testEvent.current_participants >= testEvent.maximum_participants) {
+			}
+			// if event isn't upcoming, don't allow user to join
+			else if (testEvent.event_status !== "upcoming") {
+				Service.createErrorAndThrow(`Cannot join ${testEvent.event_status} event`, 400);
+			}
+			// if event is full
+			else if (testEvent.current_participants >= testEvent.maximum_participants) {
 				Service.createErrorAndThrow("Event is full", 400);
+			}
+
+			const testUserEvent = await UserEventRepository.findOne({ user_id, event_id });
+			if (testUserEvent) {
+				Service.createErrorAndThrow("User already joined event", 400);
 			}
 
 			const userEvent = await UserEventRepository.create({ user_id, event_id });

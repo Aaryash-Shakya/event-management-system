@@ -22,6 +22,7 @@ class UserEventRoute {
 	postRoutes() {
 		this.router.post(
 			"/join-event",
+			GlobalMiddleware.authorization,
 			UserEventValidator.joinEventValidator(),
 			GlobalMiddleware.checkValidationError,
 			UserEventController.joinEvent

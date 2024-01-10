@@ -30,11 +30,11 @@ export class EventRepository {
 				plain: true,
 			}
 		);
-		if(event[1]){
+		if (event[1]) {
 			return event[1].dataValues;
 		}
 	}
-	
+
 	static async delete(key: object) {
 		let event = await db.EventModel.destroy({
 			where: { ...key },
