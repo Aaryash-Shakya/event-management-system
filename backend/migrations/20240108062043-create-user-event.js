@@ -29,6 +29,21 @@ module.exports = {
 				onUpdate: "CASCADE",
 				onDelete: "CASCADE",
 			},
+			payment_id: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: {
+					model: "Payments",
+					key: "payment_id",
+				},
+				onUpdate: "CASCADE",
+				onDelete: "CASCADE",
+			},
+			status: {
+				type: Sequelize.STRING,
+				allowNull: false,
+				defaultValue: "payment not made",
+			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE,

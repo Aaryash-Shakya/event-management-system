@@ -28,8 +28,8 @@
     "db:migrate": "sequelize db:migrate --env=database",
     "model:generate": "sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string",
     "migration:generate": "sequelize-cli migration:generate --name",
-    "seed:generate": "sequelize-cli seed:generate",
-    "db:seed:all": "sequelize-cli seed:generate --name",
+    "seed:generate": "sequelize-cli seed:generate --name",
+    "db:seed:all": "sequelize-cli db:seed:all",
     "db:seed:undo": "sequelize-cli db:seed:undo",
     "db:seed:undo:all": "sequelize-cli db:seed:undo:all"
   },

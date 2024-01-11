@@ -33,6 +33,19 @@ module.exports = (sequelize, DataTypes) => {
 					key: "event_id",
 				},
 			},
+			payment_id: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				references: {
+					model: "Payments",
+					key: "payment_id",
+				},
+			},
+			status: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				defaultValue: "payment not made",
+			},
 		},
 		{
 			sequelize,
