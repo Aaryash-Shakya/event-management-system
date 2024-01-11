@@ -16,7 +16,27 @@ class UserEventRoute {
 	}
 
 	getRoutes() {
-		this.router.get("/get-all-data", UserEventController.getAllData);
+		this.router.get(
+			"/get-all-data",
+			GlobalMiddleware.authorization,
+			GlobalMiddleware.checkTypeAdmin,
+			UserEventController.getAllData
+		);
+
+		this.router.get(
+			"/get-events-by-participant",
+			GlobalMiddleware.authorization,
+			UserEventValidator.getParticipantsByEventValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserEventController.getParticipantsByEvent
+		);
+
+		this.router.get(
+			"/get-participants-by-event",
+			UserEventValidator.getEventsByParticipantValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserEventController.getEventsByParticipant
+		);
 	}
 
 	postRoutes() {
@@ -31,7 +51,15 @@ class UserEventRoute {
 
 	patchRoutes() {}
 	putRoutes() {}
-	deleteRoutes() {}
+	deleteRoutes() {
+		this.router.delete(
+			"leave-event",
+			GlobalMiddleware.authorization,
+			UserEventValidator.leaveEventValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserEventController.leaveEvent
+		);
+	}
 }
 
 export default new UserEventRoute().router;

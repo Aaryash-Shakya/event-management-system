@@ -14,6 +14,36 @@ export class UserEventController {
 		}
 	}
 
+	static async getParticipantsByEvent(req, res, next) {
+		const { event_id, status } = req.body;
+		const queryKey: any = { event_id };
+		if (status) queryKey.status = status;
+
+		try {
+			const data = await UserEventRepository.findAll(queryKey);
+			res.send(data);
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	static async getEventsByParticipant(req, res, next) {
+		const { user_id, status, decoded } = req.body;
+		const queryKey: any = { user_id };
+		if (status) queryKey.status = status;
+
+		try {
+			if (decoded.user_id !== user_id) {
+				Service.createErrorAndThrow("Unauthorized user", 401);
+			}
+			
+			const data = await UserEventRepository.findAll(queryKey);
+			res.send(data);
+		} catch (error) {
+			next(error);
+		}
+	}
+
 	static async joinEvent(req, res, next) {
 		const { user_id, event_id, decoded } = req.body;
 		try {
@@ -49,7 +79,7 @@ export class UserEventController {
 				Service.createErrorAndThrow("User already joined event", 400);
 			}
 
-			const userEvent = await UserEventRepository.create({ user_id, event_id });
+			const userEvent = await UserEventRepository.create({ user_id, event_id, status: "payment not made" });
 
 			// update current_participants
 			const updatedEvent = await EventRepository.update(
@@ -59,6 +89,49 @@ export class UserEventController {
 			);
 
 			res.status(200).json({ message: "event joined" });
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	static async leaveEvent(req, res, next) {
+		const { user_id, event_id, decoded } = req.body;
+		try {
+			const testUser = await UserRepository.findOne({ id: user_id });
+			// if jwt doesn't belong to user_id
+			if (decoded.id !== user_id) {
+				Service.createErrorAndThrow("Unauthorized user", 401);
+			}
+			// if user not found
+			else if (!testUser) {
+				Service.createErrorAndThrow("User not found", 404);
+			}
+			// if email not verified
+			else if (testUser.email_verified === false) {
+				Service.createErrorAndThrow("User email not verified", 400);
+			}
+
+			const testEvent = await EventRepository.findOne({ event_id: event_id });
+			if (!testEvent) {
+				Service.createErrorAndThrow("Event not found", 404);
+			}
+
+			const testUserEvent = await UserEventRepository.findOne({ user_id, event_id });
+			if (!testUserEvent) {
+				Service.createErrorAndThrow("User hasn't joined event", 400);
+			}
+
+			const userEvent = await UserEventRepository.update(
+				{
+					user_id,
+					event_id,
+				},
+				{
+					status: "left",
+				}
+			);
+
+			res.status(200).json({ message: "User has left event" });
 		} catch (error) {
 			next(error);
 		}

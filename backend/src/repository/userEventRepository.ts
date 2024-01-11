@@ -25,4 +25,18 @@ export class UserEventRepository {
 		});
 		return user;
 	}
+
+	static async update(key: object, newData: object) {
+		let userEvent = await db.userEventModel.update(
+			{ ...newData },
+			{
+				where: { ...key },
+				returning: true,
+				plain: true,
+			}
+		);
+		if (userEvent[1]) {
+			return userEvent[1].dataValues;
+		}
+	}
 }
