@@ -24,15 +24,15 @@ class UserEventRoute {
 		);
 
 		this.router.get(
-			"/get-events-by-participant",
-			GlobalMiddleware.authorization,
+			"/get-participants-by-event",
 			UserEventValidator.getParticipantsByEventValidator(),
 			GlobalMiddleware.checkValidationError,
 			UserEventController.getParticipantsByEvent
 		);
 
 		this.router.get(
-			"/get-participants-by-event",
+			"/get-events-by-participant",
+			GlobalMiddleware.authorization,
 			UserEventValidator.getEventsByParticipantValidator(),
 			GlobalMiddleware.checkValidationError,
 			UserEventController.getEventsByParticipant

@@ -28,15 +28,18 @@ export class UserEventController {
 	}
 
 	static async getEventsByParticipant(req, res, next) {
-		const { user_id, status, decoded } = req.body;
-		const queryKey: any = { user_id };
+		const { user_id, status } = req.body;
+		const decoded = req.decoded;
+		const queryKey: any = {
+			user_id: user_id,
+		};
 		if (status) queryKey.status = status;
 
 		try {
-			if (decoded.user_id !== user_id) {
+			if (decoded.userId != user_id) {
 				Service.createErrorAndThrow("Unauthorized user", 401);
 			}
-			
+
 			const data = await UserEventRepository.findAll(queryKey);
 			res.send(data);
 		} catch (error) {

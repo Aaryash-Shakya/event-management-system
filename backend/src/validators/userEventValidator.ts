@@ -4,14 +4,14 @@ export class UserEventValidator {
     static getParticipantsByEventValidator() {
         return [
             body("event_id", "Event ID is required").isNumeric(),
-            body("status", "Status is required").isString(),
+            body("status", "Status is required").isString().optional(),
         ];
     }
 
     static getEventsByParticipantValidator() {
         return [
             body("user_id", "User ID is required").isNumeric(),
-            body("status", "Status is required").isString(),
+            body("status", "Status is required").isString().optional(),
         ];
     }
     
