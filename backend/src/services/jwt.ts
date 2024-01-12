@@ -1,15 +1,15 @@
 import * as jwt from "jsonwebtoken";
 
 export class Jwt {
-	static signJwt(payload: Record<string, any>, expiresIn: string = "10d") {
-		const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+	static signJwt(payload: Record<string, any>, expiresIn: string = "10d"): string {
+		const token: string = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
 			expiresIn: expiresIn,
 			issuer: "event-management-system",
 		});
 		return token;
 	}
 
-	static verifyJwt(token: string) {
+	static verifyJwt(token: string): Promise<any> {
 		return new Promise((resolve, reject) => {
 			jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
 				if (err) {
