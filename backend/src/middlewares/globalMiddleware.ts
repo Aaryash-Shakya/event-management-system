@@ -21,7 +21,7 @@ export class GlobalMiddleware {
 		// const token = header_auth.split(' ')[1]
 		try {
 			const decoded = await Jwt.verifyJwt(token);
-			req.decoded = decoded;
+			req.body.decoded = decoded;
 			next();
 		} catch (err) {
 			next(err);
@@ -30,7 +30,7 @@ export class GlobalMiddleware {
 
 	// note authorization must be called before this
 	static checkTypeAdmin(req, res, next) {
-		const userType = req.decoded.type;
+		const userType = req.body.decoded.type;
 		try {
 			if (userType !== "admin") {
 				Service.createErrorAndThrow("Unauthorized user", 401);

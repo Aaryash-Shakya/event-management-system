@@ -3,9 +3,10 @@ import { EventRepository } from "../repository/eventRepository";
 import { UserEventRepository } from "../repository/userEventRepository";
 import { UserRepository } from "../repository/userRepository";
 import { Service } from "../services/utils";
+import { Request, Response, NextFunction } from "express";
 
 export class UserEventController {
-	static async getAllData(req, res, next) {
+	static async getAllData(req: Request, res: Response, next: NextFunction) {
 		try {
 			const data = await UserEventRepository.findAll({});
 			res.send(data);
@@ -14,7 +15,7 @@ export class UserEventController {
 		}
 	}
 
-	static async getParticipantsByEvent(req, res, next) {
+	static async getParticipantsByEvent(req: Request, res: Response, next: NextFunction) {
 		const { event_id, status } = req.body;
 		const queryKey: any = { event_id };
 		if (status) queryKey.status = status;
@@ -27,9 +28,9 @@ export class UserEventController {
 		}
 	}
 
-	static async getEventsByParticipant(req, res, next) {
+	static async getEventsByParticipant(req: Request, res: Response, next: NextFunction) {
 		const { user_id, status } = req.body;
-		const decoded = req.decoded;
+		const decoded = req.body.decoded;
 		const queryKey: any = {
 			user_id: user_id,
 		};
@@ -47,7 +48,7 @@ export class UserEventController {
 		}
 	}
 
-	static async joinEvent(req, res, next) {
+	static async joinEvent(req: Request, res: Response, next: NextFunction) {
 		const { user_id, event_id, decoded } = req.body;
 		try {
 			const testUser = await UserRepository.findOne({ id: user_id });
@@ -97,7 +98,7 @@ export class UserEventController {
 		}
 	}
 
-	static async leaveEvent(req, res, next) {
+	static async leaveEvent(req: Request, res: Response, next: NextFunction) {
 		const { user_id, event_id, decoded } = req.body;
 		try {
 			const testUser = await UserRepository.findOne({ id: user_id });

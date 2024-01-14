@@ -1,7 +1,8 @@
 import { TokenRepository } from "../repository/tokenRepository";
+import { Request, Response, NextFunction } from "express";
 
 export class TokenController {
-	static async getTokens(req, res, next) {
+	static async getTokens(req: Request, res: Response, next: NextFunction) {
 		try {
 			const tokens = await TokenRepository.findAll({});
 			res.status(200).json(tokens);
@@ -10,7 +11,7 @@ export class TokenController {
 		}
 	}
 
-	static async getUserTokens(req, res, next) {
+	static async getUserTokens(req: Request, res: Response, next: NextFunction) {
 		const userId = req.params.userId;
 		try {
 			const tokens = await TokenRepository.findAll({ userId });
@@ -20,7 +21,7 @@ export class TokenController {
 		}
 	}
 
-	static async createToken(req, res, next) {
+	static async createToken(req: Request, res: Response, next: NextFunction) {
 		const { purpose, value, expires_in, userId } = req.body;
 		const tokenData = { purpose, value, expires_in, userId };
 		try {

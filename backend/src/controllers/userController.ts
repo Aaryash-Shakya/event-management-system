@@ -1,11 +1,9 @@
-import { db, Sequelize } from "../models";
 import { TokenRepository } from "../repository/tokenRepository";
 import { UserRepository } from "../repository/userRepository";
 import { Bcrypt } from "../services/bcrypt";
 import { Jwt } from "../services/jwt";
 import { NodeMailer } from "../services/nodeMailer";
 import { Service } from "../services/utils";
-import { TokenController } from "./tokenController";
 
 import { Request, Response, NextFunction } from "express";
 type token = {
@@ -18,7 +16,7 @@ type token = {
 export class UserController {
 	static async getAllUsers(req: Request, res: Response, next: NextFunction) {
 		try {
-			console.log('enter getAllUsers');
+			console.log("enter getAllUsers");
 			const users = await UserRepository.findAll();
 			res.send(users);
 		} catch (err) {
@@ -217,7 +215,7 @@ export class UserController {
 			// check password is correct
 			const checkPassword = await Bcrypt.comparePassword(password, user.password);
 			if (checkPassword !== true) {
-				Service.createErrorAndThrow(checkPassword, 401); // forbidden
+				Service.createErrorAndThrow("Incorrect password", 401); // forbidden
 			}
 
 			// generate new jwt
@@ -301,10 +299,10 @@ export class UserController {
 		}
 	}
 
-	static async resetPassword(req, res: Response, next: NextFunction) {
+	static async resetPassword(req: Request, res: Response, next: NextFunction) {
 		const { email, password, password_reset_token } = req.body;
 		// from GlobalMiddleware.authorization
-		const decoded = req.decoded;
+		const decoded = req.body.decoded;
 		try {
 			// test conditions
 			// check if jwt exists
@@ -364,8 +362,8 @@ export class UserController {
 		}
 	}
 
-	static async getProfile(req, res: Response, next: NextFunction) {
-		const decoded = req.decoded;
+	static async getProfile(req: Request, res: Response, next: NextFunction) {
+		const decoded = req.body.decoded;
 		const email = req.params.email;
 		try {
 			// test conditions
@@ -411,9 +409,9 @@ export class UserController {
 		}
 	}
 
-	static async updateProfile(req, res: Response, next: NextFunction) {
+	static async updateProfile(req: Request, res: Response, next: NextFunction) {
 		const { email, name, phone, type } = req.body;
-		const decoded = req.decoded;
+		const decoded = req.body.decoded;
 		try {
 			// test conditions
 			// check if jwt exists
@@ -460,7 +458,7 @@ export class UserController {
 		}
 	}
 
-	static async deleteUser(req, res, next) {
+	static async deleteUser(req: Request, res: Response, next: NextFunction) {
 		const { email, password } = req.body;
 		try {
 			// test conditions
@@ -476,9 +474,9 @@ export class UserController {
 			// confirm password
 			const checkPassword = await Bcrypt.comparePassword(req.body.password, testUser.password);
 			if (checkPassword !== true) {
-				Service.createErrorAndThrow(checkPassword, 401); // forbidden
+				Service.createErrorAndThrow("Incorrect password", 401); // forbidden
 			}
-			
+
 			// update token
 			const userDeletionToken = Service.generateOTP();
 			const userDeletionTokenTime = Service.generateVerificationTime(new Date(), 5);
@@ -519,10 +517,10 @@ export class UserController {
 		}
 	}
 
-	static async confirmDeleteUser(req, res, next) {
+	static async confirmDeleteUser(req: Request, res: Response, next: NextFunction) {
 		const { email, delete_user_token } = req.body;
 		// from GlobalMiddleware.authorization
-		const decoded = req.decoded;
+		const decoded = req.body.decoded;
 		try {
 			// if jwt doesn't exists
 			if (!decoded) {

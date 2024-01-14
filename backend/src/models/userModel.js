@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
-si		 */
+		 */
 		static associate(models) {
 			UserModel.hasMany(models.TokenModel, { foreignKey: "userId" });
 			UserModel.hasMany(models.UserEventModel, { foreignKey: "user_id" });

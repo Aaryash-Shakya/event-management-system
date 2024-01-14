@@ -1,8 +1,9 @@
 import { EventRepository } from "../repository/eventRepository";
 import { Service } from "../services/utils";
+import { Request, Response, NextFunction } from "express";
 
 export class EventController {
-	static async getEvents(req, res, next) {
+	static async getEvents(req: Request, res: Response, next: NextFunction) {
 		try {
 			const events = await EventRepository.findAll({});
 			res.status(200).json({
@@ -14,7 +15,7 @@ export class EventController {
 		}
 	}
 
-	static async addEvent(req, res, next) {
+	static async addEvent(req: Request, res: Response, next: NextFunction) {
 		// default values
 		const current_participants = 0;
 		const {
@@ -53,7 +54,7 @@ export class EventController {
 		}
 	}
 
-	static async getEvent(req, res, next) {
+	static async getEvent(req: Request, res: Response, next: NextFunction) {
 		const event_id = req.params.event_id;
 		try {
 			// test conditions
@@ -76,7 +77,7 @@ export class EventController {
 	}
 
 	// ! ask: should i make a separate function for each field like: updateStatus, incrementCurrentParticipants, etc.?
-	static async updateEvent(req, res, next) {
+	static async updateEvent(req: Request, res: Response, next: NextFunction) {
 		const event_id = req.params.event_id;
 		const {
 			title,
@@ -129,7 +130,7 @@ export class EventController {
 		}
 	}
 
-	static async deleteEvent(req, res, next) {
+	static async deleteEvent(req: Request, res: Response, next: NextFunction) {
 		const event_id = req.params.event_id;
 		try {
 			// test conditions
