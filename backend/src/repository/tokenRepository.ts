@@ -14,6 +14,7 @@ export class TokenRepository {
 		if (token) {
 			return token.dataValues;
 		}
+		return false;
 	}
 
 	static async create(tokenData: object) {
@@ -21,7 +22,7 @@ export class TokenRepository {
 		return token.toJSON();
 	}
 
-	static async deleteOne(key: object) {
+	static async delete(key: object) {
 		return await db.TokenModel.destroy({
 			where: { ...key },
 		});

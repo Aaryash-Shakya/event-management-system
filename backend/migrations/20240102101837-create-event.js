@@ -2,41 +2,53 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await queryInterface.createTable("Users", {
-			id: {
+		await queryInterface.createTable("Events", {
+			event_id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			name: {
+			title: {
 				type: Sequelize.STRING,
-				notNull: true,
+				NotNull: true,
 			},
-			date_of_birth: {
+			description: {
+				type: Sequelize.STRING,
+				NotNull: true,
+			},
+			status: {
+				type: Sequelize.STRING,
+				NotNull: true,
+			},
+			current_participants: {
+				type: Sequelize.INTEGER,
+				NotNull: true,
+				defaultValue: 0,
+			},
+			maximum_participants: {
+				type: Sequelize.INTEGER,
+				NotNull: true,
+			},
+			gathering_point: {
+				type: Sequelize.STRING,
+				NotNull: true,
+			},
+			destination: {
+				type: Sequelize.STRING,
+				NotNull: true,
+			},
+			start_date: {
 				type: Sequelize.DATE,
+				NotNull: true,
 			},
-			gender: {
+			duration: {
 				type: Sequelize.STRING,
+				NotNull: true,
 			},
-			email: {
+			difficulty: {
 				type: Sequelize.STRING,
-				unique: true,
-			},
-			phone: {
-				type: Sequelize.STRING,
-				unique: true,
-			},
-			password: {
-				type: Sequelize.STRING,
-			},
-			type: {
-				type: Sequelize.STRING,
-				defaultValue: "user",
-			},
-			email_verified: {
-				type: Sequelize.BOOLEAN,
-				defaultValue: false,
+				NotNull: true,
 			},
 			createdAt: {
 				allowNull: false,
@@ -49,6 +61,6 @@ module.exports = {
 		});
 	},
 	async down(queryInterface, Sequelize) {
-		await queryInterface.dropTable("Users");
+		await queryInterface.dropTable("Events");
 	},
 };

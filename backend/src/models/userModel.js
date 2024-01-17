@@ -4,11 +4,10 @@ module.exports = (sequelize, DataTypes) => {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
-		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
 			UserModel.hasMany(models.TokenModel, { foreignKey: "userId" });
-			// UserModel.hasMany(models.TokenModel);
+			UserModel.hasMany(models.UserEventModel, { foreignKey: "user_id" });
 		}
 	}
 	UserModel.init(
@@ -19,14 +18,14 @@ module.exports = (sequelize, DataTypes) => {
 				primaryKey: true,
 				type: DataTypes.INTEGER,
 			},
-			name:{
+			name: {
 				type: DataTypes.STRING,
 				notNull: true,
 			},
 			date_of_birth: {
 				type: DataTypes.DATE,
 			},
-			gender:{
+			gender: {
 				type: DataTypes.STRING,
 			},
 			email: {
@@ -48,13 +47,6 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false,
 			},
-			password_reset_token: {
-				type: DataTypes.INTEGER,
-				defaultValue: -1,
-			},
-			password_reset_token_time: {
-				type: DataTypes.DATE,
-			},	
 		},
 		{
 			sequelize,

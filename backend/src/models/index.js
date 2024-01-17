@@ -15,12 +15,6 @@ if (config.use_env_variable) {
 } else {
 	sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
-// note directly assign
-// sequelize = new Sequelize("event-management-system", "postgres", "RS9861445590.", {
-// 	dialect: "postgres",
-// 	host: "localhost",
-// 	timezone: "+05:45",
-// });
 
 fs.readdirSync(__dirname)
 	.filter(file => {
@@ -29,7 +23,7 @@ fs.readdirSync(__dirname)
 		);
 	})
 	.forEach(file => {
-		const model = require(path.join(__dirname, file))(sequelize,Sequelize.DataTypes);
+		const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
 		db[model.name] = model;
 	});
 

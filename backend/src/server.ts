@@ -1,9 +1,11 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { SequelizeClass } from "../config/sequelize";
 import userRoute from "./routes/userRoute";
 import tokenRoute from "./routes/tokenRoute";
+import eventRoute from "./routes/eventRoute";
+import userEventRoute from "./routes/userEventRoute";
 
 export class Server {
 	public app: express.Application = express();
@@ -41,11 +43,13 @@ export class Server {
 
 	setRoutes() {
 		this.app.use("/api/user", userRoute);
-		this.app.use("/api/token", tokenRoute)
+		this.app.use("/api/token", tokenRoute);
+		this.app.use("/api/event", eventRoute);
+		this.app.use("/api/user-event", userEventRoute);
 	}
 
 	handle404Error() {
-		this.app.use((req, res) => {
+		this.app.use((req: Request, res: Response) => {
 			res.status(404).json({
 				status: 404,
 				message: "Not Found",
@@ -54,7 +58,7 @@ export class Server {
 	}
 
 	handleErrors() {
-		this.app.use((error, req, res, next) => {
+		this.app.use((error, req: Request, res: Response, next: NextFunction) => {
 			let errorStatus = (error as any).errorStatus || 500;
 			let errorMessage = error.message || "Something went wrong. Please try again later";
 

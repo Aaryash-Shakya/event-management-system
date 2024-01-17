@@ -26,8 +26,15 @@
     "start": "nodemon --exec ts-node src/index.ts",
     "config": "nodemon --exec ts-node config/config.js",
     "db:migrate": "sequelize db:migrate --env=database",
+    "db:migrate:undo": "sequelize db:migrate:undo --env=database",
+    "db:migrate:undo:all": "sequelize db:migrate:undo:all --env=database",
     "model:generate": "sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string",
-    "migration:generate": "sequelize-cli migration:generate --name"
+    "migration:generate": "sequelize-cli migration:generate --name",
+    "seed:generate": "sequelize-cli seed:generate --name",
+    "db:seed": "sequelize-cli db:seed",
+    "db:seed:all": "sequelize-cli db:seed:all",
+    "db:seed:undo": "sequelize-cli db:seed:undo",
+    "db:seed:undo:all": "sequelize-cli db:seed:undo:all"
   },
   "repository": {
     "type": "git",
@@ -42,6 +49,7 @@
   "description": "",
   "devDependencies": {
     "@types/cors": "^2.8.17",
+    "@types/nodemailer": "^6.4.14",
     "sequelize-cli": "^6.6.2"
   }
 }

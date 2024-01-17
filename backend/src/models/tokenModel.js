@@ -34,12 +34,13 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				references: {
-					model: 'User',
-					key: 'id',
+					model: "Users",
+					key: "id",
 				},
 			},
 		},
 		{
+			timestamps: true,
 			sequelize,
 			modelName: "TokenModel",
 			tableName: "Tokens",

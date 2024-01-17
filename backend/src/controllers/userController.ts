@@ -1,12 +1,11 @@
-import { db, Sequelize } from "../models";
 import { TokenRepository } from "../repository/tokenRepository";
 import { UserRepository } from "../repository/userRepository";
 import { Bcrypt } from "../services/bcrypt";
 import { Jwt } from "../services/jwt";
 import { NodeMailer } from "../services/nodeMailer";
 import { Service } from "../services/utils";
-import { TokenController } from "./tokenController";
 
+import { Request, Response, NextFunction } from "express";
 type token = {
 	purpose: string;
 	expires_in: Date;
@@ -15,8 +14,9 @@ type token = {
 };
 
 export class UserController {
-	static async getAllUsers(req, res, next) {
+	static async getAllUsers(req: Request, res: Response, next: NextFunction) {
 		try {
+			console.log("enter getAllUsers");
 			const users = await UserRepository.findAll();
 			res.send(users);
 		} catch (err) {
@@ -24,7 +24,7 @@ export class UserController {
 		}
 	}
 
-	static async signup(req, res, next) {
+	static async signup(req: Request, res: Response, next: NextFunction) {
 		let { name, email, password, phone, date_of_birth, gender } = req.body;
 		try {
 			// check conditions
@@ -50,8 +50,6 @@ export class UserController {
 				name,
 				email,
 				password: hashed_password,
-				password_reset_token: -1, // -1 -> not generated
-				password_reset_token_time: Service.generateVerificationTime(new Date(), -10), // always expired: 10 min before creating the account
 				phone,
 				type: "admin",
 				date_of_birth,
@@ -59,8 +57,7 @@ export class UserController {
 			};
 			let user = await UserRepository.create(data);
 
-			// generate email verification OTP
-
+			// generate verification token
 			const tokenData: token = {
 				purpose: "verify-email",
 				expires_in: Service.generateVerificationTime(new Date(), 5),
@@ -89,7 +86,7 @@ export class UserController {
 		}
 	}
 
-	static async verifyEmail(req, res, next) {
+	static async verifyEmail(req: Request, res: Response, next: NextFunction) {
 		const { email, email_verification_token } = req.body;
 		try {
 			// test conditions
@@ -135,7 +132,7 @@ export class UserController {
 
 			if (user) {
 				// delete token
-				await TokenRepository.deleteOne({ userId: testUser.id, purpose: "verify-email" });
+				await TokenRepository.delete({ userId: testUser.id, purpose: "verify-email" });
 
 				res.status(200).json({ message: "Email has been verified successfully" });
 			} else {
@@ -146,7 +143,7 @@ export class UserController {
 		}
 	}
 
-	static async resendVerificationToken(req, res, next) {
+	static async resendVerificationToken(req: Request, res: Response, next: NextFunction) {
 		const email = req.body.email;
 		try {
 			const testUser = await UserRepository.findOne({ email });
@@ -199,7 +196,7 @@ export class UserController {
 		}
 	}
 
-	static async login(req, res, next) {
+	static async login(req: Request, res: Response, next: NextFunction) {
 		const { email, password } = req.body;
 		try {
 			let user = await UserRepository.findOne({ email: email });
@@ -218,29 +215,29 @@ export class UserController {
 			// check password is correct
 			const checkPassword = await Bcrypt.comparePassword(password, user.password);
 			if (checkPassword !== true) {
-				Service.createErrorAndThrow(checkPassword, 401); // forbidden
+				Service.createErrorAndThrow("Incorrect password", 401); // forbidden
 			}
 
-			// generate new jwt token
+			// generate new jwt
 			const payload = {
 				userId: user.id,
 				email: user.email,
 				type: user.type,
 				purpose: "login",
 			};
-			const token = Jwt.signJwt(payload, "10d");
+			const jwt = Jwt.signJwt(payload, "10d");
 
 			// send response
 			res.status(200).json({
 				message: "login successful",
-				token: token,
+				jwt: jwt,
 			});
 		} catch (err) {
 			next(err);
 		}
 	}
 
-	static async forgotPassword(req, res, next) {
+	static async forgotPassword(req: Request, res: Response, next: NextFunction) {
 		const email = req.body.email;
 		try {
 			const testUser = await UserRepository.findOne({ email: email });
@@ -259,37 +256,53 @@ export class UserController {
 			const passwordResetToken = Service.generateOTP();
 			const passwordResetTokenTime = Service.generateVerificationTime(new Date(), 5);
 
-			const updatedUser = await UserRepository.update(
-				{ email: email },
-				{
-					password_reset_token: passwordResetToken,
-					password_reset_token_time: passwordResetTokenTime,
-				}
-			);
+			const existingToken = await TokenRepository.findAll({
+				userId: testUser.id,
+			});
+
+			// if reset token exists delete old token
+			if (existingToken) {
+				await TokenRepository.delete({ userId: testUser.id, purpose: "reset-password" });
+			}
+			let token = await TokenRepository.create({
+				purpose: "reset-password",
+				expires_in: passwordResetTokenTime,
+				value: passwordResetToken,
+				userId: testUser.id,
+			});
+
+			// send email
+			await NodeMailer.sendEmail({
+				from: "event-management@api.com",
+				to: email,
+				subject: "Reset Password",
+				text: `To reset your account password use the OTP ${token.value}`,
+				html: `<a href="https://localhost:3000/api/user/reset-password">Click to reset password ${token.value}</a>`,
+			});
 
 			// generate jwt to verify device during reset
 			const payload = {
-				userId: updatedUser._id,
-				email: updatedUser.email,
-				type: updatedUser.type,
+				userId: testUser.id,
+				email: testUser.email,
+				type: testUser.type,
 				purpose: "reset-password",
 			};
-			const token = Jwt.signJwt(payload, "1hr");
+			const jwt = Jwt.signJwt(payload, "5m");
 
 			res.status(200).json({
 				message: "Password reset OTP has been sent",
-				token: token,
-				user: updatedUser,
+				jwt: jwt,
+				user: testUser,
 			});
 		} catch (err) {
 			next(err);
 		}
 	}
 
-	static async resetPassword(req, res, next) {
+	static async resetPassword(req: Request, res: Response, next: NextFunction) {
 		const { email, password, password_reset_token } = req.body;
 		// from GlobalMiddleware.authorization
-		const decoded = req.decoded;
+		const decoded = req.body.decoded;
 		try {
 			// test conditions
 			// check if jwt exists
@@ -302,9 +315,7 @@ export class UserController {
 				Service.createErrorAndThrow("Invalid JsonWebToken, email doesn't match", 401); // unauthorized
 			}
 
-			const testUser = await UserRepository.findOne({
-				email: email,
-			});
+			const testUser = await UserRepository.findOne({ email: email });
 
 			// check if email exists
 			if (!testUser) {
@@ -316,35 +327,32 @@ export class UserController {
 				Service.createErrorAndThrow("Email not verified", 401); // unauthorized
 			}
 
-			// check if password reset token has expired
-			else if (new Date() > testUser.password_reset_token_time) {
-				Service.createErrorAndThrow("Password reset token expired", 401); // unauthorized
-			}
+			const resetToken = await TokenRepository.findOne({
+				userId: decoded.userId,
+				purpose: "reset-password",
+			});
 
 			// check if password reset OTP hasn't been requested
-			else if (password_reset_token === -1) {
+			if (!resetToken) {
 				Service.createErrorAndThrow("Password reset token not generated", 400); // bad request
 			}
 
+			// check if password reset token has expired
+			else if (new Date() > resetToken.expires_in) {
+				Service.createErrorAndThrow("Password reset token expired", 401); // unauthorized
+			}
+
 			// check if password reset token is correct
-			else if (password_reset_token != testUser.password_reset_token) {
+			else if (password_reset_token !== resetToken.value) {
 				Service.createErrorAndThrow("Invalid password reset token", 401); // unauthorized
 			}
 
-			// generate hashed password
+			// update password
 			const hashed_password = await Bcrypt.encryptPassword(password);
+			const updatedUser = await UserRepository.update({ email: email }, { password: hashed_password });
 
-			const updatedUser = await UserRepository.update(
-				{
-					email: email,
-					password_reset_token: password_reset_token,
-				},
-				{
-					password: hashed_password,
-					password_reset_token: -1,
-					password_reset_token_time: Service.generateVerificationTime(new Date(), -10),
-				}
-			);
+			// delete reset token
+			await TokenRepository.delete({ userId: testUser.id, purpose: "reset-password" });
 
 			res.status(200).json({
 				message: "Password reset successful",
@@ -354,8 +362,8 @@ export class UserController {
 		}
 	}
 
-	static async getProfile(req, res, next) {
-		const decoded = req.decoded;
+	static async getProfile(req: Request, res: Response, next: NextFunction) {
+		const decoded = req.body.decoded;
 		const email = req.params.email;
 		try {
 			// test conditions
@@ -401,9 +409,9 @@ export class UserController {
 		}
 	}
 
-	static async updateProfile(req, res, next) {
+	static async updateProfile(req: Request, res: Response, next: NextFunction) {
 		const { email, name, phone, type } = req.body;
-		const decoded = req.decoded;
+		const decoded = req.body.decoded;
 		try {
 			// test conditions
 			// check if jwt exists
@@ -444,6 +452,121 @@ export class UserController {
 			await UserRepository.update({ email: email }, newData);
 			res.status(200).json({
 				message: "Profile update successfully",
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async deleteUser(req: Request, res: Response, next: NextFunction) {
+		const { email, password } = req.body;
+		try {
+			// test conditions
+			const testUser = await UserRepository.findOne({
+				email,
+			});
+
+			// check if user exists
+			if (!testUser) {
+				Service.createErrorAndThrow("User not registered", 404); // user not found
+			}
+
+			// confirm password
+			const checkPassword = await Bcrypt.comparePassword(req.body.password, testUser.password);
+			if (checkPassword !== true) {
+				Service.createErrorAndThrow("Incorrect password", 401); // forbidden
+			}
+
+			// update token
+			const userDeletionToken = Service.generateOTP();
+			const userDeletionTokenTime = Service.generateVerificationTime(new Date(), 5);
+
+			// if reset token exists delete old token
+			await TokenRepository.delete({ userId: testUser.id, purpose: "delete-user" });
+
+			let token = await TokenRepository.create({
+				purpose: "delete-user",
+				expires_in: userDeletionTokenTime,
+				value: userDeletionToken,
+				userId: testUser.id,
+			});
+
+			const payload = {
+				userId: testUser.id,
+				email: testUser.email,
+				type: testUser.type,
+				purpose: "delete-user",
+			};
+			const jwt = Jwt.signJwt(payload, "5m");
+
+			// send email
+			await NodeMailer.sendEmail({
+				from: "event-management@api.com",
+				to: email,
+				subject: "Deletion of User Account",
+				text: `To reset your account password use the OTP ${userDeletionToken}`,
+				html: `<a href="https://localhost:3000/api/user/confirm-delete-user">Click to reset password ${userDeletionToken}</a>`,
+			});
+
+			res.status(200).json({
+				message: "Account Deletion OTP sent in email",
+				jwt: jwt,
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async confirmDeleteUser(req: Request, res: Response, next: NextFunction) {
+		const { email, delete_user_token } = req.body;
+		// from GlobalMiddleware.authorization
+		const decoded = req.body.decoded;
+		try {
+			// if jwt doesn't exists
+			if (!decoded) {
+				Service.createErrorAndThrow("JsonWebToken not found", 404); // jwt not found
+			}
+
+			// if jwt is incorrect
+			else if (decoded.email !== email) {
+				Service.createErrorAndThrow("Invalid JsonWebToken, email doesn't match", 401); // unauthorized
+			}
+
+			const testUser = await UserRepository.findOne({ email: email });
+
+			// if email doesn't exists
+			if (!testUser) {
+				Service.createErrorAndThrow("Email not registered", 404); // email not found
+			}
+
+			const deleteToken = await TokenRepository.findOne({
+				userId: decoded.userId,
+				purpose: "delete-user",
+			});
+
+			// check if account deletion OTP hasn't been requested
+			if (!deleteToken) {
+				Service.createErrorAndThrow("Account deletion token not generated", 400); // bad request
+			}
+
+			// check if password reset token has expired
+			else if (new Date() > deleteToken.expires_in) {
+				Service.createErrorAndThrow("Account deletion token expired", 401); // unauthorized
+			}
+
+			// check if password reset token is correct
+			else if (delete_user_token !== deleteToken.value) {
+				Service.createErrorAndThrow("Invalid account deletion token", 401); // unauthorized
+			}
+
+			// delete user
+			await UserRepository.delete({ email: email });
+
+			// delete all token associated to user
+			await TokenRepository.delete({ userId: testUser.id });
+
+			res.status(200).json({
+				message: "Account deleted successfully",
 			});
 		} catch (err) {
 			next(err);

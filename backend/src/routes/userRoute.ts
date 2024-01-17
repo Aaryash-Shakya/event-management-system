@@ -21,7 +21,12 @@ class UserRoute {
 			res.send(UserRepository.findOne({ email: "rs9995@gmail.com" }));
 		});
 
-		this.router.get("/get-users", UserController.getAllUsers);
+		this.router.get(
+			"/get-users",
+			GlobalMiddleware.authorization,
+			GlobalMiddleware.checkTypeAdmin,
+			UserController.getAllUsers
+		);
 
 		this.router.get(
 			"/get-profile/:email",
@@ -88,7 +93,22 @@ class UserRoute {
 	}
 
 	putRoutes() {}
-	deleteRoutes() {}
+	deleteRoutes() {
+		this.router.delete(
+			"/delete-user",
+			UserValidator.deleteUserValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.deleteUser
+		);
+
+		this.router.delete(
+			"/confirm-delete-user",
+			GlobalMiddleware.authorization,
+			UserValidator.confirmDeleteUserValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserController.confirmDeleteUser
+		);
+	}
 }
 
 export default new UserRoute().router;
