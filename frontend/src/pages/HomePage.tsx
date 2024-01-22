@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react";
 
 const HomePage: React.FC = () => {
-    return (
-        <>
-            <div className="container">
-                
+	return (
+		<>
+			<div className="md:container md:mx-auto">
+                dsfgahjk
             </div>
-        </>
-    )
-}
+		</>
+	);
+};
 
-export default HomePage
+export default HomePage;
