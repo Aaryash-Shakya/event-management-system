@@ -1,4 +1,3 @@
-import React from "react";
 import Event from "../components/Event";
 
 const EventsPage = () => {
@@ -14,7 +13,7 @@ const EventsPage = () => {
 				<Event />
 				<Event />
 				<Event />
-				<Event />   
+				<Event />
 			</div>
 		</div>
 	);
