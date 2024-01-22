@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
 	return (
 		<>
@@ -28,10 +30,18 @@ const Header = () => {
 							className="w-[120px]"
 						/>
 					</a>
-					<a className="btn btn-ghost">Home</a>
-					<a className="btn btn-ghost">Find Events</a>
-					<a className="btn btn-ghost">Help Center</a>
-					<a className="btn btn-ghost">About Us</a>
+					<Link to="/" className="btn btn-ghost">
+						Home
+					</Link>
+					<Link to="/events" className="btn btn-ghost">
+						Events
+					</Link>
+					<Link to="/help-center" className="btn btn-ghost">
+						Help Center
+					</Link>
+					<Link to="/about-us" className="btn btn-ghost">
+						About Us
+					</Link>
 				</div>
 				<div className="flex-none">
 					<div className="dropdown dropdown-end">
