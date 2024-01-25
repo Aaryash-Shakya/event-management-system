@@ -1,7 +1,7 @@
 const Footer = () => {
 	return (
 		<>
-			{/* svg was taken from https://alistairshepherd.uk/writing/svg-generative-ridges/ */}
+			{/* mountain svg from https://alistairshepherd.uk/writing/svg-generative-ridges/ */}
 			<svg viewBox="0 0 1000 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
 				<path
 					fill="currentColor"
