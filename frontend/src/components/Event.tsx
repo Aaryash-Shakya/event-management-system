@@ -1,4 +1,6 @@
-const Event = () => {
+import React from "react";
+
+const Event:React.FC = () => {
 	return (
 		<div className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 inline-block p-4">
 			<div className="card card-compact bg-base-100 shadow-xl">
