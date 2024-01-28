@@ -1,11 +1,11 @@
 import React from "react";
+import Header from "../components/Header";
 
 const HomePage: React.FC = () => {
 	return (
 		<>
-			<div className="md:container md:mx-auto">
-                dsfgahjk
-            </div>
+			<Header />
+			<div className="md:container md:mx-auto">dsfgahjk</div>
 		</>
 	);
 };

@@ -22,8 +22,8 @@ const Navbar = () => {
 						<Link to="/about-us" className="btn btn-ghost">
 							About Us
 						</Link>
-						<Link to="/sign-in" className="btn btn-ghost">
-							Sign In
+						<Link to="/login" className="btn btn-ghost">
+							Log In
 						</Link>
 					</div>
 					<div className="flex-none">
