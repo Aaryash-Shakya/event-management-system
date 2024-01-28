@@ -1,3 +1,5 @@
+import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter, FaYoutube } from "react-icons/fa";
+
 const Footer = () => {
 	return (
 		<>
@@ -10,7 +12,7 @@ const Footer = () => {
 				></path>
 			</svg>
 			<footer className="footer p-10 bg-base-200 text-base-content">
-				<aside>
+				<aside className="mx-auto">
 					<img
 						src="../../public/hike-link-vertical-logo/png/logo-no-background.png"
 						alt=""
@@ -22,6 +24,23 @@ const Footer = () => {
 						<br />
 						Copyright © 2024 - All right reserved
 					</p>
+					<div className="social-icons flex gap-2 mt-2">
+						<a href="https://facebook.com">
+							<FaFacebook size={30} style={{ color: "#1877f2" }} />
+						</a>
+						<a href="https://instagram.com">
+							<FaInstagram size={30} style={{ color: "#c13584" }} />
+						</a>
+						<a href="https://linkedin.com">
+							<FaLinkedin size={30} style={{ color: "#0077b5" }} />
+						</a>
+						<a href="https://twitter.com">
+							<FaTwitter size={30} style={{ color: "#1da1f2" }} />
+						</a>
+						<a href="https://youtube.com">
+							<FaYoutube size={30} style={{ color: "#ff0000" }} />
+						</a>
+					</div>
 				</aside>
 				<nav>
 					<header className="footer-title">Services</header>
