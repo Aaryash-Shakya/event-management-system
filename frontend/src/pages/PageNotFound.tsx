@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const PageNotFound = () => {
 	return (
 		<>
+			<Navbar />
 			<div className="bg-gradient-to-r from-green-300 to-yellow-200">
 				<div className="w-9/12 m-auto py-16 min-h-screen flex items-center justify-center">
 					<div className="bg-white shadow overflow-hidden sm:rounded-lg pb-8">
