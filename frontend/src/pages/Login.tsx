@@ -43,7 +43,7 @@ const Login: React.FC = () => {
 	return (
 		<>
 			<div
-				className="hero min-h-screen"
+				className="hero min-h-screen pt-16"
 				style={{
 					backgroundImage: "url(../../public/photos/people-walking-on-grass.jpg)",
 				}}
