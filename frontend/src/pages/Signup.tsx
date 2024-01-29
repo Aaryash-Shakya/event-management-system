@@ -3,6 +3,10 @@ import AccountForm from "../components/AccountForm";
 import { useMultiStepForm } from "../hooks/useMultiStepForm";
 import ContactForm from "../components/ContactForm";
 import UserForm from "../components/UserForm";
+import { GoHome } from "react-icons/go";
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { TiTick } from "react-icons/ti";
+import { useNavigate } from "react-router-dom";
 
 type FormData = {
 	name: string;
@@ -26,20 +30,22 @@ const INITIAL_DATA: FormData = {
 	gender: "",
 };
 
-function App() {
+const SignUp = () => {
+	const navigate = useNavigate();
+
 	const [data, setData] = useState(INITIAL_DATA);
 	function updateFields(fields: Partial<FormData>) {
 		setData(prev => {
 			return { ...prev, ...fields };
 		});
 	}
-	const { steps, currentStep, step, isFirstStep, isLastStep, prev, next } = useMultiStepForm([
+	const { step, isFirstStep, isLastStep, prev, next } = useMultiStepForm([
 		<AccountForm {...data} updateFields={updateFields} />,
 		<ContactForm {...data} updateFields={updateFields} />,
 		<UserForm {...data} updateFields={updateFields} />,
 	]);
 
-	function onSubmit(e: FormEvent) {
+	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		if (!isLastStep) return next();
 		alert("Successful Account Creation");
@@ -47,40 +53,54 @@ function App() {
 
 	return (
 		<div
+			className="hero min-h-screen pt-16"
 			style={{
-				position: "relative",
-				background: "white",
-				border: "1px solid black",
-				padding: "2rem",
-				margin: "1rem",
-				borderRadius: ".5rem",
-				fontFamily: "Arial",
-				maxWidth: "max-content",
+				backgroundImage: "url(../../public/photos/people-walking-on-grass.jpg)",
 			}}
 		>
-			<form onSubmit={onSubmit}>
-				<div style={{ position: "absolute", top: ".5rem", right: ".5rem" }}>
-					{currentStep + 1} / {steps.length}
-				</div>
-				{step}
-				<div
-					style={{
-						marginTop: "1rem",
-						display: "flex",
-						gap: ".5rem",
-						justifyContent: "flex-end",
-					}}
-				>
-					{!isFirstStep && (
-						<button type="button" onClick={prev}>
-							Back
-						</button>
-					)}
-					<button type="submit">{isLastStep ? "Finish" : "Next"}</button>
-				</div>
-			</form>
+			<div className="hero-overlay bg-opacity-20"></div>
+			<div className="hero-content bg-opacity-90 bg-base-100 rounded-xl flex-col m-4 lg:p-10 md:px-7 px-4 py-10 gap-5 w-full max-w-lg">
+				<p className="text-3xl font-bold text-center">Sign up</p>
+				<p className="text-3xl font-semibold text-center">Join us and start exploring</p>
+				<form className="form-control w-full items-start">
+					{/* form field */}
+					{step}
+
+					{/* buttons */}
+					<div className="w-full max-w-lg mt-5 text-lg text-white flex justify-evenly items-center">
+						{isFirstStep ? (
+							<div
+								className="btn btn-primary btn-circle w-2/5 text-white pe-5 text-xl"
+								onClick={() => navigate("/")}
+							>
+								<GoHome size={30} />
+								Home
+							</div>
+						) : (
+							<div className="btn btn-primary btn-circle w-2/5 text-white pe-5 text-xl" onClick={prev}>
+								<MdOutlineKeyboardArrowLeft size={40} />
+								Prev
+							</div>
+						)}
+						{isLastStep ? (
+							<div
+								className="btn btn-primary btn-circle w-2/5 text-white ps-5 text-xl"
+								onClick={handleSubmit}
+							>
+								Submit
+								<TiTick size={30} />
+							</div>
+						) : (
+							<div className="btn btn-primary btn-circle w-2/5 text-white ps-5 text-xl" onClick={next}>
+								Next
+								<MdOutlineKeyboardArrowRight size={40} />
+							</div>
+						)}
+					</div>
+				</form>
+			</div>
 		</div>
 	);
-}
+};
 
-export default App;
+export default SignUp;

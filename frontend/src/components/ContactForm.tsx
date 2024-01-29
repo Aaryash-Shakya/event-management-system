@@ -9,14 +9,15 @@ type ContactFormProps = ContactData & {
 	updateFields: (fields: Partial<ContactData>) => void;
 };
 
-const ContactForm = ({ city, phone, updateFields }:ContactFormProps) => {
+const ContactForm = ({ city, phone, updateFields }: ContactFormProps) => {
 	return (
 		<FormWrapper title="Contact Details">
-			{/* step 1 login details*/}
-			<div className="form-wrapper">
+			{/* step 2 contact details*/}
 				{/* stepper */}
 				<ul className="steps steps-horizontal w-full max-w-lg">
-					<li data-content="✓" className="step step-primary">Account</li>
+					<li data-content="✓" className="step step-primary">
+						Account
+					</li>
 					<li className="step step-primary">Contact</li>
 					<li className="step">User</li>
 				</ul>
@@ -35,7 +36,7 @@ const ContactForm = ({ city, phone, updateFields }:ContactFormProps) => {
 						onChange={e => updateFields({ city: e.target.value })}
 					/>
 				</label>
-				
+
 				{/* phone */}
 				<label className="form-control w-full max-w-lg" htmlFor="phone">
 					<div className="label">
@@ -50,7 +51,6 @@ const ContactForm = ({ city, phone, updateFields }:ContactFormProps) => {
 						onChange={e => updateFields({ phone: e.target.value })}
 					/>
 				</label>
-			</div>
 		</FormWrapper>
 	);
 };

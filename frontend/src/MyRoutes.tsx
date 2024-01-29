@@ -5,7 +5,7 @@ import EventsPage from "./pages/EventsPage";
 import PageNotFound from "./pages/PageNotFound";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-import SignUp from "./pages/Signup"
+import SignUp from "./pages/SignUp"
 
 const MyRoutes = () => {
 	return (

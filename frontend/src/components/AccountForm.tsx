@@ -1,4 +1,4 @@
-    import FormWrapper from "./FormWrapper";
+import FormWrapper from "./FormWrapper";
 
 type AccountData = {
 	name: string;
@@ -15,7 +15,6 @@ const AccountForm = ({ name, email, password, confirmPassword, updateFields }: A
 	return (
 		<FormWrapper title="Account Details">
 			{/* step 1 login details*/}
-			<div className="form-wrapper">
 				{/* stepper */}
 				<ul className="steps steps-horizontal w-full max-w-lg">
 					<li className="step step-primary">Account</li>
@@ -49,7 +48,7 @@ const AccountForm = ({ name, email, password, confirmPassword, updateFields }: A
 						id="email"
 						placeholder="Email address"
 						className="input input-bordered w-full max-w-lg"
-						onChange={e => updateFields({ name: e.target.value })}
+						onChange={e => updateFields({ email: e.target.value })}
 					/>
 				</label>
 
@@ -60,7 +59,7 @@ const AccountForm = ({ name, email, password, confirmPassword, updateFields }: A
 					</div>
 					<input
 						type="password"
-                        value={password}
+						value={password}
 						id="password"
 						placeholder="Password"
 						className="input input-bordered w-full max-w-lg"
@@ -75,14 +74,13 @@ const AccountForm = ({ name, email, password, confirmPassword, updateFields }: A
 					</div>
 					<input
 						type="password"
-                        value={confirmPassword}
+						value={confirmPassword}
 						id="confirmPassword"
 						placeholder="Confirm password"
 						className="input input-bordered w-full max-w-lg"
 						onChange={e => updateFields({ confirmPassword: e.target.value })}
 					/>
 				</label>
-			</div>
 		</FormWrapper>
 	);
 };
