@@ -5,7 +5,7 @@ import EventsPage from "./pages/EventsPage";
 import PageNotFound from "./pages/PageNotFound";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import SignUp from "./pages/Signup"
 
 const MyRoutes = () => {
 	return (
@@ -16,7 +16,7 @@ const MyRoutes = () => {
 					<Route path="/events" element={<EventsPage />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/login" element={<Login />} />
-					<Route path="/signup" element={<Signup />} />
+					<Route path="/signup" element={<SignUp />} />
 				</Route>
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
