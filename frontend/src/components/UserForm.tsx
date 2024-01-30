@@ -1,5 +1,3 @@
-import FormWrapper from "./FormWrapper";
-
 type UserData = {
 	dateOfBirth: string;
 	gender: string;
@@ -11,17 +9,17 @@ type UserFormProps = UserData & {
 
 const UserForm = ({ dateOfBirth, gender, updateFields }: UserFormProps) => {
 	return (
-		<FormWrapper title="User Details">
+		<>
 			{/* step 3 user details*/}
 			{/* stepper */}
-			<ul className="steps steps-horizontal w-full max-w-lg">
+			<ul className="steps steps-horizontal w-full max-w-lg my-5">
 				<li data-content="✓" className="step step-primary">
 					Account
 				</li>
 				<li data-content="✓" className="step step-primary">
 					Contact
 				</li>
-				<li className="step step-primary">User</li>
+				<li className="step step-primary font-semibold">User</li>
 			</ul>
 
 			{/* date of birth */}
@@ -57,7 +55,7 @@ const UserForm = ({ dateOfBirth, gender, updateFields }: UserFormProps) => {
 					onChange={e => updateFields({ gender: e.target.value })}
 				/>
 			</label>
-		</FormWrapper>
+		</>
 	);
 };
 

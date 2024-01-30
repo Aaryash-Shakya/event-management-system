@@ -1,5 +1,3 @@
-import FormWrapper from "./FormWrapper";
-
 type AccountData = {
 	name: string;
 	email: string;
@@ -13,11 +11,11 @@ type AccountFormProps = AccountData & {
 
 const AccountForm = ({ name, email, password, confirmPassword, updateFields }: AccountFormProps) => {
 	return (
-		<FormWrapper title="Account Details">
+		<>
 			{/* step 1 login details*/}
 			{/* stepper */}
-			<ul className="steps steps-horizontal w-full max-w-lg">
-				<li className="step step-primary">Account</li>
+			<ul className="steps steps-horizontal w-full max-w-lg my-5">
+				<li className="step step-primary font-semibold">Account</li>
 				<li className="step">Contact</li>
 				<li className="step">User</li>
 			</ul>
@@ -87,7 +85,7 @@ const AccountForm = ({ name, email, password, confirmPassword, updateFields }: A
 					minLength={8}
 				/>
 			</label>
-		</FormWrapper>
+		</>
 	);
 };
 

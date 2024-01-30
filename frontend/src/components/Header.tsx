@@ -9,7 +9,7 @@ const Header: React.FC = () => {
 				<div
 					className="hero relative mt-7"
 					style={{
-						backgroundImage: "url(../../public/photos/man-at-summit-zoom.jpg)",
+						backgroundImage: "url(../../public/photos/girl-in-forest.jpg)",
 						backgroundAttachment: "scroll",
 						backgroundPosition: "center",
 						backgroundRepeat: "no-repeat",
@@ -19,11 +19,11 @@ const Header: React.FC = () => {
 						maxHeight: "90vh",
 					}}
 				>
-					<div className="hero-content text-center text-neutral-content">
+					<div className="hero-content text-center text-white bg-opacity-80 bg-black">
 						<div className="max-w-md">
 							<h1 className="mb-5 text-5xl font-bold">Explore the world with exciting people</h1>
-							<p className="mb-5">Find your ideal company for your next adventure.</p>
-							<button className="btn btn-primary">Get Started</button>
+							<p className="mb-5 text-lg">Find your ideal company for your next adventure.</p>
+							<button className="btn btn-primary text-lg text-white">Get Started</button>
 						</div>
 					</div>
 
