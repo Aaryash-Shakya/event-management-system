@@ -1,13 +1,11 @@
 import React from "react";
-import Navbar from "./Navbar";
 
 const Header: React.FC = () => {
 	return (
 		<>
-			<Navbar />
 			<header className="w-full flex items-center justify-center overflow-clip flex-col">
 				<div
-					className="hero relative mt-7"
+					className="hero relative"
 					style={{
 						backgroundImage: "url(../../public/photos/girl-in-forest.jpg)",
 						backgroundAttachment: "scroll",
@@ -30,6 +28,7 @@ const Header: React.FC = () => {
 					{/* top cutout */}
 					<svg
 						className="absolute top-0 text-base-100 rotate-180"
+						style={{ translate: "0 -2px" }}
 						viewBox="0 0 1000 100"
 						preserveAspectRatio="none"
 						xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +42,7 @@ const Header: React.FC = () => {
 					{/* bottom cutout */}
 					<svg
 						className="absolute bottom-0 text-base-100"
-						style={{ translate: "0 10px" }}
+						style={{ translate: "0 2px" }}
 						viewBox="0 0 1000 100"
 						preserveAspectRatio="none"
 						xmlns="http://www.w3.org/2000/svg"
@@ -54,9 +53,6 @@ const Header: React.FC = () => {
 						></path>
 					</svg>
 				</div>
-
-				<div className="top-mountain"></div>
-				<div className="bottom-mountain"></div>
 			</header>
 			{/* mountain svg from https://alistairshepherd.uk/writing/svg-generative-ridges/ */}
 			{/* <svg

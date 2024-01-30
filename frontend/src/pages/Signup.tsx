@@ -55,7 +55,7 @@ const SignUp = () => {
 
 	return (
 		<div
-			className="hero min-h-screen pt-16"
+			className="hero min-h-screen"
 			style={{
 				backgroundImage: "url(../../public/photos/people-walking-on-grass.jpg)",
 			}}
