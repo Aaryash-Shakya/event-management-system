@@ -27,11 +27,13 @@ const UserForm = ({ dateOfBirth, gender, updateFields }: UserFormProps) => {
 			{/* date of birth */}
 			<label className="form-control w-full max-w-lg" htmlFor="dateOfBirth">
 				<div className="label">
-					<span className="label-text font-semibold">Date of Birth</span>
+					<span className="label-text">
+						<span className="font-semibold">Date Of Birth</span> (optional)
+					</span>
 				</div>
 				<input
-					type="text"
-					value={dateOfBirth}
+					type="date"
+					value={!null && dateOfBirth}
 					id="dateOfBirth"
 					placeholder="Date of birth"
 					className="input input-bordered w-full max-w-lg"
@@ -42,7 +44,9 @@ const UserForm = ({ dateOfBirth, gender, updateFields }: UserFormProps) => {
 			{/* gender */}
 			<label className="form-control w-full max-w-lg" htmlFor="gender">
 				<div className="label">
-					<span className="label-text font-semibold">Gender</span>
+					<span className="label-text">
+						<span className="font-semibold">Gender</span> (optional)
+					</span>
 				</div>
 				<input
 					type="text"

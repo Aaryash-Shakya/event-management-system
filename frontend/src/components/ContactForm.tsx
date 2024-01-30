@@ -34,6 +34,7 @@ const ContactForm = ({ city, phone, updateFields }: ContactFormProps) => {
 						placeholder="City"
 						className="input input-bordered w-full max-w-lg"
 						onChange={e => updateFields({ city: e.target.value })}
+						required
 					/>
 				</label>
 
@@ -49,6 +50,7 @@ const ContactForm = ({ city, phone, updateFields }: ContactFormProps) => {
 						placeholder="Phone"
 						className="input input-bordered w-full max-w-lg"
 						onChange={e => updateFields({ phone: e.target.value })}
+						required
 					/>
 				</label>
 		</FormWrapper>

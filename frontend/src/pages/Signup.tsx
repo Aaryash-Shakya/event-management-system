@@ -48,6 +48,7 @@ const SignUp = () => {
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		if (!isLastStep) return next();
+		console.log(data);
 		alert("Successful Account Creation");
 	}
 
@@ -62,7 +63,7 @@ const SignUp = () => {
 			<div className="hero-content bg-opacity-90 bg-base-100 rounded-xl flex-col m-4 lg:p-10 md:px-7 px-4 py-10 gap-5 w-full max-w-lg">
 				<p className="text-3xl font-bold text-center">Sign up</p>
 				<p className="text-3xl font-semibold text-center">Join us and start exploring</p>
-				<form className="form-control w-full items-start">
+				<form className="form-control w-full items-start" onSubmit={handleSubmit}>
 					{/* form field */}
 					{step}
 
@@ -82,20 +83,19 @@ const SignUp = () => {
 								Prev
 							</div>
 						)}
-						{isLastStep ? (
-							<div
-								className="btn btn-primary btn-circle w-2/5 text-white ps-5 text-xl"
-								onClick={handleSubmit}
-							>
-								Submit
-								<TiTick size={30} />
-							</div>
-						) : (
-							<div className="btn btn-primary btn-circle w-2/5 text-white ps-5 text-xl" onClick={next}>
-								Next
-								<MdOutlineKeyboardArrowRight size={40} />
-							</div>
-						)}
+						<button type="submit" className="btn btn-primary btn-circle w-2/5 text-white ps-5 text-xl">
+							{isLastStep ? (
+								<>
+									Submit
+									<TiTick size={30} />
+								</>
+							) : (
+								<>
+									Next
+									<MdOutlineKeyboardArrowRight size={40} />
+								</>
+							)}
+						</button>
 					</div>
 				</form>
 			</div>
