@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../auth/authIndex.js";
+import { FaCheckCircle } from "react-icons/fa";
+import { GoXCircleFill } from "react-icons/go";
 
 const Login: React.FC = () => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [emailError, setEmailError] = useState<string>("");
 	const [passwordError, setPasswordError] = useState<string>("");
+	const [errorMessage, setErrorMessage] = useState<string>("");
+	const [successMessage, setSuccessMessage] = useState<string>("");
 
 	const navigate = useNavigate();
 
@@ -34,10 +39,49 @@ const Login: React.FC = () => {
 
 		// Perform login logic if email and password are valid
 		if (email && password) {
-			setTimeout(() => {
-				navigate("/explore");
-			}, 1000);
+			login({ email, password }).then(data => {
+				console.log(data);
+				if (data.errorName) {
+					console.log(data);
+					setErrorMessage(data.message);
+					setSuccessMessage("");
+				} else {
+					setErrorMessage("");
+					setSuccessMessage(data.message);
+					localStorage.setItem("jwt", data.jwt);
+					localStorage.setItem("jwtPurpose", "login");
+					setTimeout(()=>{
+						navigate("/");
+					},1000)
+				}
+			});
 		}
+	};
+
+	const showErrorMessage = () => {
+		return errorMessage !== "" ? (
+			<>
+				<div role="alert" className="alert alert-error">
+					<GoXCircleFill />
+					<span>{errorMessage}</span>
+				</div>
+			</>
+		) : (
+			""
+		);
+	};
+
+	const showSuccessMessage = () => {
+		return successMessage !== "" ? (
+			<>
+				<div role="alert" className="alert alert-success">
+					<FaCheckCircle />
+					<span>{successMessage}</span>
+				</div>
+			</>
+		) : (
+			""
+		);
 	};
 
 	return (
@@ -52,6 +96,11 @@ const Login: React.FC = () => {
 				<div className="hero-content bg-opacity-90 bg-base-100 rounded-xl flex-col m-4 lg:p-10 md:px-7 px-4 py-10 gap-5 w-full max-w-lg">
 					<p className="text-3xl font-bold text-center">Welcome back</p>
 					<p className="text-3xl font-semibold text-center">Login and start exploring</p>
+
+					{/* show message */}
+					{showErrorMessage()}
+					{showSuccessMessage()}
+
 					<form className="form-control w-full items-start">
 						<label className="form-control w-full max-w-lg" htmlFor="email">
 							<div className="label">
