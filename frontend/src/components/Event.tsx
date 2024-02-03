@@ -1,14 +1,39 @@
 import React from "react";
 
-const Event:React.FC = () => {
+interface EventProps {
+	key: number;
+	item: EventData;
+}
+
+type EventData = {
+	createdAt: string;
+	current_participants: number;
+	description: string;
+	destination: string;
+	difficulty: string;
+	duration: string;
+	event_id: number;
+	gathering_point: string;
+	maximum_participants: number;
+	start_date: string;
+	status: string;
+	title: string;
+	updatedAt: string;
+};
+
+const Event: React.FC<EventProps> = props => {
 	return (
 		<div className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 inline-block p-4">
 			<div className="card card-compact bg-base-100 shadow-xl">
 				<figure className="rounded-xl">
-					<img src="../../public/photos/bagpack.jpg" className="hover:scale-110 ease-out duration-500" alt="Bagpack" />
+					<img
+						src="../../public/photos/bagpack.jpg"
+						className="hover:scale-110 ease-out duration-500"
+						alt="Bagpack"
+					/>
 				</figure>
 				<div className="card-body text-primary">
-					<h2 className="card-title">Sagarmatha Hike</h2>
+					<h2 className="card-title">{props.item.title}</h2>
 					<p className="description">Is it possible to hike to summit of sagarmtha?</p>
 					<p>
 						<span className="difficulty">Moderate</span> .<span className="duration">10 hours</span>
