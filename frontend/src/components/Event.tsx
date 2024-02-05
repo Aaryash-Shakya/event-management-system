@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface EventProps {
 	key: number;
@@ -22,6 +23,8 @@ type EventData = {
 };
 
 const Event: React.FC<EventProps> = props => {
+
+	const navigate = useNavigate();
 	return (
 		<div className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 inline-block p-4">
 			<div className="card card-compact bg-base-100 shadow-xl">
@@ -34,13 +37,15 @@ const Event: React.FC<EventProps> = props => {
 				</figure>
 				<div className="card-body text-primary">
 					<h2 className="card-title">{props.item.title}</h2>
-					<p className="description">Is it possible to hike to summit of sagarmtha?</p>
+					<p className="description">{props.item.description}</p>
 					<p>
-						<span className="difficulty">Moderate</span> .<span className="duration">10 hours</span>
+						<span className="difficulty">{props.item.difficulty}</span> .<span className="duration">{props.item.duration}</span>
 					</p>
 					<div className="card-actions flex items-center justify-between">
-						<span className="date">2024 Jan 30</span>
-						<button className="btn btn-primary">Join Now</button>
+						<span className="date">{props.item.start_date}</span>
+						<button className="btn btn-primary" onClick={()=>{
+							navigate("/event-details/"+props.item.event_id, { state: props.item });
+						}}>Join Now</button>
 					</div>
 				</div>
 			</div>
