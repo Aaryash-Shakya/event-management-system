@@ -1,8 +1,8 @@
 import { FormEvent, useState } from "react";
-import AccountForm from "../components/AccountForm";
+import AccountForm from "../components/form/AccountForm";
 import { useMultiStepForm } from "../hooks/useMultiStepForm";
-import ContactForm from "../components/ContactForm";
-import UserForm from "../components/UserForm";
+import ContactForm from "../components/form/ContactForm";
+import UserForm from "../components/form/UserForm";
 import { GoHome } from "react-icons/go";
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { TiTick } from "react-icons/ti";

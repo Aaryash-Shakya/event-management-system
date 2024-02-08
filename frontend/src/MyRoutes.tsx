@@ -6,6 +6,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp"
+import EventDetails from "./pages/EventDetails";
 
 const MyRoutes = () => {
 	return (
@@ -13,10 +14,11 @@ const MyRoutes = () => {
 			<Routes>
 				<Route path="" element={<Layouts />}>
 					<Route index element={<HomePage />} />
-					<Route path="/events" element={<EventsPage />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<SignUp />} />
+					<Route path="/events" element={<EventsPage />} />
+					<Route path="/event-details/:event_id" element={<EventDetails />} />
 				</Route>
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
