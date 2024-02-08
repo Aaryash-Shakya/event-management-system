@@ -17,9 +17,36 @@ const Header: React.FC = () => {
 						maxHeight: "90vh",
 					}}
 				>
-					<div className="hero-content text-center text-white bg-opacity-80 bg-black">
+					<div className="hero-content text-center text-white bg-opacity-70 bg-black backdrop-blur-1 rounded-md p-5">
 						<div className="max-w-md">
-							<h1 className="mb-5 text-5xl font-bold">Explore the world with exciting people</h1>
+							<h1 className="mb-5 text-5xl" style={{ fontFamily: `'Protest Riot', sans-serif` }}>
+								Explore the{" "}
+								<span
+									className="text-success relative"
+									style={{ fontFamily: `'Protest Riot', sans-serif` }}
+								>
+									world
+								</span>{" "}
+								with{" "}
+								<span
+									className="text-success relative"
+									style={{ fontFamily: `'Protest Riot', sans-serif` }}
+								>
+									{" "}
+									exciting
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 63.10148 10.7553"
+										className="absolute -bottom-5 left-0 w-full fill-success scale-y-50"
+									>
+										<path
+											d="M4.7254,6.24385c.74953-1.16342,2.22421-1.09201,3.45417-1.15422,2.14741-.10861,4.31001-.0021,6.44273,.26458,4.19719,.52484,8.31108,1.63863,12.40424,2.67172,7.63368,1.92671,15.46314,3.64085,23.33831,2.18418,4.45051-.82321,8.45652-2.80963,12.00813-5.57625,1.06608-.83045,.87173-2.66381,0-3.53553-1.05239-1.05239-2.46666-.83262-3.53553,0-13.63069,10.61797-31.22921,.23514-46.05376-.92905C8.42712-.17285,3.06299-.40077,.40804,3.72026c-1.74782,2.71298,2.57851,5.22265,4.31735,2.5236h0Z"
+											origin="undraw"
+										/>
+									</svg>
+								</span>{" "}
+								people
+							</h1>
 							<p className="mb-5 text-lg">Find your ideal company for your next adventure.</p>
 							<button className="btn btn-primary text-lg text-white">Get Started</button>
 						</div>
