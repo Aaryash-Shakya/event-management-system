@@ -1,3 +1,4 @@
+import axios from "axios";
 import serverUrl from "../config.ts";
 import { SignupFormData } from "../pages/SignUp.tsx";
 
@@ -22,7 +23,7 @@ export const login = async (user: LoginData): Promise<any> => {
 	}
 };
 
-export const signup = async (user:SignupFormData): Promise<any> => {
+export const signup = async (user: SignupFormData): Promise<any> => {
 	try {
 		const res = await fetch(`${serverUrl}/api/user/signup`, {
 			method: "POST",
@@ -32,18 +33,31 @@ export const signup = async (user:SignupFormData): Promise<any> => {
 			},
 			body: JSON.stringify(user),
 		});
-		return res.json();
+		return await res.json();
 	} catch (err) {
-		return console.log(err);
+		console.log(err);
 	}
 };
 
-export const isAuthenticated = (): boolean => {
+export const isAuthenticated = (): boolean | "user" | "admin" => {
 	if (typeof window == "undefined") {
 		return false;
 	} else if (localStorage.getItem("jwt")) {
-		return true;
-		// call /api/user/verify-user to verify jwt
+		axios
+			.get(`${serverUrl}/api/user/verify-jwt`, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+					"Content-Type": "application/json",
+				},
+			})
+			.then(res => {
+				console.log(res.data);
+				return res.data.type;
+			})
+			.catch(err => {
+				console.log(err);
+				return false;
+			});
 	}
 	return false;
 };

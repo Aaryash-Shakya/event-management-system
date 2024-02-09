@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { login } from "../auth/authIndex.js";
 import { FaCheckCircle } from "react-icons/fa";
 import { GoXCircleFill } from "react-icons/go";
+import { SuccessOrError } from "../types/response.js";
 
 const Login: React.FC = () => {
 	const [email, setEmail] = useState<string>("");
@@ -39,11 +40,11 @@ const Login: React.FC = () => {
 
 		// Perform login logic if email and password are valid
 		if (email && password) {
-			login({ email, password }).then(data => {
+			login({ email, password }).then((data:SuccessOrError) => {
 				console.log(data);
 				if (data.errorName) {
 					console.log(data);
-					setErrorMessage(data.message);
+					setErrorMessage(data.errorMessage);
 					setSuccessMessage("");
 				} else {
 					setErrorMessage("");
