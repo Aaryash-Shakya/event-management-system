@@ -20,3 +20,14 @@ export const login = async (user: LoginData): Promise<any> => {
 		return console.log(err);
 	}
 };
+
+export const isAuthenticated = ():boolean => {
+	if(typeof window == "undefined") {
+		return false;
+	}
+	else if(localStorage.getItem("jwt")) {
+		return true;
+		// call /api/user/verify-user to verify jwt
+	}
+	return false;
+}

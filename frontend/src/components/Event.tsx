@@ -24,6 +24,7 @@ export type EventData = {
 
 const Event: React.FC<EventProps> = props => {
 	const navigate = useNavigate();
+	const shortDescription = props.item.description.length > 50 ? props.item.description.substring(0, 50) + "..." : props.item.description;
 
 	return (
 		<div className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 inline-block p-4">
@@ -35,9 +36,9 @@ const Event: React.FC<EventProps> = props => {
 						alt="Bagpack"
 					/>
 				</figure>
-				<div className="card-body text-primary">
+				<div className="card-body text-base-content">
 					<h2 className="card-title">{props.item.title}</h2>
-					<p className="description">{props.item.description}</p>
+					<p className="description">{shortDescription}</p>
 					<p>
 						<span className="difficulty">{props.item.difficulty}</span> .{" "}
 						<span className="duration">{props.item.duration}</span>
@@ -55,7 +56,7 @@ const Event: React.FC<EventProps> = props => {
 								navigate("/event-details/" + props.item.event_id, { state: props.item });
 							}}
 						>
-							Join Now
+							Learn More
 						</button>
 					</div>
 				</div>

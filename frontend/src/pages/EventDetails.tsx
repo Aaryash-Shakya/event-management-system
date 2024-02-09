@@ -19,7 +19,7 @@ const EventDetails: React.FC = () => {
 	}, []);
 	return (
 		<>
-			<div className="bg-base-300 py-5">
+			<div className="bg-base-200 py-5">
 				<div className="container bg-base-100 max-w-4xl min-h-screen mx-auto rounded-lg overflow-hidden shadow-md">
 					<div
 						className="image-box h-96 w-full flex flex-col justify-end"

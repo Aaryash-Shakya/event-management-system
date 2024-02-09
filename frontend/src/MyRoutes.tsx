@@ -7,6 +7,8 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp"
 import EventDetails from "./pages/EventDetails";
+import Profile from "./pages/Profile";
+import PrivateRoute from "./auth/PrivateRoute";
 
 const MyRoutes = () => {
 	return (
@@ -19,6 +21,9 @@ const MyRoutes = () => {
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="/events" element={<EventsPage />} />
 					<Route path="/event-details/:event_id" element={<EventDetails />} />
+				</Route>
+				<Route path="/" element={<PrivateRoute />}>
+					<Route path="/profile" element={<Profile />} />
 				</Route>
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
