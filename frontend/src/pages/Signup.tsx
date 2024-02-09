@@ -3,13 +3,15 @@ import AccountForm from "../components/form/AccountForm";
 import { useMultiStepForm } from "../hooks/useMultiStepForm";
 import ContactForm from "../components/form/ContactForm";
 import UserForm from "../components/form/UserForm";
-import { GoHome } from "react-icons/go";
+import { GoHome, GoXCircleFill } from "react-icons/go";
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { signup } from "../auth/authIndex";
+import { FaCheckCircle } from "react-icons/fa";
 
-type FormData = {
+export type SignupFormData = {
 	name: string;
 	email: string;
 	password: string;
@@ -20,7 +22,7 @@ type FormData = {
 	gender: string;
 };
 
-const INITIAL_DATA: FormData = {
+const INITIAL_DATA: SignupFormData = {
 	name: "",
 	email: "",
 	password: "",
@@ -34,8 +36,10 @@ const INITIAL_DATA: FormData = {
 const SignUp = () => {
 	const navigate = useNavigate();
 
+	const [errorMessage, setErrorMessage] = useState<string>("");
+	const [successMessage, setSuccessMessage] = useState<string>("");
 	const [data, setData] = useState(INITIAL_DATA);
-	function updateFields(fields: Partial<FormData>) {
+	function updateFields(fields: Partial<SignupFormData>) {
 		setData(prev => {
 			return { ...prev, ...fields };
 		});
@@ -50,8 +54,46 @@ const SignUp = () => {
 		e.preventDefault();
 		if (!isLastStep) return next();
 		console.log(data);
-		alert("Successful Account Creation");
+		signup(data).then(resData => {
+			if (resData.status === 200) {
+				setErrorMessage(resData.errorMessage);
+				setSuccessMessage("");
+			}
+			else {
+				setErrorMessage("");
+				setSuccessMessage(resData.message);
+				setTimeout(() => {
+					navigate("/verify-email");
+				}, 1000);
+			}
+		});
 	}
+
+	const showErrorMessage = () => {
+		return errorMessage !== "" ? (
+			<>
+				<div role="alert" className="alert alert-error">
+					<GoXCircleFill />
+					<span>{errorMessage}</span>
+				</div>
+			</>
+		) : (
+			""
+		);
+	};
+
+	const showSuccessMessage = () => {
+		return successMessage !== "" ? (
+			<>
+				<div role="alert" className="alert alert-success">
+					<FaCheckCircle />
+					<span>{successMessage}</span>
+				</div>
+			</>
+		) : (
+			""
+		);
+	};
 
 	return (
 		<div
@@ -66,6 +108,10 @@ const SignUp = () => {
 					<p className="text-3xl font-bold text-center">Sign up</p>
 					<p className="text-3xl font-semibold text-center">Join us and start exploring</p>
 					<form className="form-control w-full items-start" onSubmit={handleSubmit}>
+						{/* show message */}
+						{showErrorMessage()}
+						{showSuccessMessage()}
+
 						{/* form field */}
 						{step}
 
