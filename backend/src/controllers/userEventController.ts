@@ -4,12 +4,17 @@ import { UserEventRepository } from "../repository/userEventRepository";
 import { UserRepository } from "../repository/userRepository";
 import { Service } from "../services/utils";
 import { Request, Response, NextFunction } from "express";
+import { SuccessResponse } from "../types/response";
 
 export class UserEventController {
 	static async getAllData(req: Request, res: Response, next: NextFunction) {
 		try {
 			const data = await UserEventRepository.findAll({});
-			res.send(data);
+			res.status(200).json({
+				status: 200,
+				message: "Events retrieved by Participant",
+				data,
+			} as SuccessResponse);
 		} catch (error) {
 			next(error);
 		}
@@ -22,7 +27,11 @@ export class UserEventController {
 
 		try {
 			const data = await UserEventRepository.findAll(queryKey);
-			res.send(data);
+			res.status(200).json({
+				status: 200,
+				message: "Events retrieved by Participant",
+				data,
+			} as SuccessResponse);
 		} catch (error) {
 			next(error);
 		}
@@ -42,7 +51,11 @@ export class UserEventController {
 			}
 
 			const data = await UserEventRepository.findAll(queryKey);
-			res.send(data);
+			res.status(200).json({
+				status: 200,
+				message: "Events retrieved by Participant",
+				data,
+			} as SuccessResponse);
 		} catch (error) {
 			next(error);
 		}
@@ -92,7 +105,10 @@ export class UserEventController {
 				{ current_participants: testEvent.current_participants + 1 }
 			);
 
-			res.status(200).json({ message: "event joined" });
+			res.status(200).json({
+				status: 200,
+				message: "Event joined",
+			} as SuccessResponse);
 		} catch (error) {
 			next(error);
 		}
@@ -135,7 +151,10 @@ export class UserEventController {
 				}
 			);
 
-			res.status(200).json({ message: "User has left event" });
+			res.status(200).json({
+				status: 200,
+				message: "User has left event",
+			} as SuccessResponse);
 		} catch (error) {
 			next(error);
 		}

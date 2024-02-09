@@ -4,6 +4,7 @@ import { Bcrypt } from "../services/bcrypt";
 import { Jwt } from "../services/jwt";
 import { NodeMailer } from "../services/nodeMailer";
 import { Service } from "../services/utils";
+import { SuccessResponse } from "../types/response";
 
 import { Request, Response, NextFunction } from "express";
 type token = {
@@ -18,7 +19,11 @@ export class UserController {
 		try {
 			console.log("enter getAllUsers");
 			const users = await UserRepository.findAll();
-			res.send(users);
+			res.status(200).json({
+				status: 200,
+				message: "Users fetched successfully",
+				users: users,
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -51,7 +56,7 @@ export class UserController {
 				email,
 				password: hashed_password,
 				phone,
-				type: "admin",
+				type: "user",
 				date_of_birth,
 				gender,
 			};
@@ -78,9 +83,10 @@ export class UserController {
 			// ! whats the convention do you use return on res.send call.
 			// ! logically it doesn't makes any difference
 			return res.status(200).json({
+				status: 200,
 				message: "Account Created. Verify your email.",
 				user: user,
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -134,7 +140,10 @@ export class UserController {
 				// delete token
 				await TokenRepository.delete({ userId: testUser.id, purpose: "verify-email" });
 
-				res.status(200).json({ message: "Email has been verified successfully" });
+				res.status(200).json({
+					status: 200,
+					message: "Email has been verified successfully",
+				} as SuccessResponse);
 			} else {
 				Service.createErrorAndThrow("Failed to verify user", 500);
 			}
@@ -185,9 +194,10 @@ export class UserController {
 				});
 
 				res.status(200).json({
+					status: 200,
 					message: "Verification email resent successfully",
 					updatedToken,
-				});
+				} as SuccessResponse);
 			} else {
 				Service.createErrorAndThrow("Failed to resend verification email", 500);
 			}
@@ -229,7 +239,8 @@ export class UserController {
 
 			// send response
 			res.status(200).json({
-				message: "login successful",
+				status: 200,
+				message: "Login successful",
 				jwt: jwt,
 			});
 		} catch (err) {
@@ -290,10 +301,11 @@ export class UserController {
 			const jwt = Jwt.signJwt(payload, "5m");
 
 			res.status(200).json({
+				status: 200,
 				message: "Password reset OTP has been sent",
 				jwt: jwt,
 				user: testUser,
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -355,8 +367,9 @@ export class UserController {
 			await TokenRepository.delete({ userId: testUser.id, purpose: "reset-password" });
 
 			res.status(200).json({
+				status: 200,
 				message: "Password reset successful",
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -401,9 +414,10 @@ export class UserController {
 			};
 
 			res.status(200).json({
+				status: 200,
 				message: "Fetch user successful",
 				profile: user,
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -451,8 +465,9 @@ export class UserController {
 			}
 			await UserRepository.update({ email: email }, newData);
 			res.status(200).json({
+				status: 200,
 				message: "Profile update successfully",
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -509,9 +524,10 @@ export class UserController {
 			});
 
 			res.status(200).json({
+				status: 200,
 				message: "Account Deletion OTP sent in email",
 				jwt: jwt,
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -566,8 +582,9 @@ export class UserController {
 			await TokenRepository.delete({ userId: testUser.id });
 
 			res.status(200).json({
+				status: 200,
 				message: "Account deleted successfully",
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}

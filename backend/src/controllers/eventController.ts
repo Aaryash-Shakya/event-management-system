@@ -1,15 +1,17 @@
 import { EventRepository } from "../repository/eventRepository";
 import { Service } from "../services/utils";
 import { Request, Response, NextFunction } from "express";
+import { SuccessResponse } from "../types/response";
 
 export class EventController {
 	static async getEvents(req: Request, res: Response, next: NextFunction) {
 		try {
 			const events = await EventRepository.findAll({});
 			res.status(200).json({
+				status: 200,
+				message: "All events retrieved",
 				events,
-				message: "success",
-			});
+			} as SuccessResponse);
 		} catch (error) {
 			next(error);
 		}
@@ -46,9 +48,10 @@ export class EventController {
 			const event = await EventRepository.create(eventData);
 			console.log(event);
 			res.status(200).json({
+				status: 200,
 				message: "Event created",
 				event,
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -68,9 +71,10 @@ export class EventController {
 			}
 
 			res.status(200).json({
-				message: "Fetch event successful",
+				status: 200,
+				message: "Event fetched",
 				event: testEvent,
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -122,9 +126,10 @@ export class EventController {
 				eventData
 			);
 			res.status(200).json({
+				status: 200,
 				message: "Event updated",
 				event,
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
@@ -147,8 +152,9 @@ export class EventController {
 				event_id,
 			});
 			res.status(200).json({
+				status: 200,
 				message: "Event deleted",
-			});
+			} as SuccessResponse);
 		} catch (err) {
 			next(err);
 		}
