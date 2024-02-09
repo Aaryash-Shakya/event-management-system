@@ -6,6 +6,7 @@ import userRoute from "./routes/userRoute";
 import tokenRoute from "./routes/tokenRoute";
 import eventRoute from "./routes/eventRoute";
 import userEventRoute from "./routes/userEventRoute";
+import { ErrorResponse } from "./types/response";
 
 export class Server {
 	public app: express.Application = express();
@@ -52,8 +53,9 @@ export class Server {
 		this.app.use((req: Request, res: Response) => {
 			res.status(404).json({
 				status: 404,
-				message: "Not Found",
-			});
+				errorName: "Not Found",
+				errorMessage: "Not Found",
+			} as ErrorResponse);
 		});
 	}
 
@@ -65,10 +67,10 @@ export class Server {
 			console.log(`\nerror occurred: ${error.name} ${error.errorStatus} ${error.message}`);
 			console.log(error);
 			res.status(errorStatus).json({
-				errorName: error.name,
 				status: errorStatus,
-				message: errorMessage,
-			});
+				errorName: error.name,
+				errorMessage: errorMessage,
+			} as ErrorResponse);
 		});
 	}
 }
