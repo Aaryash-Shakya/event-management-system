@@ -15,7 +15,7 @@ export class Jwt {
 				if (err) {
 					reject(err);
 				} else if (!decoded) {
-					let error = new Error("User is not authorized");
+					let error = new Error("Invalid JsonWebToken");
 					(error as any).errorStatus = 401;
 					reject(error);
 				} else {
