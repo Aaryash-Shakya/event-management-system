@@ -4,6 +4,7 @@ import { Bcrypt } from "../services/bcrypt";
 import { Jwt } from "../services/jwt";
 import { NodeMailer } from "../services/nodeMailer";
 import { Service } from "../services/utils";
+import { CustomJwtPayload } from "../types/jwt";
 import { SuccessResponse } from "../types/response";
 
 import { Request, Response, NextFunction } from "express";
@@ -229,7 +230,7 @@ export class UserController {
 			}
 
 			// generate new jwt
-			const payload = {
+			const payload: CustomJwtPayload = {
 				userId: user.id,
 				email: user.email,
 				type: user.type,
@@ -292,7 +293,7 @@ export class UserController {
 			});
 
 			// generate jwt to verify device during reset
-			const payload = {
+			const payload: CustomJwtPayload = {
 				userId: testUser.id,
 				email: testUser.email,
 				type: testUser.type,
@@ -506,7 +507,7 @@ export class UserController {
 				userId: testUser.id,
 			});
 
-			const payload = {
+			const payload: CustomJwtPayload = {
 				userId: testUser.id,
 				email: testUser.email,
 				type: testUser.type,
@@ -585,6 +586,25 @@ export class UserController {
 				status: 200,
 				message: "Account deleted successfully",
 			} as SuccessResponse);
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	static async verifyJwt(req: Request, res: Response, next: NextFunction) {
+		const decoded: CustomJwtPayload = req.body.decoded;
+		try {
+			if (decoded) {
+				res.status(200).json({
+					status: 200,
+					message: "JsonWebToken is verified",
+					type: decoded.type,
+					userId: decoded.userId,
+					email: decoded.email,
+				} as SuccessResponse);
+			} else {
+				Service.createErrorAndThrow("JsonWebToken not found", 404); // jwt not found
+			}
 		} catch (err) {
 			next(err);
 		}
