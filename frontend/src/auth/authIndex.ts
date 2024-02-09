@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import serverUrl from "../config.ts";
 import { SignupFormData } from "../pages/SignUp.tsx";

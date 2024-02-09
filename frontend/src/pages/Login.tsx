@@ -39,8 +39,8 @@ const Login: React.FC = () => {
 		}
 
 		// Perform login logic if email and password are valid
-		if (email && password) {
-			login({ email, password }).then((data:SuccessOrError) => {
+		if (emailError === "" && passwordError === "") {
+			login({ email, password }).then((data: SuccessOrError) => {
 				console.log(data);
 				if (data.errorName) {
 					console.log(data);
@@ -51,9 +51,9 @@ const Login: React.FC = () => {
 					setSuccessMessage(data.message);
 					localStorage.setItem("jwt", data.jwt);
 					localStorage.setItem("jwtPurpose", "login");
-					setTimeout(()=>{
+					setTimeout(() => {
 						navigate("/");
-					},1000)
+					}, 1000);
 				}
 			});
 		}
@@ -114,7 +114,7 @@ const Login: React.FC = () => {
 								className="input input-bordered w-full max-w-lg"
 								onChange={e => setEmail(e.target.value)}
 							/>
-							<p className="text-red-500 text-xs italic">{emailError}</p>
+							<p className="text-error text-sm">{emailError}</p>
 						</label>
 						<label className="form-control w-full max-w-lg" htmlFor="password">
 							<div className="label">
@@ -127,7 +127,7 @@ const Login: React.FC = () => {
 								className="input input-bordered w-full max-w-lg"
 								onChange={e => setPassword(e.target.value)}
 							/>
-							<p className="text-red-500 text-xs italic">{passwordError}</p>
+							<p className="text-error text-sm">{passwordError}</p>
 						</label>
 						<div
 							onClick={handleLogin}

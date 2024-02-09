@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { signup } from "../auth/authIndex";
 import { FaCheckCircle } from "react-icons/fa";
+import { SuccessOrError } from "../types/response";
 
 export type SignupFormData = {
 	name: string;
@@ -54,8 +55,8 @@ const SignUp = () => {
 		e.preventDefault();
 		if (!isLastStep) return next();
 		console.log(data);
-		signup(data).then(resData => {
-			if (resData.status === 200) {
+		signup(data).then((resData: SuccessOrError) => {
+			if (resData.errorName) {
 				setErrorMessage(resData.errorMessage);
 				setSuccessMessage("");
 			}

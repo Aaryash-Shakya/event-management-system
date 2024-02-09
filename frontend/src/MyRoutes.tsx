@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layouts from "./components/Layouts";
 import HomePage from "./pages/HomePage";
@@ -11,8 +12,10 @@ import Profile from "./pages/Profile";
 import PrivateRoute from "./auth/PrivateRoute";
 import Unauthorized from "./pages/Unauthorized";
 import AdminRoute from "./auth/AdminRoute";
+import VerifyEmail from "./pages/VerifyEmail";
 
-const MyRoutes = () => {
+
+const MyRoutes:React.FC = () => {
 	return (
 		<Router>
 			<Routes>
@@ -20,21 +23,26 @@ const MyRoutes = () => {
 				{/* public route */}
 				<Route path="" element={<Layouts />}>
 					<Route index element={<HomePage />} />
-					<Route path="/contact" element={<Contact />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/signup" element={<SignUp />} />
-					<Route path="/events" element={<EventsPage />} />
-					<Route path="/event-details/:event_id" element={<EventDetails />} />
+					{/* user */}
+					<Route path="login" element={<Login />} />
+					<Route path="signup" element={<SignUp />} />
+					<Route path="verify-email" element={<VerifyEmail />} />
+
+					{/* event */}
+					<Route path="events" element={<EventsPage />} />
+					<Route path="event-details/:event_id" element={<EventDetails />} />
+					
+					<Route path="contact" element={<Contact />} />
 				</Route>
 				
 				{/* private route */}
 				<Route path="" element={<PrivateRoute />}>
-					<Route path="/profile" element={<Profile />} />
+					<Route path="profile" element={<Profile />} />
 				</Route>
 				
 				{/* admin route */}
-				<Route path="/admin" element={<AdminRoute />}>
-					<Route path="/dashboard" element={<Profile />} />
+				<Route path="admin" element={<AdminRoute />}>
+					<Route path="dashboard" element={<Profile />} />
 				</Route>
 				
 				<Route path="*" element={<PageNotFound />} />
