@@ -56,6 +56,7 @@ const SignUp = () => {
 		if (!isLastStep) return next();
 		console.log(data);
 		signup(data).then((resData: SuccessOrError) => {
+			console.log(resData);
 			if (resData.errorName) {
 				setErrorMessage(resData.errorMessage);
 				setSuccessMessage("");
@@ -108,7 +109,7 @@ const SignUp = () => {
 				<div className="bg-opacity-90 bg-base-100 rounded-xl flex-col m-4 lg:p-10 md:px-7 px-4 py-10 gap-5 w-full max-w-lg">
 					<p className="text-3xl font-bold text-center">Sign up</p>
 					<p className="text-3xl font-semibold text-center">Join us and start exploring</p>
-					<form className="form-control w-full items-start" onSubmit={handleSubmit}>
+					<form className="form-control w-full items-start pt-4" onSubmit={handleSubmit}>
 						{/* show message */}
 						{showErrorMessage()}
 						{showSuccessMessage()}

@@ -11,23 +11,30 @@ const VerifyEmail: React.FC = () => {
 
 	const navigate = useNavigate();
 
-	const handleEmailVerification = () => {
-		console.log(otp);
-		if (!otp) {
+	const checkError = (otpValue:string) => {
+		if (!otpValue) {
 			setOtpError("Otp is required");
-		} else if (otp.length !== 6) {
+		} else if (otpValue.length !== 6) {
 			setOtpError("Otp must be 6 characters");
 		} else {
 			setOtpError("");
 		}
+	};
 
+	const handleEmailVerification = () => {
 		// Perform login logic if email and password are valid
-		if (otpError === "") {
-			setErrorMessage("");
-			setSuccessMessage("Email verified successfully");
-			console.log("perform verification");
-			// navigate("/");
+		if (otpError !== "") {
+			setErrorMessage("Please fill the form correctly");
+			setSuccessMessage("");
+			return;
 		}
+
+		setErrorMessage("");
+		setSuccessMessage("Email verified successfully");
+		console.log("perform verification");
+		setTimeout(() => {
+			navigate("/login");
+		});
 	};
 
 	const showErrorMessage = () => {
@@ -85,10 +92,13 @@ const VerifyEmail: React.FC = () => {
 								id="otp"
 								placeholder="One Time Password"
 								className="input input-bordered w-full max-w-lg"
-								onChange={e => setOtp(e.target.value)}
+								onChange={e => {
+									setOtp(e.target.value);
+									checkError(e.target.value);
+								}}
 							/>
 							<p className="text-error text-sm">{otpError}</p>
-						</label>
+						</label>0
 						<div
 							onClick={handleEmailVerification}
 							className="btn btn-primary btn-circle w-full max-w-lg mt-5 text-lg text-white"
