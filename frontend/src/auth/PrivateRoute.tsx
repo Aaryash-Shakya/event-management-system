@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { isAuthenticated } from "./authIndex";
 import { Navigate, Outlet } from "react-router-dom";
 import { VscLoading } from "react-icons/vsc";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const PrivateRoute: React.FC = () => {
 	const [isAuthorized, setIsAuthorized] = useState<false | "user" | "admin" | null>(null);
@@ -34,7 +36,9 @@ const PrivateRoute: React.FC = () => {
 	console.log("authorized " + isAuthorized);
 	return (
 		<>
+			<Navbar />
 			<Outlet />
+			<Footer />
 		</>
 	);
 };

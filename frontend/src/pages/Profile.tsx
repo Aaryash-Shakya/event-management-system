@@ -1,17 +1,15 @@
 import React from "react";
-import { useStore } from "zustand";
+import { useBearStore } from "../store/store";
 
 const Profile: React.FC = () => {
-	const bears = useStore(state => state.bears);
-
-	const decrementBears = useStore(state => state.decrement);
+	const bears = useBearStore(state => state.bears);
 
 	return (
 		<>
 			<h1>Profile</h1>
 			<div>Count = {bears}</div>
-			<div onClick={decrementBears}>Decrement</div>
-			<div>Increment</div>
+			<button className="btn btn-primary" onClick={useBearStore(state => state.increment)}>Increment</button>
+			<button className="btn btn-primary" onClick={useBearStore(state => state.decrement)}>Decrement</button>
 		</>
 	);
 };
