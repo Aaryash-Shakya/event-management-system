@@ -40,25 +40,26 @@ export const signup = async (user: SignupFormData): Promise<any> => {
 	}
 };
 
-export const isAuthenticated = (): boolean | "user" | "admin" => {
+export const isAuthenticated = async (): Promise<false | "user" | "admin"> => {
 	if (typeof window == "undefined") {
 		return false;
 	} else if (localStorage.getItem("jwt")) {
-		axios
-			.get(`${serverUrl}/api/user/verify-jwt`, {
+		try {
+			const res = await axios.get(`${serverUrl}/api/user/verify-jwt`, {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem("jwt")}`,
 					"Content-Type": "application/json",
 				},
-			})
-			.then(res => {
-				console.log(res.data);
-				return res.data.type;
-			})
-			.catch(err => {
-				console.log(err);
-				return false;
 			});
+			if (res.status !== 200) {
+				return false;
+			}
+			console.log(res.data);
+			return res.data.type;
+		} catch (err) {
+			console.log(err);
+			return false;
+		}
 	}
 	return false;
 };

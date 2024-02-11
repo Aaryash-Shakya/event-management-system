@@ -36,7 +36,7 @@ const MyRoutes:React.FC = () => {
 				</Route>
 				
 				{/* private route */}
-				<Route path="" element={<PrivateRoute />}>
+				<Route path="private" element={<PrivateRoute />}>
 					<Route path="profile" element={<Profile />} />
 				</Route>
 				
