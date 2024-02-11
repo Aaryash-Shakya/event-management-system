@@ -1,7 +1,4 @@
-type ContactData = {
-	city: string;
-	phone: string;
-};
+import { ContactData } from "../../types/form";
 
 type ContactFormProps = ContactData & {
 	updateFields: (fields: Partial<ContactData>) => void;

@@ -1,7 +1,4 @@
-type UserData = {
-	dateOfBirth: string;
-	gender: string;
-};
+import { UserData } from "../../types/form";
 
 type UserFormProps = UserData & {
 	updateFields: (fields: Partial<UserData>) => void;

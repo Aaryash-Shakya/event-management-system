@@ -1,9 +1,4 @@
-type AccountData = {
-	name: string;
-	email: string;
-	password: string;
-	confirmPassword: string;
-};
+import { AccountData } from "../../types/form";
 
 type AccountFormProps = AccountData & {
 	updateFields: (fields: Partial<AccountData>) => void;

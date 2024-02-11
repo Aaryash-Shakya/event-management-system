@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import serverUrl from "../config.ts";
-import { SignupFormData } from "../pages/SignUp.tsx";
+import { SignupFormData } from "../types/form.ts";
 
 type LoginData = {
 	email: string;

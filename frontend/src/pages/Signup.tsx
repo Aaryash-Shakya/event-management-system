@@ -11,17 +11,7 @@ import { FcGoogle } from "react-icons/fc";
 import { signup } from "../auth/authIndex";
 import { FaCheckCircle } from "react-icons/fa";
 import { SuccessOrError } from "../types/response";
-
-export type SignupFormData = {
-	name: string;
-	email: string;
-	password: string;
-	confirmPassword: string;
-	city: string;
-	phone: string;
-	dateOfBirth: string;
-	gender: string;
-};
+import { SignupFormData } from "../types/form";
 
 const INITIAL_DATA: SignupFormData = {
 	name: "",
