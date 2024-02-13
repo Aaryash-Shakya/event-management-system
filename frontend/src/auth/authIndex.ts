@@ -2,6 +2,7 @@
 import axios from "axios";
 import serverUrl from "../config.ts";
 import { SignupFormData } from "../types/form.ts";
+import { useUserStore } from "../store/store.ts";
 
 type LoginData = {
 	email: string;
@@ -54,6 +55,12 @@ export const isAuthenticated = async (): Promise<false | "user" | "admin"> => {
 			if (res.status !== 200) {
 				return false;
 			}
+
+			// set store
+			useUserStore.setState({ isAuthenticated: res.data.type });
+			useUserStore.setState({ userId: res.data.userId });
+			useUserStore.setState({ email: res.data.email });
+
 			console.log(res.data);
 			return res.data.type;
 		} catch (err) {
