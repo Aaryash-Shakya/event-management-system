@@ -1,6 +1,5 @@
+import { QueryInterface } from "sequelize";
 import { EventModelType } from "../src/types/event";
-
-/** @type {import('sequelize-cli').Migration} */
 
 const events: EventModelType[] = [
 	{
@@ -156,11 +155,11 @@ const events: EventModelType[] = [
 ];
 
 module.exports = {
-	async up(queryInterface, Sequelize) {
+	async up(queryInterface: QueryInterface, Sequelize) {
 		await queryInterface.bulkInsert("Events", events, {});
 	},
 
-	async down(queryInterface, Sequelize) {
+	async down(queryInterface: QueryInterface, Sequelize) {
 		return queryInterface.bulkDelete("Events", null, {});
 	},
 };
