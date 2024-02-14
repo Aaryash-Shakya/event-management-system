@@ -53,7 +53,7 @@ class UserEventRoute {
 	putRoutes() {}
 	deleteRoutes() {
 		this.router.delete(
-			"leave-event",
+			"/leave-event",
 			GlobalMiddleware.authorization,
 			UserEventValidator.leaveEventValidator(),
 			GlobalMiddleware.checkValidationError,

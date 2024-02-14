@@ -5,6 +5,8 @@ import { UserRepository } from "../repository/userRepository";
 import { Service } from "../services/utils";
 import { Request, Response, NextFunction } from "express";
 import { SuccessResponse } from "../types/response";
+import { CustomJwtPayload } from "../types/jwt";
+import { db } from "../models";
 
 export class UserEventController {
 	static async getAllData(req: Request, res: Response, next: NextFunction) {
@@ -62,11 +64,13 @@ export class UserEventController {
 	}
 
 	static async joinEvent(req: Request, res: Response, next: NextFunction) {
-		const { user_id, event_id, decoded } = req.body;
+		const { user_id, event_id } = req.body;
+		const decoded: CustomJwtPayload = req.body.decoded;
 		try {
 			const testUser = await UserRepository.findOne({ id: user_id });
 			// if jwt doesn't belong to user_id
-			if (decoded.id !== user_id) {
+			console.log(decoded.userId, user_id);
+			if (decoded.userId != user_id) {
 				Service.createErrorAndThrow("Unauthorized user", 401);
 			}
 			// if user not found
@@ -83,8 +87,8 @@ export class UserEventController {
 				Service.createErrorAndThrow("Event not found", 404);
 			}
 			// if event isn't upcoming, don't allow user to join
-			else if (testEvent.event_status !== "upcoming") {
-				Service.createErrorAndThrow(`Cannot join ${testEvent.event_status} event`, 400);
+			else if (testEvent.status !== "Upcoming") {
+				Service.createErrorAndThrow(`Cannot join ${testEvent.status} event`, 400);
 			}
 			// if event is full
 			else if (testEvent.current_participants >= testEvent.maximum_participants) {
@@ -115,11 +119,12 @@ export class UserEventController {
 	}
 
 	static async leaveEvent(req: Request, res: Response, next: NextFunction) {
-		const { user_id, event_id, decoded } = req.body;
+		const { user_id, event_id } = req.body;
+		const decoded: CustomJwtPayload = req.body.decoded;
 		try {
 			const testUser = await UserRepository.findOne({ id: user_id });
 			// if jwt doesn't belong to user_id
-			if (decoded.id !== user_id) {
+			if (decoded.userId != user_id) {
 				Service.createErrorAndThrow("Unauthorized user", 401);
 			}
 			// if user not found

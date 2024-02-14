@@ -9,7 +9,7 @@ module.exports = {
 				{
 					title: "Shivapuri Hiking",
 					description: "This is a sample event to hike Shivapuri",
-					status: "Upcomming",
+					status: "Upcoming",
 					current_participants: 10,
 					maximum_participants: 20,
 					gathering_point: "Balaju Bus Park",

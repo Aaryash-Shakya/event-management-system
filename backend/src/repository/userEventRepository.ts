@@ -27,7 +27,8 @@ export class UserEventRepository {
 	}
 
 	static async update(key: object, newData: object) {
-		let userEvent = await db.userEventModel.update(
+		console.log('update called');
+		let userEvent = await db.UserEventModel.update(
 			{ ...newData },
 			{
 				where: { ...key },
