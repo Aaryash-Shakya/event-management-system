@@ -1,4 +1,5 @@
 import { Model } from "sequelize";
+
 module.exports = (sequelize, DataTypes) => {
 	class TokenModel extends Model {
 		/**
@@ -20,15 +21,15 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			purpose: {
 				type: DataTypes.STRING,
-				NotNull: true,
+				allowNull: false,
 			},
 			value: {
 				type: DataTypes.STRING,
-				NotNull: true,
+				allowNull: false,
 			},
 			expires_in: {
 				type: DataTypes.DATE,
-				NotNull: true,
+				allowNull: false,
 			},
 			userId: {
 				type: DataTypes.INTEGER,
