@@ -1,4 +1,5 @@
 export type EventModelType = {
+	event_id?: number;
 	title: string;
 	description: string;
 	status: "upcoming" | "completed" | "postponed" | "draft" | "cancelled";

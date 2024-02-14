@@ -3,6 +3,7 @@ import { EventModelType } from "../src/types/event";
 
 const events: EventModelType[] = [
 	{
+		event_id: 1,
 		title: "Annapurna Base Camp Trek",
 		description:
 			"Embark on a breathtaking journey to the heart of the Annapurna region, surrounded by towering peaks and pristine landscapes.",
@@ -18,6 +19,7 @@ const events: EventModelType[] = [
 		updatedAt: new Date(),
 	},
 	{
+		event_id: 2,
 		title: "Langtang Valley Exploration",
 		description:
 			"Discover the unique culture and breathtaking scenery of Langtang Valley in this immersive trekking experience.",
@@ -33,6 +35,7 @@ const events: EventModelType[] = [
 		updatedAt: new Date(),
 	},
 	{
+		event_id: 3,
 		title: "Gosaikunda Lake Adventure",
 		description:
 			"Embark on a mystical journey to the sacred Gosaikunda Lake, surrounded by pristine alpine landscapes and towering peaks.",
@@ -48,6 +51,7 @@ const events: EventModelType[] = [
 		updatedAt: new Date(),
 	},
 	{
+		event_id: 4,
 		title: "Everest Base Camp Trek",
 		description:
 			"Challenge yourself with the iconic trek to Everest Base Camp, experiencing the grandeur of the world's highest peak.",
@@ -63,6 +67,7 @@ const events: EventModelType[] = [
 		updatedAt: new Date(),
 	},
 	{
+		event_id: 5,
 		title: "Mardi Himal Trek",
 		description:
 			"Experience the serenity of Mardi Himal in this off-the-beaten-path trek, offering panoramic views of the Annapurna and Machapuchare ranges.",
@@ -78,6 +83,7 @@ const events: EventModelType[] = [
 		updatedAt: new Date(),
 	},
 	{
+		event_id: 6,
 		title: "Manaslu Circuit Expedition",
 		description:
 			"Embark on a challenging circuit around the majestic Manaslu, surrounded by diverse landscapes and rich cultural heritage.",
@@ -93,6 +99,7 @@ const events: EventModelType[] = [
 		updatedAt: new Date(),
 	},
 	{
+		event_id: 7,
 		title: "Upper Mustang Exploration",
 		description:
 			"Uncover the hidden treasures of Upper Mustang, with its ancient caves, monasteries, and unique Tibetan-influenced culture.",
@@ -108,6 +115,7 @@ const events: EventModelType[] = [
 		updatedAt: new Date(),
 	},
 	{
+		event_id: 8,
 		title: "Dhaulagiri Base Camp Trek",
 		description:
 			"Embark on an adventurous journey to the base camp of Dhaulagiri, the seventh-highest mountain in the world.",
@@ -123,6 +131,7 @@ const events: EventModelType[] = [
 		updatedAt: new Date(),
 	},
 	{
+		event_id: 9,
 		title: "Ghorepani Poon Hill Trek",
 		description:
 			"Enjoy a relatively short trek to Poon Hill, offering stunning sunrise views of the Annapurna and Dhaulagiri mountain ranges.",
@@ -138,6 +147,7 @@ const events: EventModelType[] = [
 		updatedAt: new Date(),
 	},
 	{
+		event_id: 10,
 		title: "Kanchenjunga Base Camp Expedition",
 		description:
 			"Embark on a remote and challenging trek to the base camp of Kanchenjunga, the third-highest mountain in the world.",
