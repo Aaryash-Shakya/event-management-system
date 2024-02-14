@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.FLOAT,
 				allowNull: false,
 			},
+			mode: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
 		},
 		{
 			timestamps: true,

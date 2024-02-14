@@ -1,7 +1,7 @@
-import { QueryInterface } from "sequelize";
-import { PaymentModelType } from "../src/types/payment";
+// import { QueryInterface } from "sequelize";
+// import { PaymentModelType } from "../src/types/payment";
 
-const payments: PaymentModelType[] = [
+const payments = [
 	{
 		payment_id: 1,
 		amount: 100,
@@ -40,11 +40,11 @@ const payments: PaymentModelType[] = [
 ];
 
 module.exports = {
-	async up(queryInterface: QueryInterface, Sequelize) {
+	async up(queryInterface, Sequelize) {
 		await queryInterface.bulkInsert("Payments", payments, {});
 	},
 
-	async down(queryInterface: QueryInterface, Sequelize) {
+	async down(queryInterface, Sequelize) {
 		await queryInterface.bulkDelete("Payments", null, {});
 	},
 };

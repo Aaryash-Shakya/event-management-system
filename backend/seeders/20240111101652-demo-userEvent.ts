@@ -1,6 +1,7 @@
-import { UserEventModelType } from "../src/types/userEvent";
+// import { QueryInterface } from "sequelize";
+// import { UserEventModelType } from "../src/types/userEvent";
 
-const userEvents: UserEventModelType[] = [
+const userEvents = [
 	{
 		user_id: 1,
 		event_id: 1,

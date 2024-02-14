@@ -1,7 +1,7 @@
-import { QueryInterface } from "sequelize";
-import { EventModelType } from "../src/types/event";
+// import { QueryInterface } from "sequelize";
+// import { EventModelType } from "../src/types/event";
 
-const events: EventModelType[] = [
+const events = [
 	{
 		event_id: 1,
 		title: "Annapurna Base Camp Trek",
@@ -165,11 +165,11 @@ const events: EventModelType[] = [
 ];
 
 module.exports = {
-	async up(queryInterface: QueryInterface, Sequelize) {
+	async up(queryInterface, Sequelize) {
 		await queryInterface.bulkInsert("Events", events, {});
 	},
 
-	async down(queryInterface: QueryInterface, Sequelize) {
+	async down(queryInterface, Sequelize) {
 		return queryInterface.bulkDelete("Events", null, {});
 	},
 };

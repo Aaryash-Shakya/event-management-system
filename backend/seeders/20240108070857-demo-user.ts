@@ -1,7 +1,9 @@
-import { QueryInterface } from "sequelize";
-import { UserModelType } from "../src/types/user";
+// import { UserModelType } from '../src/types/user';
+// import { QueryInterface } from 'sequelize';
 
-const users: UserModelType[] = [
+// const { UserModelType } = require("../src/types/user");
+
+const users = [
 	{
 		name: "Aaryash Shakya",
 		date_of_birth: "2003-02-08",
@@ -11,10 +13,7 @@ const users: UserModelType[] = [
 		password: "$2b$10$vLmMFY26MOcP11vk5sArt.vMhbkhCeemZHZCiMtVwYar0XWvEHVuC",
 		type: "admin",
 		email_verified: true,
-		social: {
-			facebook: 'https://www.facebook.com/profile.php?id=100010462128049',
-			instagram: 'https://www.instagram.com/aaryashshakya_',
-		},
+		social: null,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	},
@@ -99,11 +98,11 @@ const users: UserModelType[] = [
 ];
 
 module.exports = {
-	async up(queryInterface:QueryInterface, Sequelize) {
+	async up(queryInterface, Sequelize) {
 		await queryInterface.bulkInsert("Users", users, {});
 	},
 
-	async down(queryInterface: QueryInterface, Sequelize) {
+	async down(queryInterface, Sequelize) {
 		return queryInterface.bulkDelete("Users", null, {});
 	},
 };
