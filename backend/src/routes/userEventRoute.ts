@@ -23,14 +23,14 @@ class UserEventRoute {
 			UserEventController.getAllData
 		);
 
-		this.router.get(
+		this.router.post(
 			"/get-participants-by-event",
 			UserEventValidator.getParticipantsByEventValidator(),
 			GlobalMiddleware.checkValidationError,
 			UserEventController.getParticipantsByEvent
 		);
 
-		this.router.get(
+		this.router.post(
 			"/get-events-by-participant",
 			GlobalMiddleware.authorization,
 			UserEventValidator.getEventsByParticipantValidator(),
