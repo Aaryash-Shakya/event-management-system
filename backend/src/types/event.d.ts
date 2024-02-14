@@ -1,0 +1,14 @@
+export type EventModelType = {
+	title: string;
+	description: string;
+	status: "upcoming" | "completed" | "postponed" | "draft" | "cancelled";
+	current_participants: number;
+	maximum_participants: number;
+	gathering_point: string;
+	destination: string;
+	start_date: Date;
+	duration: string;
+	difficulty: "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme";
+	createdAt: Date;
+	updatedAt: Date;
+};
