@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import serverUrl from "../config";
 import { useUserStore } from "../store/store";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import UserDashboard from "../components/UserDashboard";
 
 const Profile: React.FC = () => {
-	const navigate = useNavigate();
 
 	// get email from userStore
 	const email = useUserStore.getState().email;
@@ -32,7 +30,6 @@ const Profile: React.FC = () => {
 				}
 				setUser(res.data.profile);
 			} catch (err) {
-				// navigate("/");
 				console.log(err);
 			}
 		};
