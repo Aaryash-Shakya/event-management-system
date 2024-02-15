@@ -377,8 +377,8 @@ export class UserController {
 	}
 
 	static async getProfile(req: Request, res: Response, next: NextFunction) {
-		const decoded = req.body.decoded;
-		const email = req.params.email;
+		const decoded:CustomJwtPayload = req.body.decoded;
+		const user_id = parseInt(req.params.user_id);
 		try {
 			// test conditions
 			// check if jwt exists
@@ -386,13 +386,8 @@ export class UserController {
 				Service.createErrorAndThrow("JsonWebToken not found", 404); // jwt not found
 			}
 
-			// check if jwt is correct
-			else if (decoded.email !== email) {
-				Service.createErrorAndThrow("Invalid JsonWebToken, email doesn't match", 401); // unauthorized
-			}
-
 			const testUser = await UserRepository.findOne({
-				email: email,
+				id: user_id,
 			});
 
 			// check if email exists
@@ -405,14 +400,19 @@ export class UserController {
 				Service.createErrorAndThrow("Email not verified", 401); // unauthorized
 			}
 
-			// only send necessary data
-			const user = {
+			// only send necessary data to visitor
+			let user = {
+				id: testUser.id,
 				name: testUser.name,
+				date_of_birth: testUser.date_of_birth,
+				gender: testUser.gender,
 				email: testUser.email,
-				phone: testUser.phone,
-				type: testUser.type,
 				createdAt: testUser.createdAt,
 			};
+
+			if(decoded.type === "admin" || decoded.userId == user_id) {
+				user = testUser;
+			}
 
 			res.status(200).json({
 				status: 200,

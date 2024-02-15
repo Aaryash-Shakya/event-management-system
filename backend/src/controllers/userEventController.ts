@@ -41,19 +41,19 @@ export class UserEventController {
 
 	static async getEventsByParticipant(req: Request, res: Response, next: NextFunction) {
 		const { user_id, status } = req.body;
-		const decoded = req.body.decoded;
+		const decoded: CustomJwtPayload = req.body.decoded;
 		const queryKey: any = {
 			user_id: user_id,
 		};
 		if (status) queryKey.status = status;
 
 		try {
-			if (decoded.userId != user_id && decoded.role !== "admin") {
+			if (decoded.userId != user_id && decoded.type !== "admin") {
 				Service.createErrorAndThrow("Unauthorized user", 401);
 			}
 
 			const data = await UserEventRepository.findAllAndJoinEvents(queryKey);
-			
+
 			res.status(200).json({
 				status: 200,
 				message: "Events retrieved by Participant",
@@ -71,7 +71,7 @@ export class UserEventController {
 			const testUser = await UserRepository.findOne({ id: user_id });
 			// if jwt doesn't belong to user_id
 			console.log(decoded.userId, user_id);
-			if (decoded.userId != user_id && decoded.role !== "admin") {
+			if (decoded.userId != user_id && decoded.type !== "admin") {
 				Service.createErrorAndThrow("Unauthorized user", 401);
 			}
 			// if user not found
@@ -125,7 +125,7 @@ export class UserEventController {
 		try {
 			const testUser = await UserRepository.findOne({ id: user_id });
 			// if jwt doesn't belong to user_id
-			if (decoded.userId != user_id && decoded.role !== "admin") {
+			if (decoded.userId != user_id && decoded.type !== "admin") {
 				Service.createErrorAndThrow("Unauthorized user", 401);
 			}
 			// if user not found

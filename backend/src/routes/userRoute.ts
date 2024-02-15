@@ -29,7 +29,7 @@ class UserRoute {
 		);
 
 		this.router.get(
-			"/get-profile/:email",
+			"/get-profile/:user_id",
 			GlobalMiddleware.authorization,
 			UserValidator.getProfileValidator(),
 			GlobalMiddleware.checkValidationError,

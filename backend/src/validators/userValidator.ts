@@ -49,7 +49,7 @@ export class UserValidator {
 	}
 
 	static getProfileValidator() {
-		return [param("email", "Email is required").isEmail()];
+		return [param("user_id", "User ID is required").isString()];
 	}
 
 	static updateProfileValidator() {
