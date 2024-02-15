@@ -14,6 +14,21 @@ type UserEvent = {
 	status: string;
 	createdAt: string;
 	updatedAt: string;
+	EventModel: {
+		event_id?: number;
+		title: string;
+		description: string;
+		status: "upcoming" | "completed" | "postponed" | "draft" | "cancelled";
+		current_participants: number;
+		maximum_participants: number;
+		gathering_point: string;
+		destination: string;
+		start_date: Date;
+		duration: string;
+		difficulty: "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme";
+		createdAt: Date;
+		updatedAt: Date;
+	};
 };
 
 const UserHistory: React.FC = () => {
@@ -54,28 +69,39 @@ const UserHistory: React.FC = () => {
 	};
 
 	const mapEventRows = (userEvents: UserEvent[]) => {
-		return userEvents.map(event => {
+		return userEvents.map((event, key) => {
 			return (
 				<tr className="hover:backdrop-brightness-95" key={event.id}>
 					<td>
-						<div className="font-bold">{event.event_id}</div>
+						<div className="font-bold">{key + 1}</div>
 					</td>
 					<td>
-						Zemlak, Daniel and Leannon
+						<div className="font-bold">{event.EventModel.title}</div>
+					</td>
+					<td>
+						{event.EventModel.destination}
 						<br />
-						<span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
+						<span className="badge badge-ghost badge-sm">
+							{new Date(event.EventModel.start_date).toLocaleDateString("en-US", {
+								month: "short",
+								day: "numeric",
+								hour: "numeric",
+								minute: "numeric",
+								hour12: true,
+							})}
+						</span>
 					</td>
 					<td>
 						<div className="flex items-center gap-3">
 							<div>
 								<div className="font-bold">{event.status}</div>
-								<div className="text-sm opacity-50">cash</div>
+								<div className="text-sm opacity-50">{event.status == "left" ? "refunding":"cash"}</div>
 							</div>
 						</div>
 					</td>
 					<td>
 						<button
-							className="btn btn-info btn-sm me-4"
+							className="btn btn-primary btn-sm me-4"
 							onClick={() => {
 								navigate(`/event-details/${event.event_id}`);
 							}}
@@ -86,7 +112,7 @@ const UserHistory: React.FC = () => {
 							className={`btn btn-error btn-sm ${event.status === "left" ? "btn-disabled" : ""}`}
 							onClick={() => handleLeave(event.event_id, event.user_id)}
 						>
-							leave
+							{event.status === "left" ? "left" : "leave"}
 						</button>
 					</td>
 				</tr>
@@ -157,41 +183,18 @@ const UserHistory: React.FC = () => {
 				<div className="overflow-x-auto">
 					{showSuccessMessage()}
 					{showErrorMessage()}
-					<table className="table table-zebra">
+					<table className="table">
 						{/* head */}
-						<thead className="text-lg">
+						<thead className="text-lg text-base-content">
 							<tr>
+								<th>S.N.</th>
 								<th>Event Name</th>
 								<th>Destination</th>
 								<th>Status</th>
 								<th>Actions</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr className="hover:backdrop-brightness-95">
-								<td>
-									<div className="font-bold">Hart Hagerty</div>
-								</td>
-								<td>
-									Zemlak, Daniel and Leannon
-									<br />
-									<span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
-								</td>
-								<td>
-									<div className="flex items-center gap-3">
-										<div>
-											<div className="font-bold">Paid</div>
-											<div className="text-sm opacity-50">cash</div>
-										</div>
-									</div>
-								</td>
-								<td>
-									<button className="btn btn-info btn-sm me-4">details</button>
-									<button className="btn btn-error btn-sm">cancel</button>
-								</td>
-							</tr>
-							{mapEventRows(userEvents)}
-						</tbody>
+						<tbody>{mapEventRows(userEvents)}</tbody>
 					</table>
 				</div>
 			</div>

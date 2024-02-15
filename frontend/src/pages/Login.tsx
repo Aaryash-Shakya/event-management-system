@@ -5,6 +5,7 @@ import { login } from "../auth/authIndex.js";
 import { FaCheckCircle } from "react-icons/fa";
 import { GoXCircleFill } from "react-icons/go";
 import { SuccessOrError } from "../types/response.js";
+import { useUserStore } from "../store/store.js";
 
 const Login: React.FC = () => {
 	const [email, setEmail] = useState<string>("");
@@ -51,8 +52,9 @@ const Login: React.FC = () => {
 					setSuccessMessage(data.message);
 					localStorage.setItem("jwt", data.jwt);
 					localStorage.setItem("jwtPurpose", "login");
+
 					setTimeout(() => {
-						navigate("/");
+						navigate("/profile");
 					}, 1000);
 				}
 			});

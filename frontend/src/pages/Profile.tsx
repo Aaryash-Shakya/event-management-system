@@ -6,12 +6,14 @@ import UserDashboard from "../components/UserDashboard";
 
 const Profile: React.FC = () => {
 
-	// get email from userStore
-	const email = useUserStore.getState().email;
+	// get userID from userStore
+	const userId = useUserStore.getState().userId;
 
 	const [user, setUser] = useState({
 		name: "",
 		email: "",
+		gender: "",
+		date_of_birth: "",
 		phone: "",
 		type: "",
 		createdAt: "",
@@ -19,7 +21,7 @@ const Profile: React.FC = () => {
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
-				const res = await axios.get(`${serverUrl}/api/user/get-profile/${email}`, {
+				const res = await axios.get(`${serverUrl}/api/user/get-profile/${userId}`, {
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
 						"Content-Type": "application/json",
@@ -50,7 +52,8 @@ const Profile: React.FC = () => {
 						<div className="right w-full md:w-3/5 flex flex-col">
 							<h1 className="text-3xl text-base-content">{user.name}</h1>
 							<p className="text-gray-700">{user.email}</p>
-							<p className="text-gray-700">{user.phone}</p>
+							<p className="text-gray-700">{user.phone && user.phone}</p>
+							<p className="text-gray-700">{user.gender && user.gender}</p>
 						</div>
 					</div>
 					<hr />
