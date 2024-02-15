@@ -22,6 +22,16 @@ class UserEventRoute {
 			GlobalMiddleware.checkTypeAdmin,
 			UserEventController.getAllData
 		);
+	}
+
+	postRoutes() {
+		this.router.post(
+			"/join-event",
+			GlobalMiddleware.authorization,
+			UserEventValidator.joinEventValidator(),
+			GlobalMiddleware.checkValidationError,
+			UserEventController.joinEvent
+		);
 
 		this.router.post(
 			"/get-participants-by-event",
@@ -36,16 +46,6 @@ class UserEventRoute {
 			UserEventValidator.getEventsByParticipantValidator(),
 			GlobalMiddleware.checkValidationError,
 			UserEventController.getEventsByParticipant
-		);
-	}
-
-	postRoutes() {
-		this.router.post(
-			"/join-event",
-			GlobalMiddleware.authorization,
-			UserEventValidator.joinEventValidator(),
-			GlobalMiddleware.checkValidationError,
-			UserEventController.joinEvent
 		);
 	}
 

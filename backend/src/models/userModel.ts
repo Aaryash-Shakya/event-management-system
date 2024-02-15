@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			name: {
 				type: DataTypes.STRING,
-				notNull: true,
+				allowNull: false,
 			},
 			date_of_birth: {
 				type: DataTypes.DATE,
@@ -46,6 +46,11 @@ module.exports = (sequelize, DataTypes) => {
 			email_verified: {
 				type: DataTypes.BOOLEAN,
 				defaultValue: false,
+			},
+			social: {
+				type: DataTypes.JSON,
+				allowNull: true,
+				defaultValue: null,
 			},
 		},
 		{

@@ -27,7 +27,7 @@ export class UserEventRepository {
 	}
 
 	static async update(key: object, newData: object) {
-		console.log('update called');
+		console.log("update called");
 		let userEvent = await db.UserEventModel.update(
 			{ ...newData },
 			{
@@ -39,5 +39,20 @@ export class UserEventRepository {
 		if (userEvent[1]) {
 			return userEvent[1].dataValues;
 		}
+	}
+
+	static async findAllAndJoinEvents(key: object) {
+		return await db.UserEventModel.findAll({
+			where: { ...key },
+			include: db.EventModel,
+		});
+	}
+	
+	// ! ask how to filter the data being queried due to include
+	static async findAllAndJoinUsers(key: object) {
+		return await db.UserEventModel.findAll({
+			where: { ...key },
+			include: db.UserModel,
+		});
 	}
 }

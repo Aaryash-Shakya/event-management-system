@@ -38,6 +38,10 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 				defaultValue: false,
 			},
+			social: {
+				type: Sequelize.JSON,
+				defaultValue: null,
+			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE,

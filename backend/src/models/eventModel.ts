@@ -1,5 +1,4 @@
-"use strict";
-const { Model } = require("sequelize");
+import { Model } from "sequelize";
 module.exports = (sequelize, DataTypes) => {
 	class EventModel extends Model {
 		/**
@@ -21,44 +20,44 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			title: {
 				type: DataTypes.STRING,
-				NotNull: true,
+				allowNull: false,
 			},
 			description: {
 				type: DataTypes.STRING,
-				NotNull: true,
+				allowNull: false,
 			},
 			status: {
 				type: DataTypes.STRING,
-				NotNull: true,
+				allowNull: false,
 			},
 			current_participants: {
 				type: DataTypes.INTEGER,
-				NotNull: true,
+				allowNull: false,
 				defaultValue: 0,
 			},
 			maximum_participants: {
 				type: DataTypes.INTEGER,
-				NotNull: true,
+				allowNull: false,
 			},
 			gathering_point: {
 				type: DataTypes.STRING,
-				NotNull: true,
+				allowNull: false,
 			},
 			destination: {
 				type: DataTypes.STRING,
-				NotNull: true,
+				allowNull: false,
 			},
 			start_date: {
 				type: DataTypes.DATE,
-				NotNull: true,
+				allowNull: false,
 			},
 			duration: {
 				type: DataTypes.STRING,
-				NotNull: true,
+				allowNull: false,
 			},
 			difficulty: {
 				type: DataTypes.STRING,
-				NotNull: true,
+				allowNull: false,
 			},
 		},
 		{

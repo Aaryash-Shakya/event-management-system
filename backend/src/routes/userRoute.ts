@@ -17,10 +17,6 @@ class UserRoute {
 	}
 
 	getRoutes() {
-		this.router.get("/test-route", (req, res, next) => {
-			res.send(UserRepository.findOne({ email: "rs9995@gmail.com" }));
-		});
-
 		this.router.get(
 			"/get-users",
 			GlobalMiddleware.authorization,
@@ -29,7 +25,7 @@ class UserRoute {
 		);
 
 		this.router.get(
-			"/get-profile/:email",
+			"/get-profile/:user_id",
 			GlobalMiddleware.authorization,
 			UserValidator.getProfileValidator(),
 			GlobalMiddleware.checkValidationError,

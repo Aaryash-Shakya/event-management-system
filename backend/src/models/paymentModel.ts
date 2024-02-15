@@ -1,5 +1,5 @@
-"use strict";
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
 	class PaymentModel extends Model {
 		/**
@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			amount: {
 				type: DataTypes.FLOAT,
+				allowNull: false,
+			},
+			mode: {
+				type: DataTypes.STRING,
 				allowNull: false,
 			},
 		},
