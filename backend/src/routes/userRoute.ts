@@ -35,6 +35,12 @@ class UserRoute {
 			GlobalMiddleware.checkValidationError,
 			UserController.getProfile
 		);
+
+		this.router.get(
+			"/verify-jwt",
+			GlobalMiddleware.authorization,
+			UserController.verifyJwt
+		);
 	}
 
 	postRoutes() {

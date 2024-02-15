@@ -23,14 +23,14 @@ class UserEventRoute {
 			UserEventController.getAllData
 		);
 
-		this.router.get(
+		this.router.post(
 			"/get-participants-by-event",
 			UserEventValidator.getParticipantsByEventValidator(),
 			GlobalMiddleware.checkValidationError,
 			UserEventController.getParticipantsByEvent
 		);
 
-		this.router.get(
+		this.router.post(
 			"/get-events-by-participant",
 			GlobalMiddleware.authorization,
 			UserEventValidator.getEventsByParticipantValidator(),
@@ -53,7 +53,7 @@ class UserEventRoute {
 	putRoutes() {}
 	deleteRoutes() {
 		this.router.delete(
-			"leave-event",
+			"/leave-event",
 			GlobalMiddleware.authorization,
 			UserEventValidator.leaveEventValidator(),
 			GlobalMiddleware.checkValidationError,

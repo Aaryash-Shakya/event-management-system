@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import { Jwt } from "../services/jwt";
 import { Service } from "../services/utils";
+import { CustomJwtPayload } from "../types/jwt";
 
 export class GlobalMiddleware {
 	static checkValidationError(req, res, next) {
@@ -20,7 +21,7 @@ export class GlobalMiddleware {
 		// alternative
 		// const token = header_auth.split(' ')[1]
 		try {
-			const decoded = await Jwt.verifyJwt(token);
+			const decoded:CustomJwtPayload = await Jwt.verifyJwt(token);
 			req.body.decoded = decoded;
 			next();
 		} catch (err) {
