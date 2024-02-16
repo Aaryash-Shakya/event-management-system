@@ -8,7 +8,7 @@ export const useBearStore = create<BearStore>(set => ({
 }));
 
 export const useUserStore = create<UserStore>(set => ({
-	isAuthenticated: null,
+	isAuthenticated: false,
 	userId: null,
 	email: null,
 	username: null,

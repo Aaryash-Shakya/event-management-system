@@ -3,6 +3,7 @@ import serverUrl from "../config";
 import { useUserStore } from "../store/store";
 import axios from "axios";
 import UserDashboard from "../components/UserDashboard";
+import { useNavigate } from "react-router-dom";
 
 const Profile: React.FC = () => {
 
@@ -18,9 +19,15 @@ const Profile: React.FC = () => {
 		type: "",
 		createdAt: "",
 	});
+
+	const navigate = useNavigate();
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
+				if(userId === null){
+					navigate("")
+					console.log("user not found");
+				}
 				const res = await axios.get(`${serverUrl}/api/user/get-profile/${userId}`, {
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -44,7 +51,7 @@ const Profile: React.FC = () => {
 			<div className="bg-base-200 py-5">
 				<div className="container bg-base-100 max-w-4xl min-h-screen mx-auto rounded-lg overflow-hidden shadow-md">
 					<div className="profile-header flex justify-center items-center mx-4 my-10">
-						<div className="left md:w-1/5 w-full">
+						<div className="left md:w-1/5 w-full flex items-center justify-center">
 							<div className="w-24 mask mask-squircle">
 								<img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
 							</div>

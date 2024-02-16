@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { isAuthenticated } from "../auth/authIndex";
+import { useUserStore } from "../store/store";
 
 const Navbar: React.FC = () => {
 	return (
@@ -85,36 +87,29 @@ const Navbar: React.FC = () => {
 						</ul>
 					</div>
 					<div className="navbar-end">
-						<div className="dropdown dropdown-end">
-							<div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+						{useUserStore.getState().isAuthenticated === "user" && (
+							<Link to="/profile" role="button" className="btn btn-ghost btn-circle avatar">
 								<div className="w-10 rounded-full">
 									<img
 										alt="Tailwind CSS Navbar component"
 										src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
 									/>
 								</div>
-							</div>
-							<ul
-								tabIndex={0}
-								className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-							>
-								<li>
-									<Link to="/login" className="justify-between">
-										Login
-									</Link>
-								</li>
-								<li>
-									<Link to="/signup" className="justify-between">
-										Sign Up
-									</Link>
-								</li>
-								<li>
-									<Link to="/profile" className="justify-between">
-										Profile
-									</Link>
-								</li>
-							</ul>
-						</div>
+							</Link>
+						)}
+						{useUserStore.getState().isAuthenticated === false && (
+							<>
+								<Link
+									to="/login"
+									className="btn btn-primary h-fit mx-4 hover:bg-transparent hover:text-primary"
+								>
+									Login
+								</Link>
+								<Link to="/signup" className="btn btn-outline btn-primary">
+									Sign Up
+								</Link>
+							</>
+						)}
 					</div>
 				</div>
 			</nav>
