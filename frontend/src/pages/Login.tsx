@@ -5,7 +5,6 @@ import { login } from "../auth/authIndex.js";
 import { FaCheckCircle } from "react-icons/fa";
 import { GoXCircleFill } from "react-icons/go";
 import { SuccessOrError } from "../types/response.js";
-import { useUserStore } from "../store/store.js";
 
 const Login: React.FC = () => {
 	const [email, setEmail] = useState<string>("");

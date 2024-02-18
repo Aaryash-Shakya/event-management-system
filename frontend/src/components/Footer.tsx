@@ -4,7 +4,7 @@ const Footer = () => {
 	return (
 		<>
 			{/* mountain svg from https://alistairshepherd.uk/writing/svg-generative-ridges/ */}
-			<svg viewBox="0 0 1000 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+			<svg viewBox="0 0 1000 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="bg-base-100">
 				<path
 					fill="currentColor"
 					className="text-base-300"

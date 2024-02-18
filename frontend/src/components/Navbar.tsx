@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { isAuthenticated } from "../auth/authIndex";
 import { useUserStore } from "../store/store";
 
 const Navbar: React.FC = () => {
 	return (
 		<>
 			<nav>
-				<div className="navbar bg-base-100 z-50 fixed top-0 w-full">
+				<div className="navbar bg-base-100 z-50 fixed top-0 w-full shadow-sm">
 					<div className="navbar-start">
 						<div className="dropdown">
 							<div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
