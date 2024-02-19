@@ -54,10 +54,11 @@ export class UserValidator {
 
 	static updateProfileValidator() {
 		return [
+			body("name", "Name is required").isString(),
 			body("email", "Email is required").isEmail(),
-			body("name").optional().isString(),
-			body("phone").optional().isString(),
-			body("type").optional().isString(),
+			body("gender", "Gender is required").isString(),
+			body("phone", "Phone is required").isString(),
+			body("type", "Type is required").isString(),
 		];
 	}
 

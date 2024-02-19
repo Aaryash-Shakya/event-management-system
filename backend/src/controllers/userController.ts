@@ -377,7 +377,7 @@ export class UserController {
 	}
 
 	static async getProfile(req: Request, res: Response, next: NextFunction) {
-		const decoded:CustomJwtPayload = req.body.decoded;
+		const decoded: CustomJwtPayload = req.body.decoded;
 		const user_id = parseInt(req.params.user_id);
 		try {
 			// test conditions
@@ -410,7 +410,7 @@ export class UserController {
 				createdAt: testUser.createdAt,
 			};
 
-			if(decoded.type === "admin" || decoded.userId == user_id) {
+			if (decoded.type === "admin" || decoded.userId == user_id) {
 				user = testUser;
 			}
 
@@ -425,8 +425,8 @@ export class UserController {
 	}
 
 	static async updateProfile(req: Request, res: Response, next: NextFunction) {
-		const { email, name, phone, type } = req.body;
-		const decoded = req.body.decoded;
+		const { email, name, gender, phone, type } = req.body;
+		const decoded: CustomJwtPayload = req.body.decoded;
 		try {
 			// test conditions
 			// check if jwt exists
@@ -434,19 +434,9 @@ export class UserController {
 				Service.createErrorAndThrow("JsonWebToken not found", 404); // jwt not found
 			}
 
-			// check if jwt is correct
-			else if (decoded.email !== email) {
-				Service.createErrorAndThrow("Invalid JsonWebToken", 401); // unauthorized
-			}
-
 			const testUser = await UserRepository.findOne({
-				email: email,
+				id: decoded.userId,
 			});
-
-			// check if email exists
-			if (!testUser) {
-				Service.createErrorAndThrow("Email not registered", 404); // email not found
-			}
 
 			// check is email is verified
 			if (!testUser.email_verified) {
@@ -454,7 +444,14 @@ export class UserController {
 			}
 
 			// update
-			let newData: { name?: string; phone?: string; type?: string } = {};
+			let newData: {
+				name?: string;
+				phone?: string;
+				type?: string;
+				gender?: string;
+				email?: string;
+				email_verified?: boolean;
+			} = {};
 			if (name !== undefined) {
 				newData.name = name;
 			}
@@ -464,7 +461,14 @@ export class UserController {
 			if (type !== undefined) {
 				newData.type = type;
 			}
-			await UserRepository.update({ email: email }, newData);
+			if (gender !== undefined) {
+				newData.gender = gender;
+			}
+			if (email !== undefined) {
+				newData.email = email;
+				newData.email_verified = false;
+			}
+			await UserRepository.update({ id: decoded.userId }, newData);
 			res.status(200).json({
 				status: 200,
 				message: "Profile update successfully",

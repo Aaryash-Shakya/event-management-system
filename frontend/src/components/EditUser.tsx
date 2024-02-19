@@ -4,6 +4,7 @@ import serverUrl from "../config";
 import { useUserStore } from "../store/store";
 import { GoXCircleFill } from "react-icons/go";
 import { FaCheckCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const EditUser = () => {
 	const userId = useUserStore.getState().userId;
@@ -29,6 +30,7 @@ const EditUser = () => {
 	const [gender, setGender] = useState<string>("");
 	const [type, setType] = useState<string>("");
 	const [emailInfo, setEmailInfo] = useState<string>("");
+	const navigate = useNavigate();
 
 	const fetchInitialData = async () => {
 		const res = await axios.get(`${serverUrl}/api/user/get-profile/${userId}`, {
@@ -56,7 +58,6 @@ const EditUser = () => {
 	};
 
 	const handleUpdate = () => {
-		console.log(gender);
 		const updatedData = {
 			name: name,
 			email: email,
@@ -72,9 +73,13 @@ const EditUser = () => {
 			})
 			.then(() => {
 				setSuccessMessage("Profile updated successfully");
-				// setTimeout(() => {
-				// 	window.location.reload();
-				// }, 200);
+				setTimeout(() => {
+					if (email !== initialData.email) {
+						navigate("/verify-email");
+					} else {
+						window.location.reload();
+					}
+				}, 1000);
 			})
 			.catch(err => {
 				setErrorMessage("Error updating profile");
