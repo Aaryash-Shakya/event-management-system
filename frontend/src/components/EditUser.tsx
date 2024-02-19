@@ -72,9 +72,12 @@ const EditUser = () => {
 				},
 			})
 			.then(() => {
+				setErrorMessage("");
 				setSuccessMessage("Profile updated successfully");
 				setTimeout(() => {
 					if (email !== initialData.email) {
+						useUserStore.setState({ email: email });
+						localStorage.setItem("email", email);
 						navigate("/verify-email");
 					} else {
 						window.location.reload();

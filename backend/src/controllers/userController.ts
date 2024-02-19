@@ -174,30 +174,47 @@ export class UserController {
 			const newVerificationTime = Service.generateVerificationTime(new Date(), 5);
 
 			// update token
-			const updatedToken = await TokenRepository.update(
-				{
-					userId: testUser.id,
+			const testToken = await TokenRepository.findOne({
+				userId: testUser.id,
+				purpose: "verify-email",
+			});
+			let token: any;
+			// if no existing token generate new token
+			if (!testToken) {
+				token = await TokenRepository.create({
 					purpose: "verify-email",
-				},
-				{
-					value: newVerificationToken,
 					expires_in: newVerificationTime,
-				}
-			);
-			if (updatedToken) {
+					value: newVerificationToken,
+					userId: testUser.id,
+				});
+			}
+			// else update existing token
+			else {
+				token = await TokenRepository.update(
+					{
+						userId: testUser.id,
+						purpose: "verify-email",
+					},
+					{
+						value: newVerificationToken,
+						expires_in: newVerificationTime,
+					}
+				);
+			}
+			if (token) {
 				// send email
 				await NodeMailer.sendEmail({
 					from: "event-management@api.com",
 					to: email,
 					subject: "Resend Email Verification",
-					text: `To verify your event management account use the OTP ${updatedToken.value}`,
-					html: `<a href="https://localhost:3000/api/user/verify-email">Click to verify ${updatedToken.value}</a>`,
+					text: `To verify your event management account use the OTP ${token.value}`,
+					html: `<a href="https://localhost:3000/api/user/verify-email">Click to verify ${token.value}</a>`,
 				});
 
 				res.status(200).json({
 					status: 200,
 					message: "Verification email resent successfully",
-					updatedToken,
+					token,
 				} as SuccessResponse);
 			} else {
 				Service.createErrorAndThrow("Failed to resend verification email", 500);
@@ -466,6 +483,8 @@ export class UserController {
 			}
 			if (email !== undefined) {
 				newData.email = email;
+			}
+			if (testUser.email !== email) {
 				newData.email_verified = false;
 			}
 			await UserRepository.update({ id: decoded.userId }, newData);
