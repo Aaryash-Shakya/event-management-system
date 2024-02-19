@@ -78,7 +78,19 @@ const EditUser = () => {
 					if (email !== initialData.email) {
 						useUserStore.setState({ email: email });
 						localStorage.setItem("email", email);
-						navigate("/verify-email");
+
+						// resend otp
+						axios
+							.patch(`${serverUrl}/api/user/resend-verification-token`, {
+								email: email,
+							})
+							.then(res => {
+								console.log(res.data);
+								navigate("/verify-email");
+							})
+							.catch(err => {
+								console.log(err);
+							});
 					} else {
 						window.location.reload();
 					}
