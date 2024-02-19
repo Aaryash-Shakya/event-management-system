@@ -6,17 +6,21 @@ import { EventData } from "../components/Event";
 import { FaShoePrints } from "react-icons/fa";
 import { GrGroup } from "react-icons/gr";
 import { GoShareAndroid } from "react-icons/go";
+import JoinEvent from "../components/JoinEvent";
+import EventParticipants from "../components/EventParticipants";
 
 const EventDetails: React.FC = () => {
 	const param = useParams();
-	const eventId = param.event_id;
+	const eventId = parseInt(param.event_id!);
 	const [event, setEvent] = useState({} as EventData);
+	const [currentTab, setCurrentTab] = useState<"join" | "participants" | "share">("join");
 	useEffect(() => {
 		axios
 			.get(`${serverUrl}/api/event/get-event/` + eventId)
 			.then(res => setEvent(res.data.event))
 			.catch(err => console.log(err));
 	}, []);
+
 	return (
 		<>
 			<div className="bg-base-100 py-5">
@@ -46,19 +50,28 @@ const EventDetails: React.FC = () => {
 							</div>
 						</div>
 						<div className="image-nav h-20 text-lg flex justify-evenly items-center bg-black bg-opacity-40">
-							<div className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer">
+							<div
+								className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer"
+								onClick={() => setCurrentTab("join")}
+							>
 								<div className="rounded-full bg-white p-3">
 									<FaShoePrints className="text-black text-2xl" />
 								</div>
 								<p className="text-white text-xl">Join</p>
 							</div>
-							<div className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer">
+							<div
+								className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer"
+								onClick={() => setCurrentTab("participants")}
+							>
 								<div className="rounded-full bg-white p-3">
 									<GrGroup className="text-black text-2xl" />
 								</div>
 								<p className="text-white text-xl">Participants</p>
 							</div>
-							<div className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer">
+							<div
+								className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer"
+								onClick={() => setCurrentTab("share")}
+							>
 								<div className="rounded-full bg-white p-3">
 									<GoShareAndroid className="text-black text-2xl" />
 								</div>
@@ -96,8 +109,11 @@ const EventDetails: React.FC = () => {
 								<p className="text-black text-lg">{event.status}</p>
 							</div>
 						</div>
-                        <p className="p-3 md:p-6">{event.description}</p>
+						<p className="p-3 md:p-6">{event.description}</p>
 					</div>
+					{currentTab === "join" && <JoinEvent />}
+					{currentTab === "participants" && <EventParticipants eventId={eventId} />}
+					{currentTab === "share" && <JoinEvent />}
 				</div>
 			</div>
 		</>

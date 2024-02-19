@@ -6,7 +6,6 @@ import UserDashboard from "../components/UserDashboard";
 import { useNavigate } from "react-router-dom";
 
 const Profile: React.FC = () => {
-
 	// get userID from userStore
 	const userId = useUserStore.getState().userId;
 	const [user, setUser] = useState({
