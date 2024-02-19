@@ -208,11 +208,11 @@ const EditUser = () => {
 							onChange={e => {
 								setGender(e.target.value);
 							}}
-							defaultValue={gender}
+							value={gender}
 						>
-							<option>Male</option>
-							<option>Female</option>
-							<option>Other</option>
+							<option value="Male">Male</option>
+							<option value="Female">Female</option>
+							<option value="Other">Other</option>
 						</select>
 					</label>
 					<label className="form-control w-full max-w-lg" htmlFor="type">
@@ -226,10 +226,10 @@ const EditUser = () => {
 							onChange={e => {
 								setType(e.target.value);
 							}}
-							defaultValue={type}
+							value={type}
 						>
-							<option>User</option>
-							<option>Admin</option>
+							<option value="user">User</option>
+							<option value="admin">Admin</option>
 						</select>
 						{type === "user" && <p className="text-warning text-sm">You are not authorized</p>}
 					</label>

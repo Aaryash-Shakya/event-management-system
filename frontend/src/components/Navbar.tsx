@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../store/store";
+import { LuLayoutDashboard } from "react-icons/lu";
 
 const Navbar: React.FC = () => {
 	return (
@@ -86,8 +87,13 @@ const Navbar: React.FC = () => {
 						</ul>
 					</div>
 					<div className="navbar-end">
-						{useUserStore.getState().isAuthenticated === "user" && (
-							<Link to="/profile" role="button" className="btn btn-ghost btn-circle avatar">
+						{useUserStore.getState().isAuthenticated === "admin" && (
+							<Link to="/admin/dashboard" role="button" className="btn btn-ghost btn-circle avatar" title="Dashboard">
+								<LuLayoutDashboard size={30} />
+							</Link>
+						)}
+						{useUserStore.getState().isAuthenticated !== false  && (
+							<Link to="/profile" role="button" className="btn btn-ghost btn-circle avatar" title="Profile">
 								<div className="w-10 rounded-full">
 									<img
 										alt="Tailwind CSS Navbar component"

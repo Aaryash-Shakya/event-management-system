@@ -9,7 +9,6 @@ const Profile: React.FC = () => {
 
 	// get userID from userStore
 	const userId = useUserStore.getState().userId;
-
 	const [user, setUser] = useState({
 		name: "",
 		email: "",
@@ -19,7 +18,6 @@ const Profile: React.FC = () => {
 		type: "",
 		createdAt: "",
 	});
-
 	const navigate = useNavigate();
 	useEffect(() => {
 		const fetchUser = async () => {
@@ -46,11 +44,21 @@ const Profile: React.FC = () => {
 		fetchUser();
 	}, []);
 
+	const handleSignOut = () =>{
+		localStorage.removeItem("jwt");
+		localStorage.removeItem("userId");
+		localStorage.removeItem("email");
+		useUserStore.setState({isAuthenticated: false});
+		useUserStore.setState({userId: null});
+		useUserStore.setState({email: ""});
+		navigate("/");
+	}
+
 	return (
 		<>
 			<div className="bg-base-200 py-5">
 				<div className="container bg-base-100 max-w-4xl min-h-screen mx-auto rounded-lg overflow-hidden shadow-md">
-					<div className="profile-header flex justify-center items-center mx-4 my-10">
+					<div className="profile-header flex justify-center items-center mx-4 my-10 relative">
 						<div className="left md:w-1/5 w-full flex items-center justify-center">
 							<div className="w-24 mask mask-squircle">
 								<img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
@@ -61,6 +69,7 @@ const Profile: React.FC = () => {
 							<p className="text-gray-700">{user.email}</p>
 							<p className="text-gray-700">{user.phone && user.phone}</p>
 							<p className="text-gray-700">{user.gender && user.gender}</p>
+							<div className="btn btn-warning absolute bottom-0 right-10" onClick={()=>handleSignOut()}>Sign Out</div>
 						</div>
 					</div>
 					<hr />
