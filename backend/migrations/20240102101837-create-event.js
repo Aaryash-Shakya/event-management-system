@@ -50,6 +50,14 @@ module.exports = {
 				type: Sequelize.STRING,
 				NotNull: true,
 			},
+			cost: {
+				type: Sequelize.FLOAT,
+				allowNull: false,
+			},
+			banner: {
+				type: Sequelize.STRING,
+				allowNull: true,
+			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE,
