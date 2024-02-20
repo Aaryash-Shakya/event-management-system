@@ -2,6 +2,7 @@ import { Router } from "express";
 import { EventController } from "../controllers/eventController";
 import { GlobalMiddleware } from "../middlewares/globalMiddleware";
 import { EventValidator } from "../validators/eventValidator";
+import { Multer } from "../services/multer";
 
 class EventRoute {
 	public router: Router;
@@ -31,6 +32,7 @@ class EventRoute {
 			"/add-event",
 			GlobalMiddleware.authorization,
 			GlobalMiddleware.checkTypeAdmin,
+			new Multer().pMulter.single("banner"),
 			EventValidator.addEventValidator(),
 			GlobalMiddleware.checkValidationError,
 			EventController.addEvent

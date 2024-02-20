@@ -30,7 +30,10 @@ export class EventController {
 			start_date,
 			duration,
 			difficulty,
+			cost,
 		} = req.body;
+
+		const path = req.file.path.replace(/\\/g, "/");
 
 		const eventData = {
 			title,
@@ -43,14 +46,16 @@ export class EventController {
 			start_date,
 			duration,
 			difficulty,
+			cost,
+			banner: path,
 		};
 		try {
-			const event = await EventRepository.create(eventData);
-			console.log(event);
+			// const event = await EventRepository.create(eventData);
+			// console.log(event);
 			res.status(200).json({
 				status: 200,
 				message: "Event created",
-				event,
+				event: path,
 			} as SuccessResponse);
 		} catch (err) {
 			next(err);
