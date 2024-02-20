@@ -13,6 +13,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import Unauthorized from "./pages/Unauthorized";
 import AdminRoute from "./auth/AdminRoute";
 import VerifyEmail from "./pages/VerifyEmail";
+import ViewProfile from "./pages/ViewProfile";
 
 
 const MyRoutes:React.FC = () => {
@@ -27,6 +28,7 @@ const MyRoutes:React.FC = () => {
 					<Route path="login" element={<Login />} />
 					<Route path="signup" element={<SignUp />} />
 					<Route path="verify-email" element={<VerifyEmail />} />
+					<Route path="view-profile/:userId" element={<ViewProfile />} />
 
 					{/* event */}
 					<Route path="events" element={<EventsPage />} />
