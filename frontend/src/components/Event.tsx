@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import serverUrl from "../config";
 
 interface EventProps {
 	key: number;
@@ -18,6 +19,8 @@ export type EventData = {
 	maximum_participants: number;
 	start_date: string;
 	status: "upcoming" | "completed" | "postponed" | "draft" | "cancelled";
+	cost: number;
+	banner: string;
 	title: string;
 	updatedAt: string;
 };
@@ -29,12 +32,12 @@ const Event: React.FC<EventProps> = props => {
 
 	return (
 		<div className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 inline-block p-4">
-			<div className="card card-compact bg-base-100 shadow-xl">
-				<figure className="rounded-xl">
+			<div className="card card-compact bg-base-100 shadow-xl h-full">
+				<figure className="rounded-xl" style={{aspectRatio:"4/3"}}>
 					<img
-						src="../../public/photos/bagpack.jpg"
-						className="hover:scale-110 ease-out duration-500"
-						alt="Bagpack"
+						src={`${serverUrl}/${props.item.banner}`}
+						className="hover:scale-110 ease-out duration-500 object-cover h-full "
+						alt={props.item.title}
 					/>
 				</figure>
 				<div className="card-body text-base-content">

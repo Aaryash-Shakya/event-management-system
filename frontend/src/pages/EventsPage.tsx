@@ -3,19 +3,21 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import serverUrl from "../config";
 
-type EventData = {
+export type EventData = {
 	createdAt: string;
 	current_participants: number;
 	description: string;
 	destination: string;
-	difficulty: string;
+	difficulty: "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme";
 	duration: string;
 	event_id: number;
 	gathering_point: string;
 	maximum_participants: number;
 	start_date: string;
-	status: string;
+	status: "upcoming" | "completed" | "postponed" | "draft" | "cancelled";
 	title: string;
+	cost: number;
+	banner: string;
 	updatedAt: string;
 };
 
@@ -41,7 +43,7 @@ const EventsPage: React.FC = () => {
 	return (
 		<div className="sm:container mx-auto px-5">
 			<h1 className="text-5xl ms-4">Events</h1>
-			<div className="event-container d-flex flex-wrap">
+			<div className="event-container flex flex-wrap">
 				{eventMapping()}
 			</div>
 		</div>

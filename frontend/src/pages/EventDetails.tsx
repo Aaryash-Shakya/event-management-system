@@ -28,7 +28,7 @@ const EventDetails: React.FC = () => {
 					<div
 						className="image-box h-96 w-full flex flex-col justify-end"
 						style={{
-							backgroundImage: `url(../../public/photos/bagpack.jpg)`,
+							backgroundImage: `url(${serverUrl}/${event.banner})`,
 							backgroundAttachment: "scroll",
 							backgroundPosition: "center",
 							backgroundSize: "cover",
