@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import UserHistory from "./UserHistory";
 import EditUser from "./EditUser";
+import UserSettings from "./UserSettings";
 
 const UserDashboard: React.FC = () => {
 	const [currentTab, setCurrentTab] = useState<string>("history");
@@ -41,7 +42,7 @@ const UserDashboard: React.FC = () => {
 				{/* render data */}
 				{currentTab === "history" && <UserHistory />}
 				{currentTab === "edit" && <EditUser />}
-				{currentTab === "setting" && <UserHistory />}
+				{currentTab === "setting" && <UserSettings />}
 			</div>
 		</>
 	);

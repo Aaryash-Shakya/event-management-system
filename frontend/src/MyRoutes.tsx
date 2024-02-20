@@ -6,7 +6,7 @@ import EventsPage from "./pages/EventsPage";
 import PageNotFound from "./pages/PageNotFound";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
+import SignUp from "./pages/Signup";
 import EventDetails from "./pages/EventDetails";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./auth/PrivateRoute";
@@ -15,12 +15,10 @@ import AdminRoute from "./auth/AdminRoute";
 import VerifyEmail from "./pages/VerifyEmail";
 import ViewProfile from "./pages/ViewProfile";
 
-
-const MyRoutes:React.FC = () => {
+const MyRoutes: React.FC = () => {
 	return (
 		<Router>
 			<Routes>
-
 				{/* public route */}
 				<Route path="" element={<Layouts />}>
 					<Route index element={<HomePage />} />
@@ -33,20 +31,20 @@ const MyRoutes:React.FC = () => {
 					{/* event */}
 					<Route path="events" element={<EventsPage />} />
 					<Route path="event-details/:event_id" element={<EventDetails />} />
-					
+
 					<Route path="contact" element={<Contact />} />
 				</Route>
-				
+
 				{/* private route */}
 				<Route path="" element={<PrivateRoute />}>
 					<Route path="profile" element={<Profile />} />
 				</Route>
-				
+
 				{/* admin route */}
 				<Route path="admin" element={<AdminRoute />}>
 					<Route path="dashboard" element={<Profile />} />
 				</Route>
-				
+
 				<Route path="*" element={<PageNotFound />} />
 				<Route path="/unauthorized" element={<Unauthorized />} />
 			</Routes>

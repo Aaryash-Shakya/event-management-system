@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import serverUrl from "../config";
 import { useParams } from "react-router-dom";
 import UserHistory from "../components/UserHistory";
-import { IoSubway } from "react-icons/io5";
-import { isAuthenticated } from "../auth/authIndex";
 import { useUserStore } from "../store/store";
 
 const ViewProfile: React.FC = () => {

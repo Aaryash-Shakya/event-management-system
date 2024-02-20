@@ -551,6 +551,7 @@ export class UserController {
 				status: 200,
 				message: "Account Deletion OTP sent in email",
 				jwt: jwt,
+				token: userDeletionToken,
 			} as SuccessResponse);
 		} catch (err) {
 			next(err);

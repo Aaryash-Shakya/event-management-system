@@ -95,7 +95,9 @@ const UserHistory: React.FC = () => {
 						<div className="flex items-center gap-3">
 							<div>
 								<div className="font-bold">{event.status}</div>
-								<div className="text-sm opacity-50">{event.status == "left" ? "refunding":"cash"}</div>
+								<div className="text-sm opacity-50">
+									{event.status == "left" ? "refunding" : "card"}
+								</div>
 							</div>
 						</div>
 					</td>
