@@ -55,8 +55,8 @@ const Profile: React.FC = () => {
 
 	return (
 		<>
-			<div className="bg-base-200 py-5">
-				<div className="container bg-base-100 max-w-4xl min-h-screen mx-auto rounded-lg overflow-hidden shadow-md">
+			<div className="bg-base-100 py-5">
+				<div className="container bg-base-100 max-w-4xl min-h-screen mx-auto rounded-lg overflow-hidden shadow-lg border">
 					<div className="profile-header flex justify-center items-center mx-4 my-10 relative">
 						<div className="left md:w-1/5 w-full flex items-center justify-center">
 							<div className="w-24 mask mask-squircle">

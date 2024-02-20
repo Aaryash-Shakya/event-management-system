@@ -58,8 +58,9 @@ const Event: React.FC<EventProps> = props => {
 						</div>
 					</p>
 					<div className="card-actions flex items-center justify-between">
-						<span className="date">
+						<span className="date font-semibold">
 							{new Date(props.item.start_date).toLocaleDateString("en-US", {
+								year: "numeric",
 								month: "short",
 								day: "numeric",
 							})}
