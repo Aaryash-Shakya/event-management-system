@@ -7,6 +7,9 @@ import { Request, Response, NextFunction } from "express";
 import { SuccessResponse } from "../types/response";
 import { CustomJwtPayload } from "../types/jwt";
 import { db } from "../models";
+import { EventModelType } from "../types/event";
+import { UserModelType } from "../types/user";
+import { UserEventModelType } from "../types/userEvent";
 
 export class UserEventController {
 	static async getAllData(req: Request, res: Response, next: NextFunction) {
@@ -68,7 +71,7 @@ export class UserEventController {
 		const { user_id, event_id } = req.body;
 		const decoded: CustomJwtPayload = req.body.decoded;
 		try {
-			const testUser = await UserRepository.findOne({ id: user_id });
+			const testUser:UserModelType = await UserRepository.findOne({ id: user_id });
 			// if jwt doesn't belong to user_id
 			console.log(decoded.userId, user_id);
 			if (decoded.userId != user_id && decoded.type !== "admin") {
@@ -83,12 +86,12 @@ export class UserEventController {
 				Service.createErrorAndThrow("User email not verified", 400);
 			}
 
-			const testEvent = await EventRepository.findOne({ event_id: event_id });
+			const testEvent:EventModelType = await EventRepository.findOne({ event_id: event_id });
 			if (!testEvent) {
 				Service.createErrorAndThrow("Event not found", 404);
 			}
 			// if event isn't upcoming, don't allow user to join
-			else if (testEvent.status !== "Upcoming") {
+			else if (testEvent.status !== "upcoming") {
 				Service.createErrorAndThrow(`Cannot join ${testEvent.status} event`, 400);
 			}
 			// if event is full
@@ -96,12 +99,12 @@ export class UserEventController {
 				Service.createErrorAndThrow("Event is full", 400);
 			}
 
-			const testUserEvent = await UserEventRepository.findOne({ user_id, event_id });
+			const testUserEvent:UserEventModelType = await UserEventRepository.findOne({ user_id, event_id });
 			if (testUserEvent) {
 				Service.createErrorAndThrow("User already joined event", 400);
 			}
 
-			const userEvent = await UserEventRepository.create({ user_id, event_id, status: "payment not made" });
+			const userEvent = await UserEventRepository.create({ user_id, event_id, status: "pending" });
 
 			// update current_participants
 			const updatedEvent = await EventRepository.update(

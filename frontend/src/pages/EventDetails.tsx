@@ -13,7 +13,7 @@ const EventDetails: React.FC = () => {
 	const param = useParams();
 	const eventId = parseInt(param.event_id!);
 	const [event, setEvent] = useState({} as EventData);
-	const [currentTab, setCurrentTab] = useState<"join" | "participants" | "share">("join");
+	const [currentTab, setCurrentTab] = useState<"join" | "participants" | "share">("participants");
 	useEffect(() => {
 		axios
 			.get(`${serverUrl}/api/event/get-event/` + eventId)
@@ -51,7 +51,9 @@ const EventDetails: React.FC = () => {
 						</div>
 						<div className="image-nav h-20 text-lg flex justify-evenly items-center bg-black bg-opacity-40">
 							<div
-								className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer"
+								className={`w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer ${
+									currentTab == "join" && "bg-black bg-opacity-60"
+								}`}
 								onClick={() => setCurrentTab("join")}
 							>
 								<div className="rounded-full bg-white p-3">
@@ -60,7 +62,9 @@ const EventDetails: React.FC = () => {
 								<p className="text-white text-xl">Join</p>
 							</div>
 							<div
-								className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer"
+								className={`w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer ${
+									currentTab == "participants" && "bg-black bg-opacity-60"
+								}`}
 								onClick={() => setCurrentTab("participants")}
 							>
 								<div className="rounded-full bg-white p-3">
@@ -69,7 +73,9 @@ const EventDetails: React.FC = () => {
 								<p className="text-white text-xl">Participants</p>
 							</div>
 							<div
-								className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer"
+								className={`w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer ${
+									currentTab == "share" && "bg-black bg-opacity-60"
+								}`}
 								onClick={() => setCurrentTab("share")}
 							>
 								<div className="rounded-full bg-white p-3">
@@ -109,8 +115,9 @@ const EventDetails: React.FC = () => {
 								<p className="text-black text-lg">{event.status}</p>
 							</div>
 						</div>
-						<p className="p-3 md:p-6">{event.description}</p>
+						<p className="mx-4 p-3 md:p-6 md:mx-10 border bg-base-200 rounded-md ">{event.description}</p>
 					</div>
+					<hr className="my-4 border-black"/>
 					{currentTab === "join" && <JoinEvent />}
 					{currentTab === "participants" && <EventParticipants eventId={eventId} />}
 					{currentTab === "share" && <JoinEvent />}
