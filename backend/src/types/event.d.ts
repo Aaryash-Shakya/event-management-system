@@ -10,6 +10,8 @@ export type EventModelType = {
 	start_date: Date;
 	duration: string;
 	difficulty: "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme";
+	cost: number;
+	banner: string;
 	createdAt: Date;
 	updatedAt: Date;
 };

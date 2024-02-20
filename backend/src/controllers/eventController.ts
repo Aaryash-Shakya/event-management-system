@@ -50,12 +50,12 @@ export class EventController {
 			banner: path,
 		};
 		try {
-			// const event = await EventRepository.create(eventData);
-			// console.log(event);
+			const event = await EventRepository.create(eventData);
+			console.log(event);
 			res.status(200).json({
 				status: 200,
 				message: "Event created",
-				event: path,
+				event,
 			} as SuccessResponse);
 		} catch (err) {
 			next(err);
