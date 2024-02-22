@@ -1,9 +1,16 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../store/store";
 import { LuLayoutDashboard } from "react-icons/lu";
+import { isAuthenticated } from "../auth/authIndex";
+import { useState } from "react";
 
 const Navbar: React.FC = () => {
+	const [auth, setAuth] = useState<false | "admin" | "user" | null>(null);
+	if (useUserStore.getState().isAuthenticated !== "admin" || useUserStore.getState().isAuthenticated !== "user") {
+		isAuthenticated().then((res: false | "admin" | "user") => {
+			setAuth(res);
+		});
+	}
 	return (
 		<>
 			<nav>
@@ -87,13 +94,24 @@ const Navbar: React.FC = () => {
 						</ul>
 					</div>
 					<div className="navbar-end">
-						{useUserStore.getState().isAuthenticated === "admin" && (
-							<Link to="/admin/dashboard" role="button" className="btn btn-ghost btn-circle avatar" title="Dashboard">
+						{auth === null && <></>}
+						{auth === "admin" && (
+							<Link
+								to="/admin/dashboard"
+								role="button"
+								className="btn btn-ghost btn-circle avatar"
+								title="Dashboard"
+							>
 								<LuLayoutDashboard size={30} />
 							</Link>
 						)}
-						{useUserStore.getState().isAuthenticated !== false  && (
-							<Link to="/profile" role="button" className="btn btn-ghost btn-circle avatar" title="Profile">
+						{auth !== false && (
+							<Link
+								to="/profile"
+								role="button"
+								className="btn btn-ghost btn-circle avatar"
+								title="Profile"
+							>
 								<div className="w-10 rounded-full">
 									<img
 										alt="Tailwind CSS Navbar component"
@@ -102,7 +120,7 @@ const Navbar: React.FC = () => {
 								</div>
 							</Link>
 						)}
-						{useUserStore.getState().isAuthenticated === false && (
+						{auth === false && (
 							<>
 								<Link
 									to="/login"

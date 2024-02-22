@@ -61,6 +61,8 @@ export const isAuthenticated = async (): Promise<false | "user" | "admin"> => {
 			useUserStore.setState({ userId: res.data.userId });
 			useUserStore.setState({ email: res.data.email });
 
+			console.log(useUserStore.getState());
+
 			console.log(res.data);
 			return res.data.type;
 		} catch (err) {

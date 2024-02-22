@@ -14,6 +14,8 @@ import Unauthorized from "./pages/Unauthorized";
 import AdminRoute from "./auth/AdminRoute";
 import VerifyEmail from "./pages/VerifyEmail";
 import ViewProfile from "./pages/ViewProfile";
+import Dashboard from "./admin/Dashboard";
+import AddEvent from "./admin/AddEvent";
 
 const MyRoutes: React.FC = () => {
 	return (
@@ -42,7 +44,8 @@ const MyRoutes: React.FC = () => {
 
 				{/* admin route */}
 				<Route path="admin" element={<AdminRoute />}>
-					<Route path="dashboard" element={<Profile />} />
+					<Route path="dashboard" element={<Dashboard />} />
+					<Route path="add-event" element={<AddEvent />} />
 				</Route>
 
 				<Route path="*" element={<PageNotFound />} />
