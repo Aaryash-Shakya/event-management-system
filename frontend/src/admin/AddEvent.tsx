@@ -11,6 +11,7 @@ const AddEvent = () => {
 		axios
 			.post(`${serverUrl}/api/event/add-event`, newEvent, {
 				headers: {
+					"Content-Type": "multipart/form-data",
 					Authorization: `Bearer ${localStorage.getItem("jwt")}`,
 				},
 			})
