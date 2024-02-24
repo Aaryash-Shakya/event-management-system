@@ -25,8 +25,8 @@ const AddEvent = () => {
 	return (
 		<>
 			<AdminSidebar />
-			<div className="ms-24">
-				<form className="form-control w-full items-start">
+			<div className="ms-24 mt-10 flex justify-center items-center">
+				<form className="form-control items-start p-5 border rounded-lg shadow-lg bg-base-100">
 					<label className="form-control w-full max-w-lg" htmlFor="title">
 						<div className="label">
 							<span className="label-text font-semibold">Event Title</span>
@@ -60,7 +60,7 @@ const AddEvent = () => {
 						<select
 							id="status"
 							className="input input-bordered w-full max-w-lg select"
-							onChange={e => setNewEvent(prev => ({ ...prev, status: e.target.value }))}
+							onChange={e => setNewEvent(prev => ({ ...prev, status: e.target.value as "upcoming" | "completed" | "postponed" | "draft" | "cancelled" }))}
 							value={newEvent.status}
 						>
 							<option value="upcoming">Upcoming</option>
@@ -139,13 +139,13 @@ const AddEvent = () => {
 					</label>
 					<label className="form-control w-full max-w-lg" htmlFor="duration">
 						<div className="label">
-							<span className="label-text font-semibold">Event Duration</span>
+							<span className="label-text font-semibold">Event Difficulty</span>
 						</div>
 						<select
 							id="duration"
 							className="input input-bordered w-full max-w-lg select"
-							onChange={e => setNewEvent(prev => ({ ...prev, duration: e.target.value }))}
-							value={newEvent.duration}
+							onChange={e => setNewEvent(prev => ({ ...prev, difficulty: e.target.value as "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme"}))}
+							value={newEvent.difficulty}
 						>
 							<option value="Easy">Easy</option>
 							<option value="Moderate">Moderate</option>
@@ -177,6 +177,7 @@ const AddEvent = () => {
 							placeholder="Event Banner"
 							className="input input-bordered w-full max-w-lg file-input"
 							onChange={e => {
+								setNewEvent(prev => ({ ...prev, banner: e.target.files![0] }));
 								console.log(e.target.files![0]);
 							}}
 						/>

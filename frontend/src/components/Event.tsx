@@ -20,7 +20,7 @@ export type EventData = {
 	start_date: string;
 	status: "upcoming" | "completed" | "postponed" | "draft" | "cancelled";
 	cost: number;
-	banner: string;
+	banner: File | string;
 	title: string;
 	updatedAt: string;
 };
