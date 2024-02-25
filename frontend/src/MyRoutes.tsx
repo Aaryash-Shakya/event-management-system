@@ -6,20 +6,25 @@ import EventsPage from "./pages/EventsPage";
 import PageNotFound from "./pages/PageNotFound";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
+import SignUp from "./pages/Signup";
 import EventDetails from "./pages/EventDetails";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./auth/PrivateRoute";
 import Unauthorized from "./pages/Unauthorized";
 import AdminRoute from "./auth/AdminRoute";
 import VerifyEmail from "./pages/VerifyEmail";
+import ViewProfile from "./pages/ViewProfile";
+import Dashboard from "./admin/Dashboard";
+import AddEvent from "./admin/AddEvent";
+import AllEvents from "./admin/AllEvents";
+import UpdateEvent from "./admin/UpdateEvent";
+import DraftEvents from "./admin/DraftEvents";
+import ManageUsers from "./admin/ManageUsers";
 
-
-const MyRoutes:React.FC = () => {
+const MyRoutes: React.FC = () => {
 	return (
 		<Router>
 			<Routes>
-
 				{/* public route */}
 				<Route path="" element={<Layouts />}>
 					<Route index element={<HomePage />} />
@@ -27,24 +32,30 @@ const MyRoutes:React.FC = () => {
 					<Route path="login" element={<Login />} />
 					<Route path="signup" element={<SignUp />} />
 					<Route path="verify-email" element={<VerifyEmail />} />
+					<Route path="view-profile/:user_id" element={<ViewProfile />} />
 
 					{/* event */}
 					<Route path="events" element={<EventsPage />} />
 					<Route path="event-details/:event_id" element={<EventDetails />} />
-					
+
 					<Route path="contact" element={<Contact />} />
 				</Route>
-				
+
 				{/* private route */}
 				<Route path="" element={<PrivateRoute />}>
 					<Route path="profile" element={<Profile />} />
 				</Route>
-				
+
 				{/* admin route */}
 				<Route path="admin" element={<AdminRoute />}>
-					<Route path="dashboard" element={<Profile />} />
+					<Route path="dashboard" element={<Dashboard />} />
+					<Route path="all-events" element={<AllEvents />} />
+					<Route path="add-event" element={<AddEvent />} />
+					<Route path="update-event/:event_id" element={<UpdateEvent />} />
+					<Route path="draft-events" element={<DraftEvents />} />
+					<Route path="manage-users" element={<ManageUsers />} />
 				</Route>
-				
+
 				<Route path="*" element={<PageNotFound />} />
 				<Route path="/unauthorized" element={<Unauthorized />} />
 			</Routes>

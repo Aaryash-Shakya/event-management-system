@@ -12,6 +12,7 @@ import { signup } from "../auth/authIndex";
 import { FaCheckCircle } from "react-icons/fa";
 import { SuccessOrError } from "../types/response";
 import { SignupFormData } from "../types/form";
+import { useUserStore } from "../store/store";
 
 const INITIAL_DATA: SignupFormData = {
 	name: "",
@@ -24,7 +25,7 @@ const INITIAL_DATA: SignupFormData = {
 	gender: "",
 };
 
-const SignUp = () => {
+const SignUp: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [errorMessage, setErrorMessage] = useState<string>("");
@@ -44,16 +45,17 @@ const SignUp = () => {
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		if (!isLastStep) return next();
-		console.log(data);
 		signup(data).then((resData: SuccessOrError) => {
 			console.log(resData);
 			if (resData.errorName) {
 				setErrorMessage(resData.errorMessage);
 				setSuccessMessage("");
-			}
-			else {
+			} else {
 				setErrorMessage("");
 				setSuccessMessage(resData.message);
+				// to use for verify-email page
+				useUserStore.setState({ email: data.email });
+				localStorage.setItem("email", data.email);
 				setTimeout(() => {
 					navigate("/verify-email");
 				}, 1000);

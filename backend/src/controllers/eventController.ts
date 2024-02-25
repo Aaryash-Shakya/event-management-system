@@ -30,7 +30,10 @@ export class EventController {
 			start_date,
 			duration,
 			difficulty,
+			cost,
 		} = req.body;
+
+		const path = req.file.path.replace(/\\/g, "/");
 
 		const eventData = {
 			title,
@@ -43,6 +46,8 @@ export class EventController {
 			start_date,
 			duration,
 			difficulty,
+			cost,
+			banner: path,
 		};
 		try {
 			const event = await EventRepository.create(eventData);
@@ -94,6 +99,7 @@ export class EventController {
 			start_date,
 			duration,
 			difficulty,
+			banner,
 		} = req.body;
 
 		try {
@@ -118,6 +124,11 @@ export class EventController {
 			if (start_date) eventData.start_date = start_date;
 			if (duration) eventData.duration = duration;
 			if (difficulty) eventData.difficulty = difficulty;
+			if(typeof banner === "string") eventData.banner = banner;
+			else if (req.file) {
+				const path = req.file.path.replace(/\\/g, "/");
+				eventData.banner = path;
+			}
 
 			const event = await EventRepository.update(
 				{

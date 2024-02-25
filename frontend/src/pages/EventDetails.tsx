@@ -6,25 +6,29 @@ import { EventData } from "../components/Event";
 import { FaShoePrints } from "react-icons/fa";
 import { GrGroup } from "react-icons/gr";
 import { GoShareAndroid } from "react-icons/go";
+import JoinEvent from "../components/JoinEvent";
+import EventParticipants from "../components/EventParticipants";
 
 const EventDetails: React.FC = () => {
 	const param = useParams();
-	const eventId = param.event_id;
+	const eventId = parseInt(param.event_id!);
 	const [event, setEvent] = useState({} as EventData);
+	const [currentTab, setCurrentTab] = useState<"join" | "participants" | "share">("participants");
 	useEffect(() => {
 		axios
 			.get(`${serverUrl}/api/event/get-event/` + eventId)
 			.then(res => setEvent(res.data.event))
 			.catch(err => console.log(err));
 	}, []);
+
 	return (
 		<>
-			<div className="bg-base-200 py-5">
+			<div className="bg-base-100 py-5">
 				<div className="container bg-base-100 max-w-4xl min-h-screen mx-auto rounded-lg overflow-hidden shadow-md">
 					<div
 						className="image-box h-96 w-full flex flex-col justify-end"
 						style={{
-							backgroundImage: `url(../../public/photos/bagpack.jpg)`,
+							backgroundImage: `url(${serverUrl}/${event.banner})`,
 							backgroundAttachment: "scroll",
 							backgroundPosition: "center",
 							backgroundSize: "cover",
@@ -46,19 +50,34 @@ const EventDetails: React.FC = () => {
 							</div>
 						</div>
 						<div className="image-nav h-20 text-lg flex justify-evenly items-center bg-black bg-opacity-40">
-							<div className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer">
+							<div
+								className={`w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer ${
+									currentTab == "join" && "bg-black bg-opacity-60"
+								}`}
+								onClick={() => setCurrentTab("join")}
+							>
 								<div className="rounded-full bg-white p-3">
 									<FaShoePrints className="text-black text-2xl" />
 								</div>
 								<p className="text-white text-xl">Join</p>
 							</div>
-							<div className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer">
+							<div
+								className={`w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer ${
+									currentTab == "participants" && "bg-black bg-opacity-60"
+								}`}
+								onClick={() => setCurrentTab("participants")}
+							>
 								<div className="rounded-full bg-white p-3">
 									<GrGroup className="text-black text-2xl" />
 								</div>
 								<p className="text-white text-xl">Participants</p>
 							</div>
-							<div className="w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer">
+							<div
+								className={`w-1/3 h-full flex justify-center items-center gap-2 cursor-pointer ${
+									currentTab == "share" && "bg-black bg-opacity-60"
+								}`}
+								onClick={() => setCurrentTab("share")}
+							>
 								<div className="rounded-full bg-white p-3">
 									<GoShareAndroid className="text-black text-2xl" />
 								</div>
@@ -96,8 +115,12 @@ const EventDetails: React.FC = () => {
 								<p className="text-black text-lg">{event.status}</p>
 							</div>
 						</div>
-                        <p className="p-3 md:p-6">{event.description}</p>
+						<p className="mx-4 p-3 md:p-6 md:mx-10 border bg-base-200 rounded-md ">{event.description}</p>
 					</div>
+					<hr className="my-4 border-black" />
+					{currentTab === "join" && <JoinEvent />}
+					{currentTab === "participants" && <EventParticipants eventId={eventId} />}
+					{currentTab === "share" && <JoinEvent />}
 				</div>
 			</div>
 		</>

@@ -1,13 +1,10 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import serverUrl from "../config";
-import { useUserStore } from "../store/store";
-import axios from "axios";
-import UserDashboard from "../components/UserDashboard";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import ViewHistory from "../components/ViewHistory";
 
-const Profile: React.FC = () => {
-	// get userID from userStore
-	const userId = useUserStore.getState().userId;
+const ViewProfile: React.FC = () => {
 	const [user, setUser] = useState({
 		name: "",
 		email: "",
@@ -17,12 +14,12 @@ const Profile: React.FC = () => {
 		type: "",
 		createdAt: "",
 	});
-	const navigate = useNavigate();
+	const param = useParams();
+	const userId = param.user_id;
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
 				if (userId === null) {
-					navigate("");
 					console.log("user not found");
 				}
 				const res = await axios.get(`${serverUrl}/api/user/get-profile/${userId}`, {
@@ -42,21 +39,10 @@ const Profile: React.FC = () => {
 
 		fetchUser();
 	}, []);
-
-	const handleSignOut = () => {
-		localStorage.removeItem("jwt");
-		localStorage.removeItem("userId");
-		localStorage.removeItem("email");
-		useUserStore.setState({ isAuthenticated: false });
-		useUserStore.setState({ userId: null });
-		useUserStore.setState({ email: "" });
-		navigate("/");
-	};
-
 	return (
 		<>
-			<div className="bg-base-100 py-5">
-				<div className="container bg-base-100 max-w-4xl min-h-screen mx-auto rounded-lg overflow-hidden shadow-lg border">
+			<div className="bg-base-200 py-5">
+				<div className="container bg-base-100 max-w-4xl min-h-screen mx-auto rounded-lg overflow-hidden shadow-md">
 					<div className="profile-header flex justify-center items-center mx-4 my-10 relative">
 						<div className="left md:w-1/5 w-full flex items-center justify-center">
 							<div className="w-24 mask mask-squircle">
@@ -68,17 +54,14 @@ const Profile: React.FC = () => {
 							<p className="text-gray-700">{user.email}</p>
 							<p className="text-gray-700">{user.phone && user.phone}</p>
 							<p className="text-gray-700">{user.gender && user.gender}</p>
-							<div className="btn btn-warning absolute bottom-0 right-10" onClick={() => handleSignOut()}>
-								Sign Out
-							</div>
 						</div>
 					</div>
 					<hr />
-					<UserDashboard />
+					<ViewHistory />
 				</div>
 			</div>
 		</>
 	);
 };
 
-export default Profile;
+export default ViewProfile;

@@ -5,7 +5,7 @@ export type BearStore = {
 };
 
 export type UserStore = {
-	isAuthenticated: null | "admin" | "user" | false;
+	isAuthenticated: "admin" | "user" | false;
 	userId: null | number;
 	email: null | string;
 	username: null | string;

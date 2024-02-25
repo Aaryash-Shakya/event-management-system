@@ -43,6 +43,7 @@ export class Server {
 	}
 
 	setRoutes() {
+		this.app.use("/public/banner", express.static("public/banner"));
 		this.app.use("/api/user", userRoute);
 		this.app.use("/api/token", tokenRoute);
 		this.app.use("/api/event", eventRoute);

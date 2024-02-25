@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import serverUrl from "../config";
 import { useUserStore } from "../store/store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { GoXCircleFill } from "react-icons/go";
 
@@ -31,7 +31,8 @@ type UserEvent = {
 	};
 };
 
-const UserHistory: React.FC = () => {
+const ViewHistory: React.FC = () => {
+	const user_id = useParams().user_id;
 	const navigate = useNavigate();
 	const [userEvents, setUserEvents] = useState<UserEvent[]>([]);
 	const [errorMessage, setErrorMessage] = useState<string>("");
@@ -46,7 +47,7 @@ const UserHistory: React.FC = () => {
 			const res = await axios.post(
 				`${serverUrl}/api/user-event/get-events-by-participant`,
 				{
-					user_id: useUserStore.getState().userId,
+					user_id: user_id,
 				},
 				{
 					headers: {
@@ -114,7 +115,9 @@ const UserHistory: React.FC = () => {
 							className={`btn btn-error btn-sm ${event.status === "left" ? "btn-disabled" : ""}`}
 							onClick={() => handleLeave(event.event_id, event.user_id)}
 						>
-							{event.status === "left" ? "left" : "leave"}
+							{useUserStore.getState().isAuthenticated === "admin" && event.status === "left"
+								? "left"
+								: "remove"}
 						</button>
 					</td>
 				</tr>
@@ -140,7 +143,7 @@ const UserHistory: React.FC = () => {
 					throw new Error("Error leaving event");
 				}
 
-				setSuccessMessage("You have left the event");
+				setSuccessMessage("You have removed user from the event");
 				setTimeout(() => {
 					setSuccessMessage("");
 				}, 3000);
@@ -204,4 +207,4 @@ const UserHistory: React.FC = () => {
 	);
 };
 
-export default UserHistory;
+export default ViewHistory;

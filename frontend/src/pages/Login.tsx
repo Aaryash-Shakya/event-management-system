@@ -51,8 +51,9 @@ const Login: React.FC = () => {
 					setSuccessMessage(data.message);
 					localStorage.setItem("jwt", data.jwt);
 					localStorage.setItem("jwtPurpose", "login");
+
 					setTimeout(() => {
-						navigate("/");
+						navigate("/profile");
 					}, 1000);
 				}
 			});

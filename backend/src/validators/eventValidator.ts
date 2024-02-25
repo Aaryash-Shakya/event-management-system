@@ -1,4 +1,5 @@
 import {body, param} from "express-validator";
+import { Service } from "../services/utils";
 
 export class EventValidator {
     static addEventValidator() {
@@ -12,6 +13,14 @@ export class EventValidator {
             body("start_date", "Start date is required").isString(),
             body("duration", "Duration is required").isString(),
             body("difficulty", "Difficulty is required").isString(),
+            body("cost", "Cost is required").isNumeric(),
+            body("banner", "Banner image is required").custom((banner, { req }) => {
+                if (req.file) {
+                    return true;
+                } else {
+                    Service.createErrorAndThrow("File not uploaded", 400);
+                }
+            }),
         ];
     }
 

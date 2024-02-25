@@ -59,6 +59,14 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
+			cost: {
+				type: DataTypes.FLOAT,
+				allowNull: false,
+			},
+			banner: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
 		},
 		{
 			timestamps: true,

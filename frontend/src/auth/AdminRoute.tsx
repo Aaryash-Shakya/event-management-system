@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { isAuthenticated } from "./authIndex";
 import { Navigate, Outlet } from "react-router-dom";
 import { VscLoading } from "react-icons/vsc";
+import Navbar from "../components/Navbar";
+import AdminSidebar from "../admin/AdminSidebar";
 
 const AdminRoute: React.FC = () => {
 	const [isAuthorized, setIsAuthorized] = useState<boolean | "user" | "admin" | null>(null);
@@ -34,7 +36,9 @@ const AdminRoute: React.FC = () => {
 	console.log("authorized " + isAuthorized);
 	return (
 		<>
+			<Navbar />
 			<Outlet />
+			<AdminSidebar />
 		</>
 	);
 };
