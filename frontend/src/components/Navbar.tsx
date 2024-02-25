@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
 						{auth === null && <></>}
 						{auth === "admin" && (
 							<Link
-								to="/admin/dashboard"
+								to="/admin/all-events"
 								role="button"
 								className="btn btn-ghost btn-circle avatar"
 								title="Dashboard"

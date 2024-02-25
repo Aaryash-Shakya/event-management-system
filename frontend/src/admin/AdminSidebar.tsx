@@ -10,7 +10,7 @@ const AdminSidebar: React.FC = () => {
 		<>
 			<ul className="menu bg-base-200 fixed top-0 left-0 pt-20 h-screen gap-2">
 				<li>
-					<Link to="/admin/all-event" className="tooltip tooltip-right" data-tip="All Event">
+					<Link to="/admin/all-events" className="tooltip tooltip-right" data-tip="All Event">
 						<FaRegCalendar size={30} />
 					</Link>
 				</li>
@@ -20,7 +20,7 @@ const AdminSidebar: React.FC = () => {
 					</Link>
 				</li>
 				<li>
-					<Link to="/admin/add-event" className="tooltip tooltip-right" data-tip="Drafts">
+					<Link to="/admin/draft-events" className="tooltip tooltip-right" data-tip="Drafts">
 						<RiDraftFill size={30} />
 					</Link>
 				</li>

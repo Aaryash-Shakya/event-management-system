@@ -18,6 +18,7 @@ import Dashboard from "./admin/Dashboard";
 import AddEvent from "./admin/AddEvent";
 import AllEvents from "./admin/AllEvents";
 import UpdateEvent from "./admin/UpdateEvent";
+import DraftEvents from "./admin/DraftEvents";
 
 const MyRoutes: React.FC = () => {
 	return (
@@ -47,9 +48,10 @@ const MyRoutes: React.FC = () => {
 				{/* admin route */}
 				<Route path="admin" element={<AdminRoute />}>
 					<Route path="dashboard" element={<Dashboard />} />
-					<Route path="all-event" element={<AllEvents />} />
+					<Route path="all-events" element={<AllEvents />} />
 					<Route path="add-event" element={<AddEvent />} />
 					<Route path="update-event/:event_id" element={<UpdateEvent />} />
+					<Route path="draft-events" element={<DraftEvents />} />
 				</Route>
 
 				<Route path="*" element={<PageNotFound />} />
