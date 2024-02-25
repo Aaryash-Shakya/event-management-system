@@ -25,7 +25,7 @@ const INITIAL_DATA: SignupFormData = {
 	gender: "",
 };
 
-const SignUp = () => {
+const SignUp: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [errorMessage, setErrorMessage] = useState<string>("");

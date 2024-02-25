@@ -6,7 +6,7 @@ import { GoXCircleFill } from "react-icons/go";
 import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const EditUser = () => {
+const EditUser: React.FC = () => {
 	const userId = useUserStore.getState().userId;
 
 	const [errorMessage, setErrorMessage] = useState<string>("");

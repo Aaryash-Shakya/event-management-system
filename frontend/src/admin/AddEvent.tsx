@@ -3,7 +3,7 @@ import { EventData } from "../components/Event";
 import axios from "axios";
 import serverUrl from "../config";
 
-const AddEvent = () => {
+const AddEvent: React.FC = () => {
 	const [newEvent, setNewEvent] = useState({} as EventData);
 
 	const handleSubmit = () => {
@@ -59,7 +59,17 @@ const AddEvent = () => {
 						<select
 							id="status"
 							className="input input-bordered w-full max-w-xl select"
-							onChange={e => setNewEvent(prev => ({ ...prev, status: e.target.value as "upcoming" | "completed" | "postponed" | "draft" | "cancelled" }))}
+							onChange={e =>
+								setNewEvent(prev => ({
+									...prev,
+									status: e.target.value as
+										| "upcoming"
+										| "completed"
+										| "postponed"
+										| "draft"
+										| "cancelled",
+								}))
+							}
 							value={newEvent.status}
 						>
 							<option value="upcoming">Upcoming</option>
@@ -143,7 +153,17 @@ const AddEvent = () => {
 						<select
 							id="duration"
 							className="input input-bordered w-full max-w-xl select"
-							onChange={e => setNewEvent(prev => ({ ...prev, difficulty: e.target.value as "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme"}))}
+							onChange={e =>
+								setNewEvent(prev => ({
+									...prev,
+									difficulty: e.target.value as
+										| "Easy"
+										| "Moderate"
+										| "Challenging"
+										| "Hard"
+										| "Extreme",
+								}))
+							}
 							value={newEvent.difficulty}
 						>
 							<option value="Easy">Easy</option>

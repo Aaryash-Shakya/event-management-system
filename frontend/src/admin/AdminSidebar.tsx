@@ -34,7 +34,6 @@ const AdminSidebar: React.FC = () => {
 						<IoStatsChartSharp size={30} />
 					</Link>
 				</li>
-				
 			</ul>
 		</>
 	);

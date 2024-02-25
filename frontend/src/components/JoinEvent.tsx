@@ -26,7 +26,7 @@ const JoinEvent: React.FC = () => {
 					},
 				}
 			)
-			.then((res) => {
+			.then(res => {
 				console.log(res.data);
 				setErrorMessage("");
 				setSuccessMessage(res.data.message);

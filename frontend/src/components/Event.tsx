@@ -33,7 +33,7 @@ const Event: React.FC<EventProps> = props => {
 	return (
 		<div className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 inline-block p-4">
 			<div className="card card-compact bg-base-100 shadow-xl h-full">
-				<figure className="rounded-xl" style={{aspectRatio:"4/3"}}>
+				<figure className="rounded-xl" style={{ aspectRatio: "4/3" }}>
 					<img
 						src={`${serverUrl}/${props.item.banner}`}
 						className="hover:scale-110 ease-out duration-500 object-cover h-full "

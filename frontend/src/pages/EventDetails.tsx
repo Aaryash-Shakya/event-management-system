@@ -117,7 +117,7 @@ const EventDetails: React.FC = () => {
 						</div>
 						<p className="mx-4 p-3 md:p-6 md:mx-10 border bg-base-200 rounded-md ">{event.description}</p>
 					</div>
-					<hr className="my-4 border-black"/>
+					<hr className="my-4 border-black" />
 					{currentTab === "join" && <JoinEvent />}
 					{currentTab === "participants" && <EventParticipants eventId={eventId} />}
 					{currentTab === "share" && <JoinEvent />}

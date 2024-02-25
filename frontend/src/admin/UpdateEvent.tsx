@@ -4,7 +4,7 @@ import axios from "axios";
 import serverUrl from "../config";
 import { useParams } from "react-router-dom";
 
-const UpdateEvent = () => {
+const UpdateEvent: React.FC = () => {
 	const event_id = useParams().event_id;
 	const [updatedEvent, setUpdatedEvent] = useState({} as EventData);
 
@@ -12,11 +12,11 @@ const UpdateEvent = () => {
 		axios.get(`${serverUrl}/api/event/get-event/${event_id}`).then(res => {
 			setUpdatedEvent(res.data.event);
 		});
-	}
+	};
 
-	useEffect(()=>{
+	useEffect(() => {
 		fetchPreviousData();
-	},[])
+	}, []);
 
 	const handleSubmit = () => {
 		axios
@@ -29,7 +29,7 @@ const UpdateEvent = () => {
 			.then(res => {
 				console.log(res.data);
 				fetchPreviousData();
-				scroll(0,0);
+				scroll(0, 0);
 			})
 			.catch(err => {
 				console.log(err);
@@ -73,7 +73,17 @@ const UpdateEvent = () => {
 						<select
 							id="status"
 							className="input input-bordered w-full max-w-xl select"
-							onChange={e => setUpdatedEvent(prev => ({ ...prev, status: e.target.value as "upcoming" | "completed" | "postponed" | "draft" | "cancelled" }))}
+							onChange={e =>
+								setUpdatedEvent(prev => ({
+									...prev,
+									status: e.target.value as
+										| "upcoming"
+										| "completed"
+										| "postponed"
+										| "draft"
+										| "cancelled",
+								}))
+							}
 							value={updatedEvent.status}
 						>
 							<option value="upcoming">Upcoming</option>
@@ -157,7 +167,17 @@ const UpdateEvent = () => {
 						<select
 							id="duration"
 							className="input input-bordered w-full max-w-xl select"
-							onChange={e => setUpdatedEvent(prev => ({ ...prev, difficulty: e.target.value as "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme"}))}
+							onChange={e =>
+								setUpdatedEvent(prev => ({
+									...prev,
+									difficulty: e.target.value as
+										| "Easy"
+										| "Moderate"
+										| "Challenging"
+										| "Hard"
+										| "Extreme",
+								}))
+							}
 							value={updatedEvent.difficulty}
 						>
 							<option value="Easy">Easy</option>
@@ -184,7 +204,11 @@ const UpdateEvent = () => {
 						<div className="label">
 							<span className="label-text font-semibold">Event Banner</span>
 						</div>
-						<img src={`${serverUrl}/${updatedEvent.banner}`} alt={updatedEvent.title} className="max-w-xl w-full object-cover" />
+						<img
+							src={`${serverUrl}/${updatedEvent.banner}`}
+							alt={updatedEvent.title}
+							className="max-w-xl w-full object-cover"
+						/>
 						<input
 							type="file"
 							id="banner"

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
-const Unauthorized = () => {
+const Unauthorized: React.FC = () => {
 	return (
 		<>
 			<Navbar />
@@ -14,10 +14,16 @@ const Unauthorized = () => {
 							<p className="text-2xl pb-8 px-12 font-medium">
 								Oops! You don't have the permission to view the page. Please login to view the page.
 							</p>
-							<Link to="/" className="bg-gradient-to-r from-green-300 to-green-400 hover:from-green-400 hover:to-green-500 text-white font-semibold px-6 py-3 rounded-md mr-6">
+							<Link
+								to="/"
+								className="bg-gradient-to-r from-green-300 to-green-400 hover:from-green-400 hover:to-green-500 text-white font-semibold px-6 py-3 rounded-md mr-6"
+							>
 								HOME
 							</Link>
-							<Link to="/login" className="bg-gradient-to-r from-yellow-300 to-yellow-400 hover:from-yellow-400 hover:to-yellow-500 text-white font-semibold px-6 py-3 rounded-md">
+							<Link
+								to="/login"
+								className="bg-gradient-to-r from-yellow-300 to-yellow-400 hover:from-yellow-400 hover:to-yellow-500 text-white font-semibold px-6 py-3 rounded-md"
+							>
 								LOGIN
 							</Link>
 						</div>

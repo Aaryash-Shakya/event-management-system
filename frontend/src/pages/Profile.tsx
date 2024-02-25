@@ -21,8 +21,8 @@ const Profile: React.FC = () => {
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
-				if(userId === null){
-					navigate("")
+				if (userId === null) {
+					navigate("");
 					console.log("user not found");
 				}
 				const res = await axios.get(`${serverUrl}/api/user/get-profile/${userId}`, {
@@ -43,15 +43,15 @@ const Profile: React.FC = () => {
 		fetchUser();
 	}, []);
 
-	const handleSignOut = () =>{
+	const handleSignOut = () => {
 		localStorage.removeItem("jwt");
 		localStorage.removeItem("userId");
 		localStorage.removeItem("email");
-		useUserStore.setState({isAuthenticated: false});
-		useUserStore.setState({userId: null});
-		useUserStore.setState({email: ""});
+		useUserStore.setState({ isAuthenticated: false });
+		useUserStore.setState({ userId: null });
+		useUserStore.setState({ email: "" });
 		navigate("/");
-	}
+	};
 
 	return (
 		<>
@@ -68,7 +68,9 @@ const Profile: React.FC = () => {
 							<p className="text-gray-700">{user.email}</p>
 							<p className="text-gray-700">{user.phone && user.phone}</p>
 							<p className="text-gray-700">{user.gender && user.gender}</p>
-							<div className="btn btn-warning absolute bottom-0 right-10" onClick={()=>handleSignOut()}>Sign Out</div>
+							<div className="btn btn-warning absolute bottom-0 right-10" onClick={() => handleSignOut()}>
+								Sign Out
+							</div>
 						</div>
 					</div>
 					<hr />

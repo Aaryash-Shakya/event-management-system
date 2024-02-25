@@ -4,7 +4,7 @@ import axios from "axios";
 import serverUrl from "../config";
 import { Link } from "react-router-dom";
 
-const DraftEvents = () => {
+const DraftEvents: React.FC = () => {
 	const [allEvents, setAllEvents] = useState([{} as EventData]);
 
 	const fetchEvents = () => {

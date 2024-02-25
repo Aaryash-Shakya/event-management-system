@@ -117,8 +117,7 @@ const ViewHistory: React.FC = () => {
 						>
 							{useUserStore.getState().isAuthenticated === "admin" && event.status === "left"
 								? "left"
-								: "remove"
-							}
+								: "remove"}
 						</button>
 					</td>
 				</tr>

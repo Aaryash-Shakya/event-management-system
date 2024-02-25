@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import serverUrl from "../config";
 import { useUserStore } from "../store/store";
 
-const UserSettings = () => {
+const UserSettings: React.FC = () => {
 	const [oldPassword, setOldPassword] = useState<string>("");
 	const [newPassword, setNewPassword] = useState<string>("");
 	const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");

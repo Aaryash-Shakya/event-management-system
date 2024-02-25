@@ -4,7 +4,7 @@ import axios from "axios";
 import serverUrl from "../config";
 import { Link } from "react-router-dom";
 
-const AllEvents = () => {
+const AllEvents: React.FC = () => {
 	const [allEvents, setAllEvents] = useState([{} as EventData]);
 
 	const fetchEvents = () => {
@@ -19,8 +19,8 @@ const AllEvents = () => {
 	};
 
 	useEffect(() => {
-        fetchEvents();
-    }, []);
+		fetchEvents();
+	}, []);
 
 	const handleDelete = (id: number) => {
 		if (!confirm("Are you sure you want to delete this event?")) {
@@ -34,7 +34,7 @@ const AllEvents = () => {
 			})
 			.then(res => {
 				console.log(res.data);
-                fetchEvents();
+				fetchEvents();
 			})
 			.catch(err => {
 				console.log(err);

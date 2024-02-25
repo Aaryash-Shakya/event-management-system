@@ -33,7 +33,7 @@ const EventParticipants: React.FC<{ eventId: number }> = ({ eventId }) => {
 	const [participants, setParticipants] = useState<Participant[]>([]);
 	useEffect(() => {
 		fetchParticipants();
-	},[]);
+	}, []);
 
 	const fetchParticipants = () => {
 		axios

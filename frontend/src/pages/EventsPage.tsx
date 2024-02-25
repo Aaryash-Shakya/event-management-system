@@ -37,10 +37,9 @@ const EventsPage: React.FC = () => {
 		fetchEvent();
 	}, []);
 
-	const eventMapping = (status : "upcoming" | "completed" | "postponed" | "draft" | "cancelled") => {
+	const eventMapping = (status: "upcoming" | "completed" | "postponed" | "draft" | "cancelled") => {
 		return events.map((event: EventData, index: number) => {
-			if (event.status === status)
-				return <Event key={index} item={event} />;
+			if (event.status === status) return <Event key={index} item={event} />;
 		});
 	};
 
