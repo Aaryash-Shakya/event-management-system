@@ -19,6 +19,7 @@ import AddEvent from "./admin/AddEvent";
 import AllEvents from "./admin/AllEvents";
 import UpdateEvent from "./admin/UpdateEvent";
 import DraftEvents from "./admin/DraftEvents";
+import ManageUsers from "./admin/ManageUsers";
 
 const MyRoutes: React.FC = () => {
 	return (
@@ -31,7 +32,7 @@ const MyRoutes: React.FC = () => {
 					<Route path="login" element={<Login />} />
 					<Route path="signup" element={<SignUp />} />
 					<Route path="verify-email" element={<VerifyEmail />} />
-					<Route path="view-profile/:userId" element={<ViewProfile />} />
+					<Route path="view-profile/:user_id" element={<ViewProfile />} />
 
 					{/* event */}
 					<Route path="events" element={<EventsPage />} />
@@ -52,6 +53,7 @@ const MyRoutes: React.FC = () => {
 					<Route path="add-event" element={<AddEvent />} />
 					<Route path="update-event/:event_id" element={<UpdateEvent />} />
 					<Route path="draft-events" element={<DraftEvents />} />
+					<Route path="manage-users" element={<ManageUsers />} />
 				</Route>
 
 				<Route path="*" element={<PageNotFound />} />

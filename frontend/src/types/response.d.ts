@@ -6,7 +6,7 @@ interface SuccessResponse {
 }
 
 interface ErrorResponse {
-    status: number;
+	status: number;
 	errorName: string;
 	errorMessage: string;
 	[key: string]: any;
@@ -24,3 +24,18 @@ export type SuccessOrError = {
 //     errorMessage: 'asdf'
 // };
 // console.log(x);
+
+export type UserModelType = {
+	id?: number;
+	name: string;
+	date_of_birth?: string;
+	gender?: string;
+	email: string;
+	phone: string;
+	password: string;
+	type: "user" | "admin";
+	email_verified: boolean;
+	social?: null | UserSocialType;
+	createdAt: Date;
+	updatedAt: Date;
+};

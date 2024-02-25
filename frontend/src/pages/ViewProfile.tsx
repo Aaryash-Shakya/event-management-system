@@ -2,8 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import serverUrl from "../config";
 import { useParams } from "react-router-dom";
-import UserHistory from "../components/UserHistory";
-import { useUserStore } from "../store/store";
+import ViewHistory from "../components/ViewHistory";
 
 const ViewProfile: React.FC = () => {
 	const [user, setUser] = useState({
@@ -16,7 +15,7 @@ const ViewProfile: React.FC = () => {
 		createdAt: "",
 	});
 	const param = useParams();
-	const userId = param.userId;
+	const userId = param.user_id;
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
@@ -58,9 +57,7 @@ const ViewProfile: React.FC = () => {
 						</div>
 					</div>
 					<hr />
-                    {useUserStore.getState().isAuthenticated === "admin" && (
-                        <UserHistory />
-                    )}
+					<ViewHistory />
 				</div>
 			</div>
 		</>

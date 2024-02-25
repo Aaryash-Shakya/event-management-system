@@ -25,7 +25,7 @@ const AdminSidebar: React.FC = () => {
 					</Link>
 				</li>
 				<li>
-					<Link to="/admin/add-event" className="tooltip tooltip-right" data-tip="Manage User">
+					<Link to="/admin/manage-users" className="tooltip tooltip-right" data-tip="Manage User">
 						<FaUserGear size={30} />
 					</Link>
 				</li>
