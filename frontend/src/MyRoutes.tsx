@@ -16,6 +16,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import ViewProfile from "./pages/ViewProfile";
 import Dashboard from "./admin/Dashboard";
 import AddEvent from "./admin/AddEvent";
+import AllEvents from "./admin/AllEvents";
 
 const MyRoutes: React.FC = () => {
 	return (
@@ -45,6 +46,7 @@ const MyRoutes: React.FC = () => {
 				{/* admin route */}
 				<Route path="admin" element={<AdminRoute />}>
 					<Route path="dashboard" element={<Dashboard />} />
+					<Route path="all-event" element={<AllEvents />} />
 					<Route path="add-event" element={<AddEvent />} />
 				</Route>
 

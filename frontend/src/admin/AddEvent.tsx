@@ -25,10 +25,9 @@ const AddEvent = () => {
 
 	return (
 		<>
-			<AdminSidebar />
 			<div className="ms-24 mt-10 flex justify-center items-center">
-				<form className="form-control items-start p-5 border rounded-lg shadow-lg bg-base-100">
-					<label className="form-control w-full max-w-lg" htmlFor="title">
+				<form className="form-control items-start p-5 border rounded-lg shadow-lg bg-base-100 w-full max-w-xl">
+					<label className="form-control w-full max-w-xl" htmlFor="title">
 						<div className="label">
 							<span className="label-text font-semibold">Event Title</span>
 						</div>
@@ -36,12 +35,12 @@ const AddEvent = () => {
 							type="text"
 							id="title"
 							placeholder="Event Title"
-							className="input input-bordered w-full max-w-lg"
+							className="input input-bordered w-full max-w-xl"
 							onChange={e => setNewEvent(prev => ({ ...prev, title: e.target.value }))}
 							value={newEvent.title}
 						/>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="description">
+					<label className="form-control w-full max-w-xl" htmlFor="description">
 						<div className="label">
 							<span className="label-text font-semibold">Event Description</span>
 						</div>
@@ -49,18 +48,18 @@ const AddEvent = () => {
 							type="text"
 							id="description"
 							placeholder="Event Description"
-							className="input input-bordered w-full max-w-lg"
+							className="input input-bordered w-full max-w-xl"
 							onChange={e => setNewEvent(prev => ({ ...prev, description: e.target.value }))}
 							value={newEvent.description}
 						/>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="status">
+					<label className="form-control w-full max-w-xl" htmlFor="status">
 						<div className="label">
 							<span className="label-text font-semibold">Event Status</span>
 						</div>
 						<select
 							id="status"
-							className="input input-bordered w-full max-w-lg select"
+							className="input input-bordered w-full max-w-xl select"
 							onChange={e => setNewEvent(prev => ({ ...prev, status: e.target.value as "upcoming" | "completed" | "postponed" | "draft" | "cancelled" }))}
 							value={newEvent.status}
 						>
@@ -71,7 +70,7 @@ const AddEvent = () => {
 							<option value="cancelled">Cancelled</option>
 						</select>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="maximumParticipants">
+					<label className="form-control w-full max-w-xl" htmlFor="maximumParticipants">
 						<div className="label">
 							<span className="label-text font-semibold">Maximum Participants</span>
 						</div>
@@ -79,14 +78,14 @@ const AddEvent = () => {
 							type="number"
 							id="maximumParticipants"
 							placeholder="Maximum Participants"
-							className="input input-bordered w-full max-w-lg"
+							className="input input-bordered w-full max-w-xl"
 							onChange={e =>
 								setNewEvent(prev => ({ ...prev, maximum_participants: parseInt(e.target.value) }))
 							}
 							value={newEvent.maximum_participants}
 						/>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="gatheringPoint">
+					<label className="form-control w-full max-w-xl" htmlFor="gatheringPoint">
 						<div className="label">
 							<span className="label-text font-semibold">Gathering Point</span>
 						</div>
@@ -94,12 +93,12 @@ const AddEvent = () => {
 							type="text"
 							id="gatheringPoint"
 							placeholder="Gathering Point"
-							className="input input-bordered w-full max-w-lg"
+							className="input input-bordered w-full max-w-xl"
 							onChange={e => setNewEvent(prev => ({ ...prev, gathering_point: e.target.value }))}
 							value={newEvent.gathering_point}
 						/>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="destination">
+					<label className="form-control w-full max-w-xl" htmlFor="destination">
 						<div className="label">
 							<span className="label-text font-semibold">Event Destination</span>
 						</div>
@@ -107,12 +106,12 @@ const AddEvent = () => {
 							type="text"
 							id="destination"
 							placeholder="Event Destination"
-							className="input input-bordered w-full max-w-lg"
+							className="input input-bordered w-full max-w-xl"
 							onChange={e => setNewEvent(prev => ({ ...prev, destination: e.target.value }))}
 							value={newEvent.destination}
 						/>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="startDate">
+					<label className="form-control w-full max-w-xl" htmlFor="startDate">
 						<div className="label">
 							<span className="label-text font-semibold">Event Starting Date</span>
 						</div>
@@ -120,12 +119,12 @@ const AddEvent = () => {
 							type="datetime-local"
 							id="startDate"
 							placeholder="Event Starting Date"
-							className="input input-bordered w-full max-w-lg"
+							className="input input-bordered w-full max-w-xl"
 							onChange={e => setNewEvent(prev => ({ ...prev, start_date: e.target.value }))}
 							value={newEvent.start_date}
 						/>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="duration">
+					<label className="form-control w-full max-w-xl" htmlFor="duration">
 						<div className="label">
 							<span className="label-text font-semibold">Event Duration</span>
 						</div>
@@ -133,18 +132,18 @@ const AddEvent = () => {
 							type="text"
 							id="duration"
 							placeholder="Event Duration"
-							className="input input-bordered w-full max-w-lg"
+							className="input input-bordered w-full max-w-xl"
 							onChange={e => setNewEvent(prev => ({ ...prev, duration: e.target.value }))}
 							value={newEvent.duration}
 						/>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="duration">
+					<label className="form-control w-full max-w-xl" htmlFor="duration">
 						<div className="label">
 							<span className="label-text font-semibold">Event Difficulty</span>
 						</div>
 						<select
 							id="duration"
-							className="input input-bordered w-full max-w-lg select"
+							className="input input-bordered w-full max-w-xl select"
 							onChange={e => setNewEvent(prev => ({ ...prev, difficulty: e.target.value as "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme"}))}
 							value={newEvent.difficulty}
 						>
@@ -155,7 +154,7 @@ const AddEvent = () => {
 							<option value="Extreme">Extreme</option>
 						</select>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="cost">
+					<label className="form-control w-full max-w-xl" htmlFor="cost">
 						<div className="label">
 							<span className="label-text font-semibold">Participation Fee</span>
 						</div>
@@ -163,12 +162,12 @@ const AddEvent = () => {
 							type="number"
 							id="cost"
 							placeholder="Participation Fee"
-							className="input input-bordered w-full max-w-lg"
+							className="input input-bordered w-full max-w-xl"
 							onChange={e => setNewEvent(prev => ({ ...prev, cost: parseInt(e.target.value) }))}
 							value={newEvent.cost}
 						/>
 					</label>
-					<label className="form-control w-full max-w-lg" htmlFor="banner">
+					<label className="form-control w-full max-w-xl" htmlFor="banner">
 						<div className="label">
 							<span className="label-text font-semibold">Event Banner</span>
 						</div>
@@ -176,7 +175,7 @@ const AddEvent = () => {
 							type="file"
 							id="banner"
 							placeholder="Event Banner"
-							className="input input-bordered w-full max-w-lg file-input"
+							className="input input-bordered w-full max-w-xl file-input"
 							onChange={e => {
 								setNewEvent(prev => ({ ...prev, banner: e.target.files![0] }));
 								console.log(e.target.files![0]);
@@ -185,7 +184,7 @@ const AddEvent = () => {
 					</label>
 					<div
 						onClick={handleSubmit}
-						className="btn btn-primary btn-circle w-full max-w-lg mt-5 text-lg text-white"
+						className="btn btn-primary btn-circle w-full max-w-xl mt-5 text-lg text-white"
 					>
 						Add Event
 					</div>
