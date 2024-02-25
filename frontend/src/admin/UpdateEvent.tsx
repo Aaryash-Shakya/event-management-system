@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EventData } from "../components/Event";
 import axios from "axios";
 import serverUrl from "../config";
+import { useParams } from "react-router-dom";
 
-const AddEvent = () => {
-	const [newEvent, setNewEvent] = useState({} as EventData);
+const UpdateEvent = () => {
+	const event_id = useParams().event_id;
+	const [updatedEvent, setUpdatedEvent] = useState({} as EventData);
+
+	const fetchPreviousData = () => {
+		axios.get(`${serverUrl}/api/event/get-event/${event_id}`).then(res => {
+			setUpdatedEvent(res.data.event);
+		});
+	}
+
+	useEffect(()=>{
+		fetchPreviousData();
+	},[])
 
 	const handleSubmit = () => {
 		axios
-			.post(`${serverUrl}/api/event/add-event`, newEvent, {
+			.put(`${serverUrl}/api/event/update-event/${event_id}`, updatedEvent, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 					Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -16,6 +28,8 @@ const AddEvent = () => {
 			})
 			.then(res => {
 				console.log(res.data);
+				fetchPreviousData();
+				scroll(0,0);
 			})
 			.catch(err => {
 				console.log(err);
@@ -35,8 +49,8 @@ const AddEvent = () => {
 							id="title"
 							placeholder="Event Title"
 							className="input input-bordered w-full max-w-xl"
-							onChange={e => setNewEvent(prev => ({ ...prev, title: e.target.value }))}
-							value={newEvent.title}
+							onChange={e => setUpdatedEvent(prev => ({ ...prev, title: e.target.value }))}
+							value={updatedEvent.title}
 						/>
 					</label>
 					<label className="form-control w-full max-w-xl" htmlFor="description">
@@ -48,8 +62,8 @@ const AddEvent = () => {
 							id="description"
 							placeholder="Event Description"
 							className="input input-bordered w-full max-w-xl"
-							onChange={e => setNewEvent(prev => ({ ...prev, description: e.target.value }))}
-							value={newEvent.description}
+							onChange={e => setUpdatedEvent(prev => ({ ...prev, description: e.target.value }))}
+							value={updatedEvent.description}
 						/>
 					</label>
 					<label className="form-control w-full max-w-xl" htmlFor="status">
@@ -59,8 +73,8 @@ const AddEvent = () => {
 						<select
 							id="status"
 							className="input input-bordered w-full max-w-xl select"
-							onChange={e => setNewEvent(prev => ({ ...prev, status: e.target.value as "upcoming" | "completed" | "postponed" | "draft" | "cancelled" }))}
-							value={newEvent.status}
+							onChange={e => setUpdatedEvent(prev => ({ ...prev, status: e.target.value as "upcoming" | "completed" | "postponed" | "draft" | "cancelled" }))}
+							value={updatedEvent.status}
 						>
 							<option value="upcoming">Upcoming</option>
 							<option value="completed">Completed</option>
@@ -79,9 +93,9 @@ const AddEvent = () => {
 							placeholder="Maximum Participants"
 							className="input input-bordered w-full max-w-xl"
 							onChange={e =>
-								setNewEvent(prev => ({ ...prev, maximum_participants: parseInt(e.target.value) }))
+								setUpdatedEvent(prev => ({ ...prev, maximum_participants: parseInt(e.target.value) }))
 							}
-							value={newEvent.maximum_participants}
+							value={updatedEvent.maximum_participants}
 						/>
 					</label>
 					<label className="form-control w-full max-w-xl" htmlFor="gatheringPoint">
@@ -93,8 +107,8 @@ const AddEvent = () => {
 							id="gatheringPoint"
 							placeholder="Gathering Point"
 							className="input input-bordered w-full max-w-xl"
-							onChange={e => setNewEvent(prev => ({ ...prev, gathering_point: e.target.value }))}
-							value={newEvent.gathering_point}
+							onChange={e => setUpdatedEvent(prev => ({ ...prev, gathering_point: e.target.value }))}
+							value={updatedEvent.gathering_point}
 						/>
 					</label>
 					<label className="form-control w-full max-w-xl" htmlFor="destination">
@@ -106,8 +120,8 @@ const AddEvent = () => {
 							id="destination"
 							placeholder="Event Destination"
 							className="input input-bordered w-full max-w-xl"
-							onChange={e => setNewEvent(prev => ({ ...prev, destination: e.target.value }))}
-							value={newEvent.destination}
+							onChange={e => setUpdatedEvent(prev => ({ ...prev, destination: e.target.value }))}
+							value={updatedEvent.destination}
 						/>
 					</label>
 					<label className="form-control w-full max-w-xl" htmlFor="startDate">
@@ -119,8 +133,8 @@ const AddEvent = () => {
 							id="startDate"
 							placeholder="Event Starting Date"
 							className="input input-bordered w-full max-w-xl"
-							onChange={e => setNewEvent(prev => ({ ...prev, start_date: e.target.value }))}
-							value={newEvent.start_date}
+							onChange={e => setUpdatedEvent(prev => ({ ...prev, start_date: e.target.value }))}
+							value={new Date(updatedEvent.start_date).toISOString().slice(0, 16)}
 						/>
 					</label>
 					<label className="form-control w-full max-w-xl" htmlFor="duration">
@@ -132,8 +146,8 @@ const AddEvent = () => {
 							id="duration"
 							placeholder="Event Duration"
 							className="input input-bordered w-full max-w-xl"
-							onChange={e => setNewEvent(prev => ({ ...prev, duration: e.target.value }))}
-							value={newEvent.duration}
+							onChange={e => setUpdatedEvent(prev => ({ ...prev, duration: e.target.value }))}
+							value={updatedEvent.duration}
 						/>
 					</label>
 					<label className="form-control w-full max-w-xl" htmlFor="duration">
@@ -143,8 +157,8 @@ const AddEvent = () => {
 						<select
 							id="duration"
 							className="input input-bordered w-full max-w-xl select"
-							onChange={e => setNewEvent(prev => ({ ...prev, difficulty: e.target.value as "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme"}))}
-							value={newEvent.difficulty}
+							onChange={e => setUpdatedEvent(prev => ({ ...prev, difficulty: e.target.value as "Easy" | "Moderate" | "Challenging" | "Hard" | "Extreme"}))}
+							value={updatedEvent.difficulty}
 						>
 							<option value="Easy">Easy</option>
 							<option value="Moderate">Moderate</option>
@@ -162,21 +176,22 @@ const AddEvent = () => {
 							id="cost"
 							placeholder="Participation Fee"
 							className="input input-bordered w-full max-w-xl"
-							onChange={e => setNewEvent(prev => ({ ...prev, cost: parseInt(e.target.value) }))}
-							value={newEvent.cost}
+							onChange={e => setUpdatedEvent(prev => ({ ...prev, cost: parseInt(e.target.value) }))}
+							value={updatedEvent.cost}
 						/>
 					</label>
 					<label className="form-control w-full max-w-xl" htmlFor="banner">
 						<div className="label">
 							<span className="label-text font-semibold">Event Banner</span>
 						</div>
+						<img src={`${serverUrl}/${updatedEvent.banner}`} alt={updatedEvent.title} className="max-w-xl w-full object-cover" />
 						<input
 							type="file"
 							id="banner"
-							placeholder="Event Banner"
+							placeholder="Choose another Banner"
 							className="input input-bordered w-full max-w-xl file-input"
 							onChange={e => {
-								setNewEvent(prev => ({ ...prev, banner: e.target.files![0] }));
+								setUpdatedEvent(prev => ({ ...prev, banner: e.target.files![0] }));
 								console.log(e.target.files![0]);
 							}}
 						/>
@@ -185,7 +200,7 @@ const AddEvent = () => {
 						onClick={handleSubmit}
 						className="btn btn-primary btn-circle w-full max-w-xl mt-5 text-lg text-white"
 					>
-						Add Event
+						Update Event
 					</div>
 				</form>
 			</div>
@@ -193,4 +208,4 @@ const AddEvent = () => {
 	);
 };
 
-export default AddEvent;
+export default UpdateEvent;

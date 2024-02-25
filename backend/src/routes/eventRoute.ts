@@ -46,6 +46,7 @@ class EventRoute {
 			"/update-event/:event_id",
 			GlobalMiddleware.authorization,
 			GlobalMiddleware.checkTypeAdmin,
+			new Multer().pMulter.single("banner"),
 			EventValidator.updateEventValidator(),
 			GlobalMiddleware.checkValidationError,
 			EventController.updateEvent
