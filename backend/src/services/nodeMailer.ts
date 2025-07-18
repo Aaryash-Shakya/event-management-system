@@ -12,7 +12,7 @@ export class NodeMailer {
 	private static transporter: nodemailer.Transporter;
 
 	private static initializeTransporter() {
-		console.log(process.env.NODEMAILER_USER);
+		console.log("smtp host ",process.env.NODEMAILER_USER);
 
 		NodeMailer.transporter = nodemailer.createTransport({
 			host: process.env.NODEMAILER_HOST,
